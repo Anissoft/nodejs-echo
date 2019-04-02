@@ -1,8 +1,11 @@
 {
-  "name": "@node-network-tool/server",
+  "name": "@node-network-tool/core",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist"
+  ],
   "version": "1.0.0",
   "description": "",
   "main": "index.umd.js",
@@ -10,14 +13,40 @@
   "typings": "index.d.ts",
   "scripts": {
     "lint": "eslint --fix ./src/index.ts",
-    "prebuild": "rimraf ./index.umd.js ./index.es5.js ./index.d.ts"
+    "clear": "rimraf ./dist",
+    "prebuild": "npm run clear",
+    "build": "tsc ./src/index.ts --module commonjs && rollup -c rollup.config.ts",
+    "commit": "git-cz",
+    "precommit": "lint-staged"
   },
-  "author": "",
+  "author": "Alexey Anisimov anissoftkun@gmail.com",
   "license": "MIT",
+  "lint-staged": {
+    "{src,test}/**/*.ts?": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
   "devDependencies": {
+    "@commitlint/cli": "^7.1.2",
+    "commitizen": "^3.0.0",
+    "@commitlint/config-conventional": "^7.1.2",
     "@types/lodash": "^4.14.123",
     "@types/node": "^11.13.0",
+    "cz-conventional-changelog": "^2.1.0",
     "lodash": "^4.17.11",
+    "lint-staged": "^8.0.0",
+    "prettier": "^1.14.3",
     "rimraf": "^2.6.3",
     "rollup": "^1.8.0",
     "rollup-plugin-commonjs": "^9.2.3",

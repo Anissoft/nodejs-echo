@@ -1,7 +1,6 @@
 {
-  "allowJS": true,
   "compilerOptions": {
-    "moduleResolution": "classic",
+    "moduleResolution": "node",
     "target": "es5",
     "module": "es2015",
     "lib": [
@@ -18,7 +17,13 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
-    "declarationDir": "./",
-    "outDir": "./"
-  }
+    "declarationDir": "./dist",
+    "outDir": "./dist",
+  },
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "./dist"
+  ]
 }
