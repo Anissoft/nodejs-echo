@@ -15,7 +15,7 @@
     "lint": "eslint --fix ./src/index.ts",
     "clear": "rimraf ./dist",
     "prebuild": "npm run clear",
-    "build": "tsc ./src/index.ts --module commonjs && rollup -c rollup.config.ts",
+    "build": "tsc  --module commonjs --project ./tsconfig.json && rollup -c rollup.config.ts",
     "commit": "git-cz",
     "precommit": "lint-staged"
   },

@@ -1,6 +1,7 @@
-.eslintrc
+.eslintignore
+.eslintrc.js
 .gitignore
+.prettierrc.js
 rollup.config.ts
-tslint.json
 tsconfig.json
 ./src
