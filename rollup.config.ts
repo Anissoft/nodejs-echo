@@ -6,13 +6,13 @@ import json from 'rollup-plugin-json';
 import pkg from './package.json';
 
 export default {
-  input: `src/index.ts`,
+  input: `src/node/index.ts`,
   output: [
-    { file: `./dist/${pkg.main}`, name: 'index.umd.js', format: 'umd', sourcemap: true },
-    { file: `./dist/${pkg.module}`, format: 'es', sourcemap: true },
+    { file: `${pkg.main}`, name: 'index.umd.js', format: 'umd', sourcemap: true },
+    { file: `${pkg.module}`, format: 'es', sourcemap: true },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
-  external: [],
+  external: ['http', 'crypto'],
   watch: {
     include: 'src/**',
   },

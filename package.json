@@ -1,23 +1,25 @@
 {
-  "name": "@node-network-tool/core",
-  "publishConfig": {
-    "access": "public"
-  },
+  "name": "nodejs-echo",
   "files": [
     "dist"
   ],
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "",
-  "main": "index.umd.js",
-  "module": "index.es5.js",
-  "typings": "index.d.ts",
+  "main": "dist/index.umd.js",
+  "module": "dist/index.es5.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint --fix ./src/index.ts",
     "clear": "rimraf ./dist",
     "prebuild": "npm run clear",
-    "build": "tsc  --module commonjs --project ./tsconfig.json && rollup -c rollup.config.ts",
+    "build:static": "webpack --config webpack.config.js --optimize-minimize --optimize-occurrence-order --mode=development",
+    "build:static:watch": " webpack-dev-server --config webpack.config.js --progress --mode=development --watch",
+    "build": "tsc  --module commonjs --project ./tsconfig.json && rollup -c rollup.config.ts && npm run build:static",
     "commit": "git-cz",
     "precommit": "lint-staged"
+  },
+  "repository": {
+    "url": "https://github.com/Anissoft/node-network-tools-core"
   },
   "author": "Alexey Anisimov anissoftkun@gmail.com",
   "license": "MIT",
@@ -39,14 +41,23 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
-    "commitizen": "^3.0.0",
     "@commitlint/config-conventional": "^7.1.2",
+    "@material-ui/core": "^4.0.0-alpha.6",
+    "@material-ui/icons": "^4.0.0-alpha.1",
+    "@material-ui/styles": "^4.0.0-alpha.6",
     "@types/lodash": "^4.14.123",
     "@types/node": "^11.13.0",
+    "@types/react-dom": "^16.8.3",
+    "@types/ws": "^6.0.1",
+    "awesome-typescript-loader": "^5.2.1",
+    "commitizen": "^3.0.0",
     "cz-conventional-changelog": "^2.1.0",
-    "lodash": "^4.17.11",
+    "html-webpack-plugin": "^3.2.0",
     "lint-staged": "^8.0.0",
+    "lodash": "^4.17.11",
     "prettier": "^1.14.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "rimraf": "^2.6.3",
     "rollup": "^1.8.0",
     "rollup-plugin-commonjs": "^9.2.3",
@@ -54,6 +65,14 @@
     "rollup-plugin-node-resolve": "^4.0.1",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.20.1",
-    "typescript": "^3.4.1"
+    "typescript": "^3.4.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "dependencies": {
+    "bufferutil": "^4.0.1",
+    "utf-8-validate": "^5.0.2",
+    "ws": "^6.2.1"
   }
 }

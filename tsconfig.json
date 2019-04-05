@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "types/*"
+      ]
+    },
     "moduleResolution": "node",
     "target": "es5",
     "module": "es2015",
@@ -19,9 +25,10 @@
     "resolveJsonModule": true,
     "declarationDir": "./dist",
     "outDir": "./dist",
+    "jsx": "react"
   },
   "include": [
-    "./src"
+    "./src/node"
   ],
   "exclude": [
     "./dist"
