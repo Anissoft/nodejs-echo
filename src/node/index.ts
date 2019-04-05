@@ -1,18 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import * as http from 'http';
+import * as https from 'https';
 import WebSocket from 'ws';
 
 import generateId from './generateId';
 import convertJSON from './convertJSON';
-
-export interface Request {
-  id: string;
-  type: 'outgoing' | 'incoming';
-  data: {
-    url?: string | URL;
-    options: http.RequestOptions;
-  };
-}
+import { Request } from '../../types'
 
 const createSniffer = (original: typeof http.request, effect: (req: Request) => void) => {
   function request(
@@ -27,7 +20,7 @@ const createSniffer = (original: typeof http.request, effect: (req: Request) => 
   function request(arg0: any, arg1?: any, arg2?: any): http.ClientRequest {
     try {
       let url: string | URL | undefined;
-      let options: http.RequestOptions;
+      let options: Request['options'];
       let callback: (res: http.IncomingMessage) => void;
 
       if (typeof arg0 === 'string' || arg0 instanceof URL) {
@@ -38,7 +31,7 @@ const createSniffer = (original: typeof http.request, effect: (req: Request) => 
         options = arg0;
         callback = arg1;
       }
-      effect({ id: generateId(), type: 'outgoing', data: { url, options } });
+      effect({ id: generateId(), type: 'outgoing', status: 'pending', url, options });
     } catch (e) {
       console.log(e);
     }
@@ -47,7 +40,7 @@ const createSniffer = (original: typeof http.request, effect: (req: Request) => 
   return request;
 };
 
-const prepare = (HTTP: typeof http) => ({
+const prepare = (HTTP: typeof http, HTTPS: typeof https) => ({
   port,
   passphrase,
   debug = false,
@@ -60,17 +53,28 @@ const prepare = (HTTP: typeof http) => ({
     `initiate Echo with port: ${port}, and passphrase: ${passphrase && passphrase.replace(/./g, '*')}`,
   );
 
-  const original = HTTP.request;
+  const originalHttp = HTTP.request;
+  const originalHttps = HTTPS.request;
   const outgoing = new WebSocket.Server({ port: +port });
 
   outgoing.on('connection', ws => {
     if (debug) console.log('ws connection');
-    const sniffer = createSniffer(original, req => {
+    const snifferHttp = createSniffer(originalHttp, req => {
       if (debug) console.log('ws send');
       ws.send(convertJSON(req), err => {
         if (err) {
           console.log(err);
-          HTTP.request = original;
+          HTTP.request = originalHttp;
+          ws.terminate();
+        }
+      });
+    });
+    const snifferHttps = createSniffer(originalHttps, req => {
+      if (debug) console.log('ws send');
+      ws.send(convertJSON(req), err => {
+        if (err) {
+          console.log(err);
+          HTTPS.request = originalHttps;
           ws.terminate();
         }
       });
@@ -79,11 +83,13 @@ const prepare = (HTTP: typeof http) => ({
       if (message === passphrase) {
         if (debug) console.log('ws auth true');
         ws.send('establish connection');
-        HTTP.request = sniffer;
+        HTTP.request = snifferHttp;
+        HTTPS.request = snifferHttps;
       } else {
         if (debug) console.log('ws auth false');
         ws.send('incorrect passphrase', () => {
-          HTTP.request = original;
+          HTTP.request = originalHttp;
+          HTTPS.request = originalHttps;
           ws.terminate();
         });
       }
@@ -92,4 +98,4 @@ const prepare = (HTTP: typeof http) => ({
   return outgoing;
 };
 
-export default prepare((global as any).http);
+export default prepare(http, https);

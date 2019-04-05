@@ -72,6 +72,7 @@
   },
   "dependencies": {
     "bufferutil": "^4.0.1",
+    "node-fetch": "^2.3.0",
     "utf-8-validate": "^5.0.2",
     "ws": "^6.2.1"
   }
