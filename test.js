@@ -1,6 +1,17 @@
-const prepare = require('./');
-const fetch = require('node-fetch');
+require('./')({ debug: true, port: 3001, passphrase: 'hello' });
+setInterval(() => {
+  console.log('send request');
+  require('http').get('http://jsonplaceholder.typicode.com/todos/1', res => {
+    let data = '';
 
-prepare({ debug: true, port: 3001, passphrase: 'hello' });
+    // A chunk of data has been recieved.
+    res.on('data', (chunk) => {
+      data += chunk;
+    });
 
-setInterval(() => { console.log('send request'); fetch('https://www.google.com') }, 10 * 1000);
+    // The whole response has been received. Print out the result.
+    res.on('end', () => {
+      console.log(data);
+    });
+  })
+}, 10 * 1000);

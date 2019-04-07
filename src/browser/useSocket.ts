@@ -31,13 +31,14 @@ export const useSocket = (props: { port: string | number, parrphrase: string }) 
         socket.onclose = () => { saveSocket(null); }
         socket.onerror = (error: any) => {
           console.info('Lost connection');
+          socket.close();
           saveSocket(null);
         };
       } else {
         interval = setInterval(() => {
           try {
             const candidate = new WebSocket(`ws://${location.hostname}:${+props.port}`);
-            candidate.onopen = () => { saveSocket(candidate); };
+            candidate.onopen = () => { clearInterval(interval); saveSocket(candidate); };
             candidate.onerror = (error: any) => {
               candidate.close();
             };

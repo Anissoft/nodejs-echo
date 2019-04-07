@@ -12,9 +12,10 @@
     "lint": "eslint --fix ./src/index.ts",
     "clear": "rimraf ./dist",
     "prebuild": "npm run clear",
+    "build:node": "tsc  --module commonjs --project ./tsconfig.json && rollup -c rollup.config.ts",
     "build:static": "webpack --config webpack.config.js --optimize-minimize --optimize-occurrence-order --mode=development",
     "build:static:watch": " webpack-dev-server --config webpack.config.js --progress --mode=development --watch",
-    "build": "tsc  --module commonjs --project ./tsconfig.json && rollup -c rollup.config.ts && npm run build:static",
+    "build": "npm run build:node && npm run build:static",
     "commit": "git-cz",
     "precommit": "lint-staged"
   },

@@ -3,9 +3,8 @@ export type WSListener = (event: WSEvent) => void;
 export interface Request {
   id: string;
   type: 'outgoing' | 'incoming';
-  status: 'pending' | 'success' | 'errored';
   url?: string | URL;
-  options: {
+  request: string | {
     auth: any
     hash: any
     headers: { [key: string]: string[] },
@@ -22,3 +21,17 @@ export interface Request {
     slashes: boolean
   };
 }
+
+export interface Response {
+  id: string;
+  response: {
+    httpVersion: string;
+    headers: { [key: string]: string[] },
+    method?: string;
+    url?: string | URL;
+    statusCode?: number;
+    statusMessage?: string;
+    data: string | null;
+  }
+}
+
