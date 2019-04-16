@@ -29,7 +29,10 @@ module.exports = {
     // new webpack.DefinePlugin({
     //   'process.env.ENV': JSON.stringify(process.env.ENV),
     // }),
-    new HtmlWebpackPlugin({ title: 'Nodejs echo' }),
+    new HtmlWebpackPlugin({
+      title: 'Nodejs echo',
+      favicon: './favicon.png'
+    }),
     new webpack.optimize.AggressiveMergingPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
   ],
@@ -38,7 +41,7 @@ module.exports = {
     compress: true,
     disableHostCheck: true,
     hot: false,
-    port: 3000,
+    port: 3002,
     historyApiFallback: {
       index: 'index.html',
     },

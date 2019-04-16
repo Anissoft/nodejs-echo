@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { WSListener } from '../../types';
 
-export const useSocket = (props: { port: string | number, parrphrase: string }) => {
+export const useSocket = (props: { port: string | number }) => {
   const [socket, saveSocket] = React.useState(null) as [WebSocket | null, React.Dispatch<React.SetStateAction<WebSocket | null>>];
   const [listeners, setListeners] = React.useState([] as WSListener[]);
 
@@ -27,7 +27,7 @@ export const useSocket = (props: { port: string | number, parrphrase: string }) 
             }
           })
         }
-        socket.send(`${props.parrphrase}`);
+        socket.send('69742773206D65202D204D6172696F21');
         socket.onclose = () => { saveSocket(null); }
         socket.onerror = (error: any) => {
           console.info('Lost connection');
@@ -50,7 +50,7 @@ export const useSocket = (props: { port: string | number, parrphrase: string }) 
 
       return () => { clearInterval(interval); }
     },
-    [socket],
+    [!socket],
   )
 
   return {

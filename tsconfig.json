@@ -28,7 +28,8 @@
     "jsx": "react"
   },
   "include": [
-    "./src/node"
+    "./src/node",
+    "src/common"
   ],
   "exclude": [
     "./dist"

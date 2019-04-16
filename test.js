@@ -1,17 +1,12 @@
-require('./')({ debug: true, port: 3001, passphrase: 'hello' });
+require('./')({ debug: true, port: 3000 });
+
 setInterval(() => {
   console.log('send request');
-  require('http').get('http://jsonplaceholder.typicode.com/todos/1', res => {
-    let data = '';
-
-    // A chunk of data has been recieved.
-    res.on('data', (chunk) => {
-      data += chunk;
+  try {
+    require('request').post('http://jsonplaceholder.typicode.com/posts', {}, (error, response, body) => {
+      console.log({ error })
     });
-
-    // The whole response has been received. Print out the result.
-    res.on('end', () => {
-      console.log(data);
-    });
-  })
+  } catch (e) {
+    console.error(e);
+  }
 }, 10 * 1000);
