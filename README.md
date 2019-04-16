@@ -15,8 +15,9 @@ Simply import initial command from package and execute it in very beginning of y
 ```js
 const start = require('node-echo');
 
-start({ port: 3001 })
+start({ port: 3000 })
 ```
+Then just open in your browser `localhost:3000`.
 
 It is recommended to place the above code in a separate file (e.g. echo.js) and to import it in your application's entry point (e.g. index.js).
 
@@ -25,3 +26,5 @@ require('./echo');
 const express = require('express');
 ...
 ```
+
+Remember that tool also occupies next port for uts needs (WIP). Eg. if you select port 3000, 3001 should also be available.
