@@ -17,11 +17,23 @@ export const useRequests = ({
       try {
         const json: Response | Request = JSON.parse(message);
         if (Object.prototype.hasOwnProperty.call(json, 'request')) {
-          setTimes(state => Object.assign({}, state, { [json.id]: Date.now() }));
-          setRequests(state => Object.assign({}, state, { [json.id]: json }));
+          setTimeout(() => {
+            setTimes(state => Object.assign({}, state, { [json.id]: Date.now() }));
+            setRequests(state => Object.assign({}, state, { [json.id]: json }));
+          }, 0);
         }
         if (Object.prototype.hasOwnProperty.call(json, 'response')) {
-          setResponses(state => Object.assign({}, state, { [json.id]: json }))
+          try {
+            const jsonData = JSON.parse((json as Response).response.data as string);
+            ((json as Response).response.data as any) = jsonData;
+            setTimeout(() => {
+              setResponses(state => Object.assign({}, state, { [json.id]: json }))
+            }, 0);
+          } catch (e) {
+            setTimeout(() => {
+              setResponses(state => Object.assign({}, state, { [json.id]: json }))
+            }, 0);
+          }
         }
       } catch (e) {
         console.info(message);

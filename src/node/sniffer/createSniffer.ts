@@ -31,7 +31,7 @@ export default (original: typeof http.request, effect: (arg0: Request | Response
 
       const id = generateId();
 
-      effect({ id, type: 'outgoing', request: Object.assign({}, options), url });
+      effect({ id, type: 'outgoing', request: Object.assign({}, options) });
 
       return original(options, (res) => {
         const { httpVersion, headers, method, url, statusCode, statusMessage } = res;

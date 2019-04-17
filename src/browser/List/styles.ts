@@ -4,12 +4,14 @@ import { makeStyles } from '@material-ui/styles';
 export default makeStyles((theme: Theme) => ({
   root: {
     width: '100%',
-    minHeight: 'calc(100vh - 49px)',
+    minHeight: 'calc(100vh - 47px)',
     // position: 'absolute',
-    marginBottom: 49,
+    marginBottom: 46,
+    flexWrap: 'nowrap',
   },
   row: {
-    height: 40,
+    minHeight: 40,
+    flexWrap: 'nowrap',
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -17,6 +19,11 @@ export default makeStyles((theme: Theme) => ({
   },
   statusGreen: {
     color: theme.palette.secondary.main
+  },
+  url: {
+    wordWrap: 'break-word',
+    /* line-break: normal; */
+    width: '100%',
   },
   statusYellow: {
     color: '#ddd73e'

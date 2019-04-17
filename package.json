@@ -3,11 +3,17 @@
   "files": [
     "dist"
   ],
-  "version": "1.0.7",
+  "version": "1.1.7",
   "description": "",
   "main": "dist/index.umd.js",
   "module": "dist/index.es5.js",
   "typings": "dist/index.d.ts",
+  "keywords": [
+    "debug",
+    "tool",
+    "network",
+    "requests"
+  ],
   "scripts": {
     "lint": "eslint --fix ./src/index.ts",
     "clear": "rimraf ./dist",
@@ -42,7 +48,7 @@
     ]
   },
   "devDependencies": {
-    "@anissoft/react-helpers": "^1.1.3",
+    "@anissoft/react-helpers": "^1.1.4",
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
     "@material-ui/core": "^4.0.0-alpha.6",

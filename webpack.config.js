@@ -41,7 +41,7 @@ module.exports = {
     compress: true,
     disableHostCheck: true,
     hot: false,
-    port: 3002,
+    port: 3009,
     historyApiFallback: {
       index: 'index.html',
     },

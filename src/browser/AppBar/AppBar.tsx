@@ -1,7 +1,9 @@
 import * as React from 'react';
 import MuiAppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-// import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 // import IconButton from '@material-ui/core/IconButton';
 // import Paper from '@material-ui/core/Paper';
 // import Fab from '@material-ui/core/Fab';
@@ -14,15 +16,33 @@ import Toolbar from '@material-ui/core/Toolbar';
 // import AddIcon from '@material-ui/icons/Add';
 // import SearchIcon from '@material-ui/icons/Search';
 // import MoreIcon from '@material-ui/icons/MoreVert';
+import Wifi from '@material-ui/icons/Wifi';
+import WifiOff from '@material-ui/icons/WifiOff';
 
 import useStyles from './styles';
+import If from '@anissoft/react-helpers/components/If';
 
-export const AppBar = () => {
+export const AppBar = ({
+  connected,
+}: {
+  connected: boolean;
+}) => {
   const classes = useStyles();
 
   return (
     <MuiAppBar position="fixed" color="secondary" className={classes.appBar}>
+      <If condition={!connected}>
+        <LinearProgress color="secondary" />
+      </If>
       <Toolbar className={classes.toolbar} variant="dense">
+        <Typography>
+          NodeJS Echo
+        </Typography>
+        <If
+          condition={connected}
+          then={() => <Wifi />}
+          else={() => <WifiOff />}
+        />
         {/* <IconButton color="inherit" aria-label="Open drawer">
           <MenuIcon />
         </IconButton>

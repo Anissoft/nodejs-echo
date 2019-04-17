@@ -1,4 +1,4 @@
-# NodeJS Echo - network debugging tool (WIP)
+# NodeJS Echo - network debugging tool
 
 Provides an easy way to monitor (for now only outgoing) requests from your nodejs application.
 
@@ -23,8 +23,8 @@ It is recommended to place the above code in a separate file (e.g. echo.js) and 
 
 ```js
 require('./echo'); 
-const express = require('express');
-...
+
+// your code...
 ```
 
-Remember that tool also occupies next port for uts needs (WIP). Eg. if you select port 3000, 3001 should also be available.
+Remember that tool also occupies next port for its needs (WIP). Eg. if you select port 3000, 3001 should also be available.

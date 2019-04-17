@@ -14,9 +14,6 @@ document.body.appendChild(container);
 render(
   <CssBaseline>
     <ThemeProvider theme={theme} >
-      <div style={{ flexGrow: 1 }}>
-        <AppBar />
-      </div>
       <List />
     </ThemeProvider>
   </CssBaseline>,
