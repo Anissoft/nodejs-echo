@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { WSListener, Request, Response } from '../../types';
-import { useSocket } from './useSocket';
 
 export const useRequests = ({
   addSocketListener
@@ -26,14 +25,12 @@ export const useRequests = ({
           try {
             const jsonData = JSON.parse((json as Response).response.data as string);
             ((json as Response).response.data as any) = jsonData;
-            setTimeout(() => {
-              setResponses(state => Object.assign({}, state, { [json.id]: json }))
-            }, 0);
-          } catch (e) {
-            setTimeout(() => {
-              setResponses(state => Object.assign({}, state, { [json.id]: json }))
-            }, 0);
+          } catch (error) {
+            console.log('Cannot convert message to JSON with', error);
           }
+          setTimeout(() => {
+            setResponses(state => Object.assign({}, state, { [json.id]: json }))
+          }, 0);
         }
       } catch (e) {
         console.info(message);

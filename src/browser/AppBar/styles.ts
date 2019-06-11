@@ -1,7 +1,7 @@
 import { Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, createStyles } from '@material-ui/styles';
 
-export default makeStyles((theme: Theme) => ({
+export default makeStyles((theme: Theme) => createStyles({
   subHeader: {
     backgroundColor: theme.palette.background.paper,
   },
@@ -20,5 +20,8 @@ export default makeStyles((theme: Theme) => ({
     left: 0,
     right: 0,
     margin: '0 auto',
+  },
+  dense: {
+    marginTop: 16,
   },
 }));

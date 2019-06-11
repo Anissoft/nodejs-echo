@@ -1,10 +1,10 @@
 import { Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles, createStyles } from '@material-ui/styles';
 
-export default makeStyles((theme: Theme) => ({
+export default makeStyles((theme: Theme) => createStyles({
   root: {
     width: '100%',
-    minHeight: 'calc(100vh - 47px)',
+    minHeight: 'calc(100vh - 52px)',
     // position: 'absolute',
     marginBottom: 46,
     flexWrap: 'nowrap',
