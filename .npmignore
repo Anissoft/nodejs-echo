@@ -5,3 +5,5 @@
 rollup.config.ts
 tsconfig.json
 ./src
+*.ts
+*.tsx

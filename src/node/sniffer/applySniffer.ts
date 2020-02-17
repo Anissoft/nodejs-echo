@@ -1,9 +1,16 @@
-import * as http from 'http'
+import * as http from 'http';
 
-import { Request, Response } from '../../../types'
+import { Request, Response, RequestBody } from '../../../types';
 import generateId from '../../common/generateId';
 
-export default (original: typeof http.request, effect: (arg0: Request | Response) => void) => {
+export default (
+  original: typeof http.request,
+  effect: (info: Request | Response | RequestBody) => void,
+  debug = false,
+) => {
+  if (debug) {
+    console.log('apply sniffer on', original.name);
+  }
   function request(
     options: http.RequestOptions | string | URL,
     callback?: (res: http.IncomingMessage) => void,
@@ -30,34 +37,37 @@ export default (original: typeof http.request, effect: (arg0: Request | Response
       }
 
       const id = generateId();
-
       effect({ id, type: 'outgoing', request: Object.assign({}, options) });
 
-      return original(options, (res) => {
+      if (debug) {
+        console.log('send request for', id);
+      }
+
+      const req = original(options, res => {
         const { httpVersion, headers, method, url, statusCode, statusMessage } = res;
 
-        const buffers: Array<Buffer> = []
-        const strings: string[] = []
-        let bufferLength = 0
-        let data: string = ''
+        const buffers: Array<Buffer> = [];
+        const strings: string[] = [];
+        let bufferLength = 0;
+        let data: string = '';
 
-        res.on('data', (chunk) => {
+        res.on('data', chunk => {
           if (!Buffer.isBuffer(chunk)) {
-            strings.push(chunk)
+            strings.push(chunk);
           } else if (chunk.length) {
-            bufferLength += chunk.length
-            buffers.push(chunk)
+            bufferLength += chunk.length;
+            buffers.push(chunk);
           }
-        })
+        });
 
         res.on('end', () => {
           if (bufferLength) {
-            data = Buffer.concat(buffers, bufferLength).toString('utf8')
+            data = Buffer.concat(buffers, bufferLength).toString('utf8');
           } else if (strings.length) {
             if (strings[0].length > 0 && strings[0][0] === '\uFEFF') {
-              strings[0] = strings[0].substring(1)
+              strings[0] = strings[0].substring(1);
             }
-            data = strings.join('')
+            data = strings.join('');
           }
 
           effect({
@@ -70,15 +80,38 @@ export default (original: typeof http.request, effect: (arg0: Request | Response
               statusCode,
               statusMessage,
               data,
-            }
+            },
           });
-        })
+          if (debug) {
+            console.log('send response for', id);
+          }
+        });
 
         callback && callback(res);
       });
+      const originalWrite = req.write;
+      const originalEnd = req.end;
+      const buffer: any[] = [];
+      req.write = function(chunk: any) {
+        buffer.push(chunk);
+        return originalWrite.apply(this, arguments as any);
+      };
+      req.end = function() {
+        effect({
+          id,
+          type: 'outgoing',
+          body: buffer,
+        });
+        if (debug) {
+          console.log('send request body for', id);
+        }
+        return originalEnd.apply(this, arguments as any);
+      };
+      return req;
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
+    console.log('use original', original.name);
     return original(arg0, arg1, arg2);
   }
   return request;
