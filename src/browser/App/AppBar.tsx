@@ -43,7 +43,7 @@ export default ({
     <>
       <AppBar position="static">
         <If condition={!connected}>
-          <LinearProgress style={{ position: 'fixed' }} />
+          <LinearProgress />
         </If>
         <Toolbar variant="dense">
           <IconButton edge="start" className={classes.menuButton} onClick={toggleTheme}>
