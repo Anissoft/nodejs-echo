@@ -13,7 +13,7 @@ npm install nodejs-echo --save-dev
 Simply import initial command from package and execute it in very beginning of your program.
 
 ```js
-const start = require('nodejs-echo');
+const start = require('nodejs-echo').start;
 
 start({ port: 3000, secret: 'any-string' });
 ```

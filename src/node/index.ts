@@ -87,4 +87,6 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
   };
 };
 
-export default prepare(http, https);
+export const start = prepare(http, https);
+
+export default start;
