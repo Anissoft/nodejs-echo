@@ -3,7 +3,10 @@
 .gitignore
 .prettierrc.js
 rollup.config.ts
-tsconfig.json
+tsconfig.*
+.vscode
+.cache
+.travis.yml
 ./src
 *.ts
 *.tsx
