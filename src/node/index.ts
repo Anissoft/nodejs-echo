@@ -25,7 +25,7 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
 
   return ({
     port,
-    secret,
+    secret = '',
     debug = false,
   }: {
     port: string | number;
