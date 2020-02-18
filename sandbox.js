@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-require('./dist/node/index').default({ port: 4900, debug: true, secret: 'secret' });
+require('./dist/node/index').default({ port: 4900, debug: true });
 
 setInterval(() => {
   console.log('send get request');

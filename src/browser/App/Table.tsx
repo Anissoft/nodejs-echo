@@ -23,19 +23,17 @@ const columns: Column[] = [
     id: 'url',
     label: 'URL',
     get: item => {
-      const candidate =
-        item.request.href ||
-        `${item.request.protocol || 'http://'}${item.request.hostname}${item.request.path}`;
       return (
         <div
           style={{
-            width: 'calc(100vw - 290px)',
+            width: 'calc(100vw - 300px)',
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
           }}
         >
-          {candidate}
+          {item.request.href ||
+            `${item.request.protocol || 'http://'}${item.request.hostname}${item.request.path}`}
         </div>
       );
     },
