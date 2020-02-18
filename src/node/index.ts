@@ -3,11 +3,12 @@ import * as http from 'http';
 import * as https from 'https';
 import * as WebSocket from 'ws';
 import * as chalk from 'chalk';
-// import { createServer } from 'http-server';
+import { resolve } from 'path';
+import { createServer } from 'http-server';
 
 import convertJSON from '../common/convertJSON';
 import applySniffer from './sniffer/applySniffer';
-import { RequestBody } from './../../types';
+import { RequestBody } from '../types';
 
 const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
   let enabled = false;
@@ -17,14 +18,10 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
     listeners.forEach(listener => listener(info));
   };
 
-  // @ts-ignore
-  HTTP.request = applySniffer(http.request, sniffer, false);
-  // @ts-ignore
-  HTTPS.request = applySniffer(https.request, sniffer, false);
-  // @ts-ignore
-  HTTP.get = applySniffer(http.get, sniffer, false);
-  // @ts-ignore
-  HTTPS.get = applySniffer(https.get, sniffer, false);
+  HTTP.request = applySniffer(http.request, sniffer as any, false);
+  HTTPS.request = applySniffer(https.request, sniffer as any, false);
+  HTTP.get = applySniffer(http.get, sniffer as any, false);
+  HTTPS.get = applySniffer(https.get, sniffer as any, false);
 
   return ({
     port,
@@ -73,7 +70,7 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
           }
           ws.send('{"auth": false}', () => {
             enabled = false;
-            ws.terminate();
+            // ws.terminate();
           });
         }
 
@@ -83,8 +80,8 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
       });
     });
 
-    // const server = createServer({ root: __dirname });
-    // server.listen(port);
+    const server = createServer({ root: resolve(__dirname, '..') });
+    server.listen(port);
 
     return wss;
   };

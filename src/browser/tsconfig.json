@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "dist/browser/",
+    "jsx": "react",
+    "lib": ["DOM"]
+  },
+  "include": ["src/browser/**/*"]
+}

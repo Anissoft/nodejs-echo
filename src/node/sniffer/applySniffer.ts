@@ -1,6 +1,7 @@
+/* eslint-disable  prefer-rest-params */
 import * as http from 'http';
 
-import { Request, Response, RequestBody } from '../../../types';
+import { Request, Response, RequestBody } from '../../types';
 import generateId from '../../common/generateId';
 
 export default (
@@ -37,7 +38,7 @@ export default (
       }
 
       const id = generateId();
-      effect({ id, type: 'outgoing', request: Object.assign({}, options) });
+      effect({ id, type: 'outgoing', request: Object.assign({}, options, { time: Date.now() }) });
 
       if (debug) {
         console.log('send request for', id);
@@ -49,7 +50,7 @@ export default (
         const buffers: Array<Buffer> = [];
         const strings: string[] = [];
         let bufferLength = 0;
-        let data: string = '';
+        let data = '';
 
         res.on('data', chunk => {
           if (!Buffer.isBuffer(chunk)) {
@@ -80,6 +81,7 @@ export default (
               statusCode,
               statusMessage,
               data,
+              time: Date.now(),
             },
           });
           if (debug) {
@@ -91,9 +93,9 @@ export default (
       });
       const originalWrite = req.write;
       const originalEnd = req.end;
-      const buffer: any[] = [];
+      let buffer: any = '';
       req.write = function(chunk: any) {
-        buffer.push(chunk);
+        buffer += chunk;
         return originalWrite.apply(this, arguments as any);
       };
       req.end = function() {

@@ -4,29 +4,28 @@ export interface Request {
   id: string;
   type: 'outgoing' | 'incoming';
   url?: string | URL;
-  request:
-    | string
-    | {
-        auth: any;
-        hash: any;
-        headers: { [key: string]: string[] };
-        host: string;
-        hostname: string;
-        href: string;
-        method: string;
-        path: string;
-        pathname: string;
-        port: any;
-        protocol: string;
-        query: any;
-        search: any;
-        slashes: boolean;
-      };
+  request: {
+    auth: any;
+    hash: any;
+    headers: { [key: string]: string[] };
+    host: string;
+    hostname: string;
+    href?: string;
+    method: string;
+    path: string;
+    pathname: string;
+    port: any;
+    protocol: string;
+    query: any;
+    search: any;
+    slashes: boolean;
+    time: number;
+  };
 }
 export interface RequestBody {
   id: string;
   type: 'outgoing' | 'incoming';
-  body: string[];
+  body: string;
 }
 
 export interface Response {
@@ -39,5 +38,9 @@ export interface Response {
     statusCode?: number;
     statusMessage?: string;
     data: string | null;
+    time: number;
   };
 }
+
+export type Item = Response | Request | RequestBody;
+export type CompleteItem = Request & Partial<RequestBody> & Partial<Response>;

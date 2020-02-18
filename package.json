@@ -4,13 +4,16 @@
   "description": "node-js easy to use request logging tool",
   "main": "index.js",
   "scripts": {
+    "build:browser:dev": "parcel ./src/browser/index.html",
+    "build:browser": "parcel build ./src/browser/index.html",
     "build:node": "tsc -p tsconfig.node.json",
+    "build": "npm run build:node & npm run build:browser",
     "lint": "eslint --fix './src/**'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Anissoft/node-network-tools-core.git"
+    "url": "git+https://github.com/Anissoft/nodejs-echo.git"
   },
   "keywords": [
     "http",
@@ -25,15 +28,31 @@
   },
   "homepage": "https://github.com/Anissoft/node-network-tools-core#readme",
   "devDependencies": {
+    "@anissoft/box": "^2.0.0",
+    "@anissoft/react-helpers": "^2.1.0",
+    "@material-ui/core": "^4.9.3",
+    "@material-ui/icons": "^4.9.1",
     "@types/http-server": "^0.10.0",
     "@types/node": "^13.7.1",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
     "@types/ws": "^7.2.1",
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.3",
+    "jss": "^10.0.4",
+    "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-json-view": "^1.19.1",
     "request": "^2.88.2",
     "typescript": "^3.7.5"
   },
