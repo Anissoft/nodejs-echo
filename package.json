@@ -1,6 +1,6 @@
 {
   "name": "nodejs-echo",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "node-js easy to use request logging tool",
   "main": "dist/node/index.js",
   "scripts": {

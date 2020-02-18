@@ -26,10 +26,18 @@ const columns: Column[] = [
       const candidate =
         item.request.href ||
         `${item.request.protocol || 'http://'}${item.request.hostname}${item.request.path}`;
-      if (candidate.length > 50) {
-        return `${candidate.slice(0, 48)}...`;
-      }
-      return candidate;
+      return (
+        <div
+          style={{
+            width: 'calc(100vw - 290px)',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {candidate}
+        </div>
+      );
     },
     minWidth: 170,
   },
