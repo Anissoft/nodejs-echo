@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - '10'
+stages:
+  - test
+  - publish
+jobs:
+  include:
+    - stage: test
+      script: npm run test
+    - stage: publish
+      script: cp .template.npmrc $HOME/.npmrc && npm run build && npm publish --tag beta
+      if: branch = development
+    - stage: publish
+      script: cp .template.npmrc $HOME/.npmrc && npm run build && npm publish
+      if: branch = master
+notifications:
+  email:
+    recipients:
+      - anissoftkun@gmail.com
+    on_success: change
+    on_failure: always

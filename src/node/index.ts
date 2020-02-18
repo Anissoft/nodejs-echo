@@ -1,99 +1,92 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { inherits } from 'util';
 import * as http from 'http';
 import * as https from 'https';
-import WebSocket from 'ws';
+import * as WebSocket from 'ws';
+import * as chalk from 'chalk';
+import { resolve } from 'path';
 import { createServer } from 'http-server';
 
 import convertJSON from '../common/convertJSON';
-import createSniffer from './sniffer/createSniffer'
+import applySniffer from './sniffer/applySniffer';
+import { RequestBody } from '../types';
 
-const prepare = (HTTP: typeof http, HTTPS: typeof https) => ({
-  port,
-  debug = false,
-}: {
-  port: string | number;
-  debug?: boolean;
-}) => {
-  console.log(
-    `initiate Echo UI on port: ${port}, and websocket on port: ${+port + 1}`,
-  );
-
-  const schemas = {
-    httpRequest: {
-      original: HTTP.request,
-      cleanup: (original: typeof http.request) => { HTTP.request = original; }
-    },
-    httpGet: {
-      original: HTTP.get,
-      cleanup: (original: typeof http.get) => { HTTP.get = original; }
-    },
-    httpsRequest: {
-      original: HTTPS.request,
-      cleanup: (original: typeof https.request) => { HTTPS.request = original; }
-    },
-    httpsGet: {
-      original: HTTPS.get,
-      cleanup: (original: typeof https.get) => { HTTPS.get = original; }
-    }
+const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
+  let enabled = false;
+  const listeners: ((info: Request | Response | RequestBody) => void)[] = [];
+  const sniffer = (info: Request | Response | RequestBody) => {
+    if (!enabled) return;
+    listeners.forEach(listener => listener(info));
   };
 
-  const wss = new WebSocket.Server({ port: +port + 1 });
+  HTTP.request = applySniffer(http.request, sniffer as any, false);
+  HTTPS.request = applySniffer(https.request, sniffer as any, false);
+  HTTP.get = applySniffer(http.get, sniffer as any, false);
+  HTTPS.get = applySniffer(https.get, sniffer as any, false);
 
-  const prepareSniffer = ({
-    original,
-    cleanup,
-  }: typeof schemas['httpRequest']) => createSniffer(original, req => {
-    if (debug) console.log('ws uses effect with', req);
-    wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(convertJSON(req), err => {
-          if (err) {
-            console.log(err);
-            // cleanup(original);
-            // client.terminate();
+  return ({
+    port,
+    secret,
+    debug = false,
+  }: {
+    port: string | number;
+    secret: string;
+    debug?: boolean;
+  }) => {
+    console.log(
+      chalk.greenBright(`initiate Echo UI on port: ${port}, and websocket on port: ${+port + 1}`),
+    );
+
+    const wss = new WebSocket.Server({ port: +port + 1 });
+    listeners.push(info => {
+      if (debug) {
+        console.log('call ws listener');
+      }
+      wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(convertJSON(info), err => {
+            if (err) {
+              console.log(err);
+            }
+          });
+        }
+      });
+    });
+    wss.on('connection', ws => {
+      if (debug) console.log('ws connection');
+
+      ws.on('message', message => {
+        if (debug) {
+          console.log('ws got message', message);
+        }
+        if (message === secret) {
+          if (debug) {
+            console.log('ws auth true');
           }
-        });;
-      }
-    });
-  })
-  const cleanAll = () => Object.values(schemas).forEach(({ original, cleanup }) => { cleanup(original) });
+          ws.send('{"auth": true}');
+          enabled = true;
+        } else {
+          if (debug) {
+            console.log('ws auth false');
+          }
+          ws.send('{"auth": false}', () => {
+            enabled = false;
+            // ws.terminate();
+          });
+        }
 
-  type Sniffers = { [key in 'httpRequest' | 'httpGet' | 'httpsRequest' | 'httpsGet']: typeof http['request'] }
-  const sniffers: Sniffers = Object.entries(schemas)
-    .reduce((acc, [key, schema]) => {
-      return Object.assign(acc, {
-        [key]: prepareSniffer(schema),
-      })
-    }, {} as any);
-
-  wss.on('connection', ws => {
-    if (debug) console.log('ws connection');
-
-    ws.on('message', message => {
-      if (message === '69742773206D65202D204D6172696F21') {
-        if (debug) console.log('ws auth true');
-        ws.send('establish connection');
-        HTTP.request = sniffers.httpRequest;
-        HTTP.get = sniffers.httpGet;
-        HTTPS.request = sniffers.httpsRequest;
-        HTTPS.get = sniffers.httpsGet;
-      } else {
-        if (debug) console.log('ws auth false');
-        ws.send('incorrect passphrase', () => {
-          cleanAll();
-          ws.terminate();
+        ws.on('close', () => {
+          enabled = false;
         });
-      }
-
-      ws.on('close', cleanAll);
+      });
     });
-  });
 
-  const server = createServer({ root: __dirname });
-  server.listen(port);
+    const server = createServer({ root: resolve(__dirname, '..') });
+    server.listen(port);
 
-  return wss;
+    return wss;
+  };
 };
 
-export default prepare(http, https);
+export const start = prepare(http, https);
+
+export default start;

@@ -14,7 +14,7 @@ function getRandomValues<T1>(buf: T1): T1 {
         'number of bytes of entropy available via this API (65536).',
     );
   }
-  var bytes = crypto.randomBytes(buf.length);
+  const bytes = crypto.randomBytes(buf.length);
   buf.set(bytes);
   return buf;
 }
