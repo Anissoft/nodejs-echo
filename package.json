@@ -1,8 +1,8 @@
 {
   "name": "nodejs-echo",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "node-js easy to use request logging tool",
-  "main": "index.js",
+  "main": "dist/node/index.js",
   "scripts": {
     "build:browser:dev": "parcel ./src/browser/index.html",
     "build:browser": "parcel build ./src/browser/index.html",
