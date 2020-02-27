@@ -9,7 +9,7 @@ import { CompleteItem } from '../../types';
 import Auth from './Auth';
 import Target from './Target';
 
-export default ({ feed }: { feed: DataFeed }) => {
+export default ({ feed, toggleTheme }: { feed: DataFeed; toggleTheme: () => void }) => {
   const { pick } = useBox(feed);
   const connected = pick<boolean>('connected');
   const authorized = pick<boolean>('authorized');
@@ -30,14 +30,14 @@ export default ({ feed }: { feed: DataFeed }) => {
           if (!data.id || (!data.request && !pickRequest(data.id))) {
             return;
           }
-          if (data.body) {
+          if (data.request?.body) {
             try {
-              data.body = JSON.parse(data.body);
+              data.request.body = JSON.parse(data.request?.body);
             } catch (e) {}
           }
-          if (data.response?.data) {
+          if (data.response?.body) {
             try {
-              data.response.data = JSON.parse(data.response?.data);
+              data.response.body = JSON.parse(data.response?.body);
             } catch (e) {}
           }
           merge({ [data.id]: data } as Partial<Record<string, CompleteItem>>);
@@ -79,6 +79,7 @@ export default ({ feed }: { feed: DataFeed }) => {
               set({});
             }}
             onPause={() => setPause(!pause)}
+            toggleTheme={toggleTheme}
           />
         )}
       </Memo>

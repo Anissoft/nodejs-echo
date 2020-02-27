@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-require('./dist/node/index').default({ port: 4900, debug: true });
+require('./dist/node/index').default({ port: 4900 });
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => res.send('Hello World!'));
+app.use('/path', (req, res) => res.send('Hello from path'));
+app.listen(3000, () => console.log(`Example app listening on port 3000!`));
 
 setInterval(() => {
   console.log('send get request');
@@ -9,7 +15,7 @@ setInterval(() => {
       {},
       (error, response, body) => {
         if (error) console.log({ error });
-        else console.log(response.statusCode);
+        // else console.log(response.statusCode);
       },
     );
   } catch (e) {
@@ -37,7 +43,7 @@ setInterval(() => {
     };
 
     const req = https.request(options, res => {
-      console.log(res.statusCode);
+      // console.log(res.statusCode);
     });
 
     req.on('error', error => {

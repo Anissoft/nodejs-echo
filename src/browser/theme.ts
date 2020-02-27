@@ -1,22 +1,17 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
-if (!localStorage.getItem('nodejs-echo-color')) {
-  localStorage.setItem('nodejs-echo-color', 'dark');
-}
-
-const isDark = localStorage.getItem('nodejs-echo-color') === 'dark';
-
-export default createMuiTheme({
-  typography: {
-    fontFamily: 'Segoe UI, Helvetica Neue, sans-serif',
-  },
-  palette: {
-    type: isDark ? 'dark' : 'light',
-    primary: {
-      main: isDark ? '#222222' : '#c7c7c7',
+export default ({ dark }: { dark: boolean }) =>
+  createMuiTheme({
+    typography: {
+      fontFamily: 'Segoe UI, Helvetica Neue, sans-serif',
     },
-    secondary: {
-      main: '#42c73b',
+    palette: {
+      type: dark ? 'dark' : 'light',
+      primary: {
+        main: dark ? '#222222' : '#c7c7c7',
+      },
+      secondary: {
+        main: dark ? '#c7c7c7' : '#222222',
+      },
     },
-  },
-});
+  });

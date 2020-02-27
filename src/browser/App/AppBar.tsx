@@ -15,6 +15,7 @@ import Pause from '@material-ui/icons/Pause';
 import Play from '@material-ui/icons/PlayArrow';
 
 import useStyles from './styles';
+import { CircularProgress } from '@material-ui/core';
 
 export default ({
   connected,
@@ -22,31 +23,31 @@ export default ({
   onChangeFilter,
   onClear,
   onPause,
+  toggleTheme,
 }: {
   connected: boolean;
   pause: boolean;
   onChangeFilter: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   onClear?: () => void;
   onPause?: () => void;
+  toggleTheme: () => void;
 }) => {
   const classes = useStyles({});
-
-  const toggleTheme = () => {
-    localStorage.setItem(
-      'nodejs-echo-color',
-      localStorage.getItem('nodejs-echo-color') === 'dark' ? 'light' : 'dark',
-    );
-    window.location.reload();
-  };
-
   return (
     <>
-      <AppBar position="static">
-        <If condition={!connected}>
-          <LinearProgress />
-        </If>
+      <AppBar position="fixed">
         <Toolbar variant="dense">
-          <IconButton edge="start" className={classes.menuButton} onClick={toggleTheme}>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            onClick={() => {
+              localStorage.setItem(
+                'nodejs-echo-color',
+                localStorage.getItem('nodejs-echo-color') === 'dark' ? 'light' : 'dark',
+              );
+              toggleTheme();
+            }}
+          >
             <If condition={localStorage.getItem('nodejs-echo-color') === 'dark'}>
               <Then>
                 <Dark />
@@ -60,13 +61,18 @@ export default ({
             <DeleteSweep />
           </IconButton>
           <IconButton edge="start" className={classes.menuButton} onClick={onPause}>
-            <If condition={pause}>
+            <If condition={!connected}>
               <Then>
-                <Play />
+                <CircularProgress color="secondary" size={24} />
               </Then>
-              <Else>
-                <Pause />
-              </Else>
+              <ElseIf condition={pause}>
+                <Then>
+                  <Play />
+                </Then>
+                <Else>
+                  <Pause />
+                </Else>
+              </ElseIf>
             </If>
           </IconButton>
           <Typography className={classes.title} variant="h6" color="inherit"></Typography>

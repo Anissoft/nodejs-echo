@@ -12,6 +12,7 @@ import { CompleteItem } from '../../types';
 
 export default ({ target, onClose }: { target?: CompleteItem; onClose: () => void }) => {
   const theme = useTheme();
+  console.log(target);
   return (
     <Dialog open={!!target} onClose={onClose} fullWidth maxWidth="lg">
       <Grid container>
@@ -23,9 +24,9 @@ export default ({ target, onClose }: { target?: CompleteItem; onClose: () => voi
                 sortKeys
                 name="request"
                 theme={theme.palette.type === 'dark' ? 'twilight' : 'bright:inverted'}
-                src={{ ...target?.request, body: target?.body }}
+                src={target?.request || {}}
                 iconStyle="triangle"
-                enableClipboard
+                enableClipboard={false}
                 displayDataTypes
                 displayObjectSize
                 shouldCollapse={({ namespace }) => namespace.length > 1}
@@ -43,7 +44,7 @@ export default ({ target, onClose }: { target?: CompleteItem; onClose: () => voi
             theme={theme.palette.type === 'dark' ? 'twilight' : 'bright:inverted'}
             src={target?.response || {}}
             iconStyle="triangle"
-            enableClipboard
+            enableClipboard={false}
             displayDataTypes
             displayObjectSize
             shouldCollapse={({ namespace }) => namespace.length > 1}

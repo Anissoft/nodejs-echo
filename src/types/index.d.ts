@@ -16,6 +16,7 @@ export interface Request {
     pathname: string;
     port: any;
     protocol: string;
+    url: string;
     query: any;
     search: any;
     slashes: boolean;
@@ -25,7 +26,9 @@ export interface Request {
 export interface RequestBody {
   id: string;
   type: 'outgoing' | 'incoming';
-  body: string;
+  request: {
+    body: string;
+  };
 }
 
 export interface Response {
@@ -37,7 +40,7 @@ export interface Response {
     url?: string | URL;
     statusCode?: number;
     statusMessage?: string;
-    data: string | null;
+    body: string | null;
     time: number;
   };
 }

@@ -4,11 +4,12 @@ import * as https from 'https';
 import * as WebSocket from 'ws';
 import * as chalk from 'chalk';
 import { resolve } from 'path';
-import { createServer } from 'http-server';
+import { createServer as createStaticServer } from 'http-server';
 
 import convertJSON from '../common/convertJSON';
-import applySniffer from './sniffer/applySniffer';
-import { RequestBody } from '../types';
+import applyRequestSniffer from './sniffer/applyRequestSniffer';
+import applyServerSniffer from './sniffer/applyServerSniffer';
+import { RequestBody, Request, Response } from '../types';
 
 const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
   let enabled = false;
@@ -18,10 +19,16 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
     listeners.forEach(listener => listener(info));
   };
 
-  HTTP.request = applySniffer(http.request, sniffer as any, false);
-  HTTPS.request = applySniffer(https.request, sniffer as any, false);
-  HTTP.get = applySniffer(http.get, sniffer as any, false);
-  HTTPS.get = applySniffer(https.get, sniffer as any, false);
+  HTTP.request = applyRequestSniffer(http.request, sniffer, false);
+  HTTPS.request = applyRequestSniffer(https.request, sniffer, false);
+  HTTP.get = applyRequestSniffer(http.get, sniffer, false);
+  HTTPS.get = applyRequestSniffer(https.get, sniffer, false);
+
+  const createHTTPServer = applyServerSniffer(http, sniffer, false);
+  const createHTTPSServer = applyServerSniffer(https, sniffer, false);
+
+  HTTP.createServer = createHTTPServer;
+  HTTPS.createServer = createHTTPSServer;
 
   return ({
     port,
@@ -70,7 +77,6 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
           }
           ws.send('{"auth": false}', () => {
             enabled = false;
-            // ws.terminate();
           });
         }
 
@@ -80,7 +86,7 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
       });
     });
 
-    const server = createServer({ root: resolve(__dirname, '..') });
+    const server = createStaticServer({ root: resolve(__dirname, '..') });
     server.listen(port);
 
     return wss;

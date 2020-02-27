@@ -1,4 +1,3 @@
-/* eslint-disable  prefer-rest-params */
 import * as http from 'http';
 
 import { Request, Response, RequestBody } from '../../types';
@@ -80,7 +79,7 @@ export default (
               url,
               statusCode,
               statusMessage,
-              data,
+              body: data,
               time: Date.now(),
             },
           });
@@ -102,7 +101,9 @@ export default (
         effect({
           id,
           type: 'outgoing',
-          body: buffer,
+          request: {
+            body: buffer,
+          },
         });
         if (debug) {
           console.log('send request body for', id);
@@ -113,7 +114,9 @@ export default (
     } catch (e) {
       console.error(e);
     }
-    console.log('use original', original.name);
+    if (debug) {
+      console.log('use original ', original.name);
+    }
     return original(arg0, arg1, arg2);
   }
   return request;
