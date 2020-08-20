@@ -1,6 +1,6 @@
 # NodeJS Echo - network debugging tool
 
-Provides an easy way to monitor (for now only outgoing) requests from your nodejs application.
+Provides an easy way to monitor requests from your nodejs application.
 
 ![list view](https://github.com/Anissoft/nodejs-echo/raw/master/screenshots/rl.png)
 
