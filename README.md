@@ -2,9 +2,9 @@
 
 Provides an easy way to monitor (for now only outgoing) requests from your nodejs application.
 
-![list view](https://github.com/Anissoft/nodejs-echo/tree/master/screenshots/rl.png)
+![list view](https://github.com/Anissoft/nodejs-echo/raw/master/screenshots/rl.png)
 
-![request view](https://github.com/Anissoft/nodejs-echo/tree/master/screenshots/rw.png)
+![request view](https://github.com/Anissoft/nodejs-echo/raw/master/screenshots/rw.png)
 
 ## Installation
 
