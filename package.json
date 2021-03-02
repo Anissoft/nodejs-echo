@@ -1,8 +1,9 @@
 {
   "name": "nodejs-echo",
-  "version": "2.1.0",
-  "description": "node-js easy to use request logging tool",
+  "version": "3.0.0",
+  "description": "easy to use requests debugging tool for nodejs",
   "main": "dist/node/index.js",
+  "bin": "./cli.js",
   "scripts": {
     "build:browser:dev": "parcel ./src/browser/index.html",
     "build:browser": "parcel build ./src/browser/index.html",
@@ -58,6 +59,7 @@
   },
   "dependencies": {
     "chalk": "^3.0.0",
+    "commander": "^7.1.0",
     "express": "^4.17.1",
     "http-server": "^0.12.3",
     "ws": "^7.2.1"

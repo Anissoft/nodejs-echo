@@ -5,26 +5,26 @@ export default class DataFeed extends Box<{
   connected: boolean;
 }> {
   private ws?: WebSocket;
-  private port: string;
+  private address: string;
   private secret: string;
 
-  constructor({ port, secret }: { port: number | string; secret: string }) {
+  constructor({ address, secret }: { address: string; secret: string }) {
     super({
       authorized: false,
       connected: false,
     });
-    this.port = `${port}`;
-    this.secret = '';
+    this.address = address;
+    this.secret = secret;
     this.connect();
   }
 
   public connect() {
     console.log('connecting...');
-    this.ws = new WebSocket(`ws://${location.hostname}:${this.port}`);
+    this.ws = new WebSocket(this.address);
     this.listen(() => {
       console.log('connected');
       this.merge({ connected: true });
-      this.authorize(this.secret).catch(() => {});
+      this.authorize(this.secret).catch(() => { });
       this.ws!.onerror = (error: any) => {
         console.error(error);
         this.merge({ connected: false });
@@ -41,7 +41,7 @@ export default class DataFeed extends Box<{
     };
   }
 
-  public authorize = (secret: string) =>
+  public authorize = (secret: string): Promise<void> =>
     new Promise((res, rej) => {
       console.log('authorization...');
       this.secret = secret;

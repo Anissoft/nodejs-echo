@@ -3,8 +3,6 @@ import * as http from 'http';
 import * as https from 'https';
 import * as WebSocket from 'ws';
 import * as chalk from 'chalk';
-import { resolve } from 'path';
-import { createServer as createStaticServer } from 'http-server';
 
 import convertJSON from '../common/convertJSON';
 import applyRequestSniffer from './sniffer/applyRequestSniffer';
@@ -31,7 +29,7 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
   HTTPS.createServer = createHTTPSServer;
 
   return ({
-    port,
+    port = process.env.NODEJS_ECHO_PORT || '4901',
     secret = '',
     debug = false,
   }: {
@@ -39,11 +37,7 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
     secret: string;
     debug?: boolean;
   }) => {
-    console.log(
-      chalk.greenBright(`initiate Echo UI on port: ${port}, and websocket on port: ${+port + 1}`),
-    );
-
-    const wss = new WebSocket.Server({ port: +port + 1 });
+    const wss = new WebSocket.Server({ port: +port });
     listeners.push(info => {
       if (debug) {
         console.log('call ws listener');
@@ -86,9 +80,7 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https) => {
       });
     });
 
-    const server = createStaticServer({ root: resolve(__dirname, '..') });
-    server.listen(port);
-
+    console.log(chalk.greenBright(`Echo started to broadcast on ws://localhost:${port}`));
     return wss;
   };
 };

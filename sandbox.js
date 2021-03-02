@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-require('./dist/node/index').default({ port: 4900 });
+require('./dist/node/index').default({ port: process.env.NODEJS_ECHO_PORT });
 const express = require('express');
 const app = express();
 

@@ -20,14 +20,15 @@ if (!localStorage.getItem('nodejs-echo-color')) {
   localStorage.setItem('nodejs-echo-color', 'dark');
 }
 const isDark = localStorage.getItem('nodejs-echo-color') === 'dark';
+const params = new URLSearchParams(window.location.search);
 
-const Root = ({}) => {
+const Root = ({ }) => {
   const [dark, setDark] = React.useState(isDark);
   const theme = getTheme({ dark });
   const feed = React.useRef(
     new DataFeed({
-      port: +window.location.port + 1,
-      secret: '',
+      address: params.get('socket') || `ws://${location.hostname}:${+window.location.port + 1}`,
+      secret: params.get('secret') || '',
     }),
   );
 

@@ -14,24 +14,28 @@ npm install nodejs-echo --save-dev
 
 ## Usage
 
-Simply import initial command from package and execute it in very beginning of your program.
+In terminal execute:
+
+```sh
+npx nodejs-echo -p 4900 -l 4901 -s 123qwe
+```
+
+This will start static server and provide exact link to web interface.
+
+Then you should start nodejs script, which you want to debug. To do so - import initial command from package and execute it in the very beginning of your program.
 
 ```js
 const { start } = require('nodejs-echo');
 
-start({ port: 4900, secret: 'any-string' });
+start({ port: 4901, secret: 'any-string' });
 ```
 
 > Parameter `secret` is optional but highly recommended to use in public networks
 
-Then just open in your browser `localhost:4900`
-
-It is recommended to place the above code in a separate file (e.g. echo.js) and to import it in your application's entry point (e.g. index.js).
+The best practice is to place the above code in a separate file (e.g. echo.js) and import it in your application's entry point (e.g. index.js).
 
 ```js
-require('./echo');
+require('./echo.js');
 
 // your code...
 ```
-
-Remember that tool also occupies next port for its needs. Eg. if you select port 3000, 3001 should also be available.
