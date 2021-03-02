@@ -1,9 +1,10 @@
+#!/usr/bin/env node
 const { program } = require('commander');
 const { createServer } = require('http-server');
 const chalk = require('chalk');
 const path = require('path');
 
-program.version('3.0.0')
+program.version('3.0.1')
   .option('-p, --port <port>', 'network port')
   .option('-l, --listen <socket>', 'socket connection address')
   .option('-s, --secret <secret>', 'secret key for authorization');
