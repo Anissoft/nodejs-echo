@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-require('./dist/node/index').default({ port: process.env.NODEJS_ECHO_PORT });
+require('./dist/node/index').default({ port: process.env.NODEJS_ECHO_PORT, secret: 'secret', debug: false });
 const express = require('express');
 const app = express();
 
@@ -9,18 +9,15 @@ app.listen(3000, () => console.log(`Example app listening on port 3000!`));
 
 setInterval(() => {
   console.log('send get request');
-  try {
-    require('request').get(
+    require('got')(
       'http://jsonplaceholder.typicode.com/posts',
-      {},
-      (error, response, body) => {
-        if (error) console.log({ error });
-        // else console.log(response.statusCode);
-      },
-    );
-  } catch (e) {
-    console.error(e);
-  }
+      {json: true},
+    ).then((res) => {
+      console.log('response: ',res.body);
+    }).catch(err => {
+      console.error('error: ', err);
+    });
+  
 }, 6000);
 
 setInterval(() => {

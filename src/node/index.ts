@@ -36,7 +36,7 @@ const prepare = (HTTP: typeof http, HTTPS: typeof https, debug = false) => {
     debug = false,
   }: {
     port: number;
-    secret: string;
+    secret?: string;
     debug?: boolean;
   }) => {
     const wsPort = port + 1;

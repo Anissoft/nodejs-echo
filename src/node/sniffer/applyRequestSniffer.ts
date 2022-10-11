@@ -53,7 +53,7 @@ export default (
         let bufferLength = 0;
         let data = '';
 
-        response.on('data', chunk => {
+        response.prependListener('data', chunk => {
           switch (response.headers['content-encoding']) {
             case 'br':
               chunk = deflateSync(chunk);
