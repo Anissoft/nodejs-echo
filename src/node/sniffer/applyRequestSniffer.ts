@@ -1,4 +1,5 @@
 import * as http from 'http';
+import { deflateSync, unzipSync } from 'zlib';
 
 import { Request, Response, RequestBody } from '../../types';
 import generateId from '../../common/generateId';
@@ -13,17 +14,17 @@ export default (
   }
   function request(
     options: http.RequestOptions | string | URL,
-    callback?: (res: http.IncomingMessage) => void,
+    callback?: (raw: http.IncomingMessage) => void,
   ): http.ClientRequest;
   function request(
     url: string | URL,
     options: http.RequestOptions,
-    callback?: (res: http.IncomingMessage) => void,
+    callback?: (raw: http.IncomingMessage) => void,
   ): http.ClientRequest;
   function request(arg0: any, arg1?: any, arg2?: any): http.ClientRequest {
     let url: string | URL | undefined;
     let options: Request['request'];
-    let callback: (res: http.IncomingMessage) => void;
+    let callback: (raw: http.IncomingMessage) => void;
 
     try {
       if (!arg1 || typeof arg1 === 'function') {
@@ -43,15 +44,28 @@ export default (
         console.log('send request for', id);
       }
 
-      const req = original(options, res => {
-        const { httpVersion, headers, method, url, statusCode, statusMessage } = res;
+      const req = original(options, response => {
+        callback && callback(response);
+        const { httpVersion, headers, method, url, statusCode, statusMessage } = response;
 
         const buffers: Array<Buffer> = [];
         const strings: string[] = [];
         let bufferLength = 0;
         let data = '';
 
-        res.on('data', chunk => {
+        response.on('data', chunk => {
+          switch (response.headers['content-encoding']) {
+            case 'br':
+              chunk = deflateSync(chunk);
+              break;
+              case 'deflate':
+            case 'gzip':
+              chunk = unzipSync(chunk);
+              break;
+            default:
+              break;
+          }
+
           if (!Buffer.isBuffer(chunk)) {
             strings.push(chunk);
           } else if (chunk.length) {
@@ -60,7 +74,7 @@ export default (
           }
         });
 
-        res.on('end', () => {
+        response.on('end', () => {
           if (bufferLength) {
             data = Buffer.concat(buffers, bufferLength).toString('utf8');
           } else if (strings.length) {
@@ -88,7 +102,6 @@ export default (
           }
         });
 
-        callback && callback(res);
       });
       const originalWrite = req.write;
       const originalEnd = req.end;
