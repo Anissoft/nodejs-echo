@@ -1,6 +1,6 @@
 {
   "name": "nodejs-echo",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "HTTPs requests debugging tool for nodejs",
   "main": "dist/node/index.js",
   "bin": "./cli.js",
