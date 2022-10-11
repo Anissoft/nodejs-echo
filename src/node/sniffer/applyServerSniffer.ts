@@ -7,17 +7,14 @@ import generateId from '../../common/generateId';
 function applyServerSniffer(
   original: typeof http,
   effect: (info: Request | Response | RequestBody) => void,
-  debug: boolean,
 ): typeof http.createServer;
 function applyServerSniffer(
   original: typeof https,
   effect: (info: Request | Response | RequestBody) => void,
-  debug: boolean,
 ): typeof https.createServer;
 function applyServerSniffer(
   original: typeof http | typeof https,
   effect: (info: Request | Response | RequestBody) => void,
-  debug = false,
 ) {
   const originalCreateServer = original.createServer;
 
@@ -63,10 +60,6 @@ function applyServerSniffer(
               body: buffers.request,
             },
           });
-
-          if (debug) {
-            console.log('send request body for', id);
-          }
         });
 
         res.write = function(chunk: any) {
@@ -97,10 +90,6 @@ function applyServerSniffer(
               headers,
             }),
           });
-
-          if (debug) {
-            console.log('send response for', id);
-          }
         });
         effect({
           id,
@@ -111,9 +100,6 @@ function applyServerSniffer(
           }),
         });
 
-        if (debug) {
-          console.log('send request for', id);
-        }
       } catch (e) {
         console.log(e);
       }
