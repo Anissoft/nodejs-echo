@@ -8,6 +8,5 @@ tsconfig.*
 .cache
 .travis.yml
 ./src
-*.ts
 *.tsx
 sandbox.js
