@@ -1,5 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const crypto = require('crypto');
+import * as crypto from 'crypto';
+import { IncomingMessage, ServerResponse } from 'http';
 
 function getRandomValues<T1>(buf: T1): T1 {
   if (!(buf instanceof Uint8Array)) {
@@ -19,7 +19,17 @@ function getRandomValues<T1>(buf: T1): T1 {
   return buf;
 }
 
-export default () =>
+export const getRandomId = () =>
   `${1e7}-${1e3}-${4e3}-${8e3}-${1e11}`.replace(/[018]/g, c =>
     (+c ^ (getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16),
   );
+
+export const setId= (req: IncomingMessage, res?: ServerResponse) => {
+  const id = (req as any)._id_ ?? (res as any)._id_ ?? getRandomId();
+  (req as any)._id_ = id;
+  (res as any)._id_ = id;
+}
+
+export const getId = (t: IncomingMessage | ServerResponse): string => {
+  return (t as any)._id_;
+}

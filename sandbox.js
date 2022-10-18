@@ -1,55 +1,27 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-require('./dist/node/index').default({ port: process.env.NODEJS_ECHO_PORT, secret: 'secret', debug: false });
-const express = require('express');
-const app = express();
+require('./dist/index.node').start({port: 4900});
+const http = require('http');
+const https = require('https');
+const fs = require('fs');
 
-app.get('/', (req, res) => res.send('Hello World!'));
-app.use('/path', (req, res) => res.send('Hello from path'));
-app.listen(3000, () => console.log(`Example app listening on port 3000!`));
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
 
-setInterval(() => {
-  console.log('send get request');
-    require('got')(
-      'http://jsonplaceholder.typicode.com/posts',
-      {json: true},
-    ).then((res) => {
-      console.log('response: ',res.body);
-    }).catch(err => {
-      console.error('error: ', err);
-    });
-  
-}, 6000);
+https.createServer(options, function (req, res) {
+  req.on('data', () => undefined);
+  req.on('end', () => {
+    res.setHeader('content-type', 'application/json');
+    res.writeHead(200);
+    res.end(`{"server": "https"}`);
+  });
+}).listen(8000, (...srgs) => console.log('started https server', ...srgs));
 
-setInterval(() => {
-  console.log('send post request');
-  try {
-    const https = require('https');
-    const data = JSON.stringify({
-      todo: 'Buy the milk',
-    });
-
-    const options = {
-      hostname: 'flaviocopes.com',
-      port: 443,
-      path: '/todos',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': data.length,
-      },
-    };
-
-    const req = https.request(options, res => {
-      // console.log(res.statusCode);
-    });
-
-    req.on('error', error => {
-      console.error(error);
-    });
-
-    req.write(data);
-    req.end();
-  } catch (e) {
-    console.error(e);
-  }
-}, 5000);
+http.createServer( function (req, res) {
+  req.on('data', () => undefined);
+  req.on('end', () => {
+    res.setHeader('content-type', 'application/json');
+    res.writeHead(200);
+    res.end(`{"server": "http"}`);
+  });
+}).listen(9000, (...srgs) => console.log('started http server', ...srgs));

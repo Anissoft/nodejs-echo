@@ -27,5 +27,5 @@ const hidePrivateKeys = (source: object) => {
   return hide(source);
 };
 
-export default (source: Record<string, any>): string =>
+export const stringifySafe = (source: Record<string, any>): string =>
   JSON.stringify(hidePrivateKeys(source), getCircularReplacer());
