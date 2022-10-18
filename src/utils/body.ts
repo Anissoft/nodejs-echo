@@ -1,10 +1,12 @@
 import { deflateSync, unzipSync } from 'zlib';
 
 export const parseBodyFromChunks = (
-  chunks: (Buffer | string)[],
-  
+  chunks?: (Buffer | string)[],
   encoding?: string,
 ) => {
+  if (!chunks || chunks.length === 0) {
+    return '';
+  }
   let raw: string | Buffer;
   if (Buffer.isBuffer(chunks[0])) {
     raw = Buffer.concat(chunks as Buffer[]);

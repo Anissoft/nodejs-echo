@@ -20,8 +20,8 @@ export const interceptIncomingMessage = (capture: (event: NetworkEvent) => void)
         break;
       case "end":
         capture({ 
-          type: NetworkEventType.IncomingData, 
           id,
+          type: NetworkEventType.IncomingData, 
           body: parseBodyFromChunks(BODIES[id], this.headers['content-encoding']),
         });
         delete BODIES[id];

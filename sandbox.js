@@ -22,6 +22,7 @@ http.createServer( function (req, res) {
   req.on('end', () => {
     res.setHeader('content-type', 'application/json');
     res.writeHead(200);
-    res.end(`{"server": "http"}`);
+    res.write(`{"server": "http"}`)
+    res.end();
   });
 }).listen(9000, (...srgs) => console.log('started http server', ...srgs));

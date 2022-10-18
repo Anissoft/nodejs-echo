@@ -9,31 +9,29 @@ const serverResponseEmit = http.ServerResponse.prototype.emit;
 
 export const interceptServerResponse = (capture: (event: NetworkEvent) => void) => {
   function emitInterceptor(this: http.ServerResponse, event: string | symbol, ...args: any[]) {
-    const id = getId(this);
-    capture({ 
-      type: NetworkEventType.IncomingResponseHeaders, 
-      id,
-      headers: this.getHeaders(),
-    });
+    const onChunk = (chunk: any) => {
+      const id = getId(this);
+      if (!PAYLOADS[id]) {
+        PAYLOADS[id] = [];
+      }
+      PAYLOADS[id].push(chunk);
+    }
     switch(event) {
       case "socket":
-        interceptWrite(this, (chunk, encoding) => {
-          if (!PAYLOADS[id]) {
-            PAYLOADS[id] = [];
-          }
-          PAYLOADS[id].push(chunk);
-        });
+        interceptWrite(this, onChunk);
         break;
-      case "finish": 
+      case "finish":
+        const id = getId(this);
+        capture({ id, type: NetworkEventType.IncomingResponseHeaders, headers: Object.assign({},this.getHeaders()) });
+        capture({ id, type: NetworkEventType.IncomingResponseStatus, statusCode: this.statusCode, statusMessage: this.statusMessage });
         capture({ 
-          type: NetworkEventType.IncomingResponseData, 
           id,
+          type: NetworkEventType.IncomingResponseData, 
           payload: parseBodyFromChunks(PAYLOADS[id], this.getHeaders()['content-encoding']?.toString()),
         });
         delete PAYLOADS[id];
         break;  
     }
-    capture({ type: 'sr+' + (event as any), payload: args} as any)
     return serverResponseEmit.call(this, event, ...args);
   }
 

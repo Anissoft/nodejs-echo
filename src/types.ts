@@ -10,7 +10,8 @@ export type NetworkEvent = ({
   body: string;
 } | {
   type: NetworkEventType.IncomingResponseStatus;
-  status: number;
+  statusCode: number;
+  statusMessage?: string;
 } | {
   type: NetworkEventType.IncomingResponseData;
   payload: string;
