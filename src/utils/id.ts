@@ -1,5 +1,5 @@
 import * as crypto from 'crypto';
-import { IncomingMessage, ServerResponse } from 'http';
+import { IncomingMessage, ServerResponse, ClientRequest, OutgoingMessage } from 'http';
 
 function getRandomValues<T1>(buf: T1): T1 {
   if (!(buf instanceof Uint8Array)) {
@@ -24,12 +24,14 @@ export const getRandomId = () =>
     (+c ^ (getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16),
   );
 
-export const setId= (req: IncomingMessage, res?: ServerResponse) => {
-  const id = (req as any)._id_ ?? (res as any)._id_ ?? getRandomId();
-  (req as any)._id_ = id;
-  (res as any)._id_ = id;
+export const setId = (req: any, res?: any) => {
+  const id = req._id_ ?? res?._id_ ?? getRandomId();
+  req._id_ = id;
+  if (res) {
+    res._id_ = id;
+  }
 }
 
-export const getId = (t: IncomingMessage | ServerResponse): string => {
+export const getId = (t: any): string => {
   return (t as any)._id_;
 }

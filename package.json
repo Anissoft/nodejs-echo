@@ -33,11 +33,12 @@
   "homepage": "https://github.com/Anissoft/node-network-tools-core#readme",
   "devDependencies": {
     "@types/ws": "^8.5.3",
+    "axios": "^0.21.1",
+    "parcel": "^2.7.0",
     "typescript": "^4.8.4"
   },
   "dependencies": {
     "chalk": "^3.0.0",
-    "parcel": "^2.7.0",
     "ws": "^7.5.9"
   }
 }

@@ -13,13 +13,14 @@ export const interceptServer = (capture: (event: NetworkEvent) => void) => {
         const [req, res] = args as [http.IncomingMessage, http.ServerResponse];
         setId(req, res);
         capture({ 
-          type: NetworkEventType.IncomingRequest, 
+          type: NetworkEventType.Request, 
           id: getId(req),
           method: req.method!,
           version: req.httpVersion,
-          url: `${this instanceof http.Server ? 'http://' : 'https://'}${req.headers['host'] || 'localhost'}${req.url}`,
+          url: `http${this instanceof http.Server ? '' : 's'}://${req.headers['host'] || 'localhost'}${req.url}`,
           timestamp: Date.now(),
           headers: req.headers,
+          incoming: true,
         });
         break;
       }

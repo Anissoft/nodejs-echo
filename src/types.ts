@@ -1,31 +1,36 @@
 export type NetworkEvent = ({
-  type: NetworkEventType.IncomingRequest;
+  type: NetworkEventType.Request;
   version?: string;
   method: string;
   url: string;
   timestamp: number;
-  headers: Record<string, string | string[] | undefined>;
+  headers?: Record<string, string | string[] | undefined>;
+  incoming: Boolean; 
 } | {
-  type: NetworkEventType.IncomingData;
-  body: string;
+  type: NetworkEventType.RequestHeaders;
+  headers: Record<string, string | string[] | number | undefined>;
 } | {
-  type: NetworkEventType.IncomingResponseStatus;
+  type: NetworkEventType.RequestData;
+  payload: string;
+} | {
+  type: NetworkEventType.ResponseStatus;
   statusCode: number;
   statusMessage?: string;
 } | {
-  type: NetworkEventType.IncomingResponseData;
+  type: NetworkEventType.ResponseData;
   payload: string;
 } | {
-  type: NetworkEventType.IncomingResponseHeaders;
+  type: NetworkEventType.ResponseHeaders;
   headers: Record<string, string | string[] | number | undefined>;
 }) & {
   id: string;
 }
 
 export enum NetworkEventType {
-  IncomingRequest = 'IncomingRequest',
-  IncomingData = 'IncomingData',
-  IncomingResponseStatus = 'IncomingResponseStatus',
-  IncomingResponseData = 'IncomingResponseData',
-  IncomingResponseHeaders = 'IncomingResponseHeaders',
+  Request = 'Request',
+  RequestHeaders = 'RequestHeaders',
+  RequestData = 'RequestData',
+  ResponseStatus = 'ResponseStatus',
+  ResponseData = 'ResponseData',
+  ResponseHeaders = 'ResponseHeaders',
 }
