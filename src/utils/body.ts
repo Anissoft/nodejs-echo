@@ -5,6 +5,7 @@ export const parseBodyFromChunks = (
   contentEncoding?: string,
   encoding: BufferEncoding = 'utf8',
 ) => {
+  chunks = chunks?.filter(Boolean);
   if (!chunks || chunks.length === 0) {
     return '';
   }

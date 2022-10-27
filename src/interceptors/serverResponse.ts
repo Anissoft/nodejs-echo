@@ -17,15 +17,23 @@ export const interceptServerResponse = (capture: (event: NetworkEvent) => void) 
         capture({ 
           id, 
           type: NetworkEventType.ResponseHeaders, 
-          headers: Object.assign({}, this.getHeaders(), parseRawHeaders((this as any)._header))
+          headers: Object.assign(
+            {}, 
+            this.getHeaders(), 
+            parseRawHeaders((this as any)._header),
+          )
         });
-        capture({ id, type: NetworkEventType.ResponseStatus, statusCode: this.statusCode, statusMessage: this.statusMessage });
+        capture({ 
+          id, 
+          type: NetworkEventType.ResponseStatus, 
+          statusCode: this.statusCode, 
+          statusMessage: this.statusMessage,
+        });
         capture({ 
           id,
           type: NetworkEventType.ResponseData, 
-          payload: collect(id),
+          payload: collect(id, this.getHeader('content-encoding') as string),
         });
-        
         break;  
     }
     return serverResponseEmit.call(this, event, ...args);

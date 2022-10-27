@@ -2,16 +2,16 @@
   "name": "@anissoft/http-debug",
   "version": "1.0.0-beta",
   "description": "HTTPs requests debugging tool",
-  "main": "dist/node/index.js",
+  "main": "dist/index.node.js",
   "engines": {
     "node": ">=10"
   },
   "scripts": {
-    "build:browser": "parcel build ./src/browser/index.html",
-    "watch:browser": "parcel ./src/browser/index.html",
+    "build:client": "parcel build ./src/index.html",
+    "watch:client": "parcel ./src/index.html",
     "build:node": "tsc -p tsconfig.node.json",
     "watch:node": "tsc -p tsconfig.node.json --watch",
-    "build": "npm run build:node & npm run build:browser",
+    "build": "rm -rf dist && npm run build:node && npm run build:client",
     "lint": "eslint --fix './src/**'",
     "test": "echo \"no test specified\" && exit 0"
   },
@@ -32,13 +32,21 @@
   },
   "homepage": "https://github.com/Anissoft/node-network-tools-core#readme",
   "devDependencies": {
+    "@tsconfig/svelte": "^3.0.0",
+    "@types/http-server": "^0.12.1",
+    "@types/react": "^18.0.23",
+    "@types/react-dom": "^18.0.7",
     "@types/ws": "^8.5.3",
     "axios": "^0.21.1",
     "parcel": "^2.7.0",
+    "process": "^0.11.10",
     "typescript": "^4.8.4"
   },
   "dependencies": {
     "chalk": "^3.0.0",
+    "http-server": "^14.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "ws": "^7.5.9"
   }
 }

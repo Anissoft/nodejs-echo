@@ -41,15 +41,16 @@ export const interceptIncomingMessage = (capture: (event: NetworkEvent) => void)
           headers: Object.assign({}, (this as any).headers) 
         });
 
-        capture({ 
-          id,
-          type: isResponse
-            ? NetworkEventType.ResponseData 
-            : NetworkEventType.RequestData, 
-          payload: parseBodyFromChunks(BODIES[id].chunks, this.headers['content-encoding'], BODIES[id].encoding),
-        });
-        
-        delete BODIES[id];
+        if (BODIES[id]) {
+          capture({ 
+            id,
+            type: isResponse
+              ? NetworkEventType.ResponseData 
+              : NetworkEventType.RequestData, 
+            payload: parseBodyFromChunks(BODIES[id].chunks, this.headers['content-encoding'], BODIES[id].encoding),
+          });
+          delete BODIES[id];
+        }
         break;  
       }
 

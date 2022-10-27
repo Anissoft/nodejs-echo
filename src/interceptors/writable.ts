@@ -35,6 +35,9 @@ export function interceptWritable(this: stream.Writable) {
 }
 
 export function collect(id: string, contentEncoding?: string) {
+  if (!PAYLOADS[id]) {
+    return '';
+  }
   const payload = parseBodyFromChunks(PAYLOADS[id].chunks, contentEncoding, PAYLOADS[id].encoding);
   delete PAYLOADS[id];
   return payload;

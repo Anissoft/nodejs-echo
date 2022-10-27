@@ -1,17 +1,21 @@
+import * as chalk from 'chalk';
+import { AddressInfo } from 'ws';
 import { EventEmitter } from 'events';
-import { interceptClientRequest } from './interceptors/clientRequest';
 
-import { interceptIncomingMessage } from './interceptors/incomingMessage';
 import { interceptServer } from './interceptors/server';
+import { interceptClientRequest } from './interceptors/clientRequest';
+import { interceptIncomingMessage } from './interceptors/incomingMessage';
 import { interceptServerResponse } from './interceptors/serverResponse';
-import { createWebSocketServer } from './servers/ws';
-import { NetworkEvent } from './types';
-import { stringifySafe } from './utils/json';
 
-export function start({ port }: {port: number | string}) {
+import { createWebSocketServer } from './servers/ws';
+import { startHTTPServer } from './servers/http';
+import { stringifySafe } from './utils/json';
+import { getFreePort } from './utils/net';
+import { NetworkEvent } from './types';
+
+export function start(opts?: number | { port?: number }) {
   const emitter = new EventEmitter();
   const captureEvent = (event: NetworkEvent) => {
-    console.log(`[{${event.type}}]`, event)
     emitter.emit('message', event);
   }
   
@@ -20,12 +24,32 @@ export function start({ port }: {port: number | string}) {
   interceptServerResponse(captureEvent);
   interceptClientRequest(captureEvent);
 
-  createWebSocketServer()
-    .then(wss => {
-      wss.on('connection', ws => {
-        emitter.on('message', (message: NetworkEvent) => {
-          ws.send(stringifySafe(message));
+  (async () => {
+    const httpPort = (typeof opts === 'object' ? opts.port : opts) || await getFreePort();
+    const wssPort = await getFreePort(httpPort);
+    const wss = await createWebSocketServer(wssPort);
+    console.log(
+      chalk.greenBright(`http-debug started to broadcast events on ws://localhost:${wssPort}`)
+    );
+    await startHTTPServer(httpPort);
+    console.log(
+      chalk.greenBright(`http-debug has started on http://localhost:${httpPort}?socket=${wssPort}`)
+    );
+
+    emitter.on('message', (message: NetworkEvent) => {
+      console.log(chalk.gray(`[{${message.type}}]`));
+
+      wss.clients.forEach(client => {
+        if (client.readyState !== WebSocket.OPEN) {
+          return;
+        } 
+        client.send(stringifySafe(message), err => {
+          if (err) {
+            console.log(err);
+          }
         });
       });
     });
+
+  })();
 }
