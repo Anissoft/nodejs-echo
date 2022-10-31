@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { RecordButton } from '../../components/controls/RecordButton.component';
-import { ClearButton } from '../../components/controls/ClearButton.component';
+import { RecordButton } from '../../components/controls/recordButton.component';
+import { ClearButton } from '../../components/controls/clearButton.component';
 import { useRequests } from '../../services/requests/requests.provider';
 import { useClearRequestsEvent } from '../../services/requests/requests.events';
 

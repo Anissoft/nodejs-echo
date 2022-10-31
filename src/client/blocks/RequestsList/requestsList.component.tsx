@@ -1,8 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+
+import { SplitView } from '../../components/layouts/SplitView/splitview.component';
 import { useClearRequestsEvent } from '../../services/requests/requests.events';
 import { MessageListener, useRequests } from '../../services/requests/requests.provider';
 import { Merge, NetworkEvent } from '../../../types';
 import { mergeDeep } from '../../../utils/json';
+
+import classes from './requestsList.module.css';
 
 type RequestItem = Partial<Omit<Merge<NetworkEvent>, 'type'>>;
 
@@ -30,7 +34,16 @@ export function RequestsList() {
 
   useRequests(onMessage);
 
-  console.log(items);
-
-  return null;
+  return (
+    <div className={classes.root}>
+       <SplitView name='requests' threshold='(max-width: 768px)'>
+        <div className={classes.container}>
+          {/* // table */}
+        </div>
+          <div className={classes.details} >
+            {/* // drawer */}
+          </div>
+      </SplitView>
+    </div>
+  );
 }

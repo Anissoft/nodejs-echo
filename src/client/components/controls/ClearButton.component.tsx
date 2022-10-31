@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconButton, IconButtonProps } from './IconButton/IconButton.component';
+import { IconButton, IconButtonProps } from './IconButton/iconButton.component';
 import classes from './controls.module.css';
 
 export type ClearButtonProps = {
