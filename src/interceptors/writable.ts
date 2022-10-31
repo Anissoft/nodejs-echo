@@ -2,12 +2,11 @@ import * as stream from 'stream';
 import { getId } from '../utils/id';
 import { parseBodyFromChunks } from '../utils/body';
 
-const PAYLOADS: Record<string, {chunks: any[]; encoding: BufferEncoding}> = {};
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-export function intercept(
-  this: stream.Writable,
-  method: 'write' | 'end',
-) {
+const PAYLOADS: Record<string, { chunks: any[]; encoding: BufferEncoding }> = {};
+
+export function intercept(this: stream.Writable, method: 'write' | 'end') {
   const originalMethod = this[method];
   const interceptor = (chunk: any, ...args: any[]): any => {
     const id = getId(this);
@@ -24,7 +23,7 @@ export function intercept(
     }
 
     return (originalMethod as any).apply(this, [chunk, ...args] as any);
-  }
+  };
 
   this[method] = interceptor;
 }

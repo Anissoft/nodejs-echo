@@ -32,7 +32,7 @@ http.createServer( function (req, res) {
 
 setTimeout(() => {
   exec(`curl -v -i -k https://localhost:8000/ -H'Content-Encoding: gzip' --data-binary @${path.resolve(__dirname, 'body.gz')}`);
-}, 1000);
+}, 3000);
 
 setTimeout(() => {
   axios.post('http://www.boredapi.com/api/activity', { key: 'value' });

@@ -1,0 +1,22 @@
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100vw;
+  height: 27px;
+  padding: 0 12px;
+  box-sizing: border-box;
+
+  border-bottom: 1px solid var(--border-color-1);
+  background-color: var(--surface-color);
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+}
+
+.status {
+  cursor: default;
+}

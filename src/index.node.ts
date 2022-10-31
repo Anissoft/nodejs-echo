@@ -1,5 +1,4 @@
 import * as chalk from 'chalk';
-import { AddressInfo } from 'ws';
 import { EventEmitter } from 'events';
 
 import { interceptServer } from './interceptors/server';
@@ -17,39 +16,38 @@ export function start(opts?: number | { port?: number }) {
   const emitter = new EventEmitter();
   const captureEvent = (event: NetworkEvent) => {
     emitter.emit('message', event);
-  }
-  
+  };
+
   interceptServer(captureEvent);
   interceptIncomingMessage(captureEvent);
   interceptServerResponse(captureEvent);
   interceptClientRequest(captureEvent);
 
   (async () => {
-    const httpPort = (typeof opts === 'object' ? opts.port : opts) || await getFreePort();
+    const httpPort = (typeof opts === 'object' ? opts.port : opts) || (await getFreePort());
     const wssPort = await getFreePort(httpPort);
     const wss = await createWebSocketServer(wssPort);
     console.log(
-      chalk.greenBright(`http-debug started to broadcast events on ws://localhost:${wssPort}`)
+      chalk.greenBright(`http-debug started to broadcast events on ws://localhost:${wssPort}`),
     );
     await startHTTPServer(httpPort);
     console.log(
-      chalk.greenBright(`http-debug has started on http://localhost:${httpPort}?socket=${wssPort}`)
+      chalk.greenBright(`http-debug has started on http://localhost:${httpPort}?socket=${wssPort}`),
     );
 
     emitter.on('message', (message: NetworkEvent) => {
       console.log(chalk.gray(`[{${message.type}}]`));
 
-      wss.clients.forEach(client => {
-        if (client.readyState !== WebSocket.OPEN) {
+      wss.clients.forEach((client) => {
+        if (client.readyState !== client.OPEN) {
           return;
-        } 
-        client.send(stringifySafe(message), err => {
+        }
+        client.send(stringifySafe(message), (err) => {
           if (err) {
             console.log(err);
           }
         });
       });
     });
-
   })();
 }

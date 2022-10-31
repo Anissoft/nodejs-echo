@@ -1,5 +1,6 @@
 import * as crypto from 'crypto';
-import { IncomingMessage, ServerResponse, ClientRequest, OutgoingMessage } from 'http';
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 function getRandomValues<T1>(buf: T1): T1 {
   if (!(buf instanceof Uint8Array)) {
@@ -20,7 +21,7 @@ function getRandomValues<T1>(buf: T1): T1 {
 }
 
 export const getRandomId = () =>
-  `${1e7}-${1e3}-${4e3}-${8e3}-${1e11}`.replace(/[018]/g, c =>
+  `${1e7}-${1e3}-${4e3}-${8e3}-${1e11}`.replace(/[018]/g, (c) =>
     (+c ^ (getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16),
   );
 
@@ -30,8 +31,8 @@ export const setId = (req: any, res?: any) => {
   if (res) {
     res._id_ = id;
   }
-}
+};
 
 export const getId = (t: any): string => {
   return (t as any)._id_;
-}
+};

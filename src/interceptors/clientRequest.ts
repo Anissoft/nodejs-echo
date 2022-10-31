@@ -4,15 +4,17 @@ import { getId, setId } from '../utils/id';
 import { parseRawHeaders } from '../utils/headers';
 import { NetworkEvent, NetworkEventType } from '../types';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const clientRequestEmit = http.ClientRequest.prototype.emit;
 
 export const interceptClientRequest = (capture: (event: NetworkEvent) => void) => {
   function emitInterceptor(this: http.ClientRequest, event: string | symbol, ...args: any[]) {
-    switch(event) {
-      case "socket":
+    switch (event) {
+      case 'socket':
         setId(this);
-        capture({ 
-          type: NetworkEventType.Request, 
+        capture({
+          type: NetworkEventType.Request,
           id: getId(this),
           method: this.method,
           url: `${this.protocol}//${this.host}${this.path}`,
@@ -20,45 +22,41 @@ export const interceptClientRequest = (capture: (event: NetworkEvent) => void) =
           incoming: false,
         });
         break;
-      case "response":
+      case 'response':
         const response: http.IncomingMessage = args[0];
         setId(this, response);
         break;
-      case "finish":
+      case 'finish':
         const id = getId(this);
-        capture({ 
-          id, 
-          type: NetworkEventType.RequestHeaders, 
-          headers: Object.assign(
-            {}, 
-            this.getHeaders(),
-            parseRawHeaders((this as any)._header)
-          ),
-        });
-        capture({ 
+        capture({
           id,
-          type: NetworkEventType.RequestData, 
-          payload: collect(id, this.getHeaders()['content-encoding']?.toString()),
+          type: NetworkEventType.RequestHeaders,
+          requestHeaders: Object.assign({}, this.getHeaders(), parseRawHeaders((this as any)._header)),
         });
-        break;  
+        capture({
+          id,
+          type: NetworkEventType.RequestData,
+          request: collect(id, this.getHeaders()['content-encoding']?.toString()),
+        });
+        break;
     }
     return clientRequestEmit.call(this, event, ...args);
   }
 
   http.ClientRequest.prototype.emit = emitInterceptor;
-}
+};
 
-Object.defineProperty(http.OutgoingMessage.prototype, "_writable_", {
+Object.defineProperty(http.OutgoingMessage.prototype, '_writable_', {
   value: false,
-  writable: true
+  writable: true,
 });
 
-Object.defineProperty(http.OutgoingMessage.prototype, "_intercepted_", {
+Object.defineProperty(http.OutgoingMessage.prototype, '_intercepted_', {
   value: false,
-  writable: true
+  writable: true,
 });
 
-Object.defineProperty(http.OutgoingMessage.prototype, "writable", {
+Object.defineProperty(http.OutgoingMessage.prototype, 'writable', {
   set: function writable(value: boolean) {
     this._writable_ = value;
     if (!this._intercepted_) {
@@ -69,6 +67,5 @@ Object.defineProperty(http.OutgoingMessage.prototype, "writable", {
   },
   get: function writable() {
     return this._writable_;
-  }
+  },
 });
-  

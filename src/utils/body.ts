@@ -28,4 +28,4 @@ export const parseBodyFromChunks = (
     default:
       return raw.toString(encoding);
   }
-}
+};

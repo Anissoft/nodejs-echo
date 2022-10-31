@@ -1,30 +1,41 @@
-export type NetworkEvent = ({
-  type: NetworkEventType.Request;
-  version?: string;
-  method: string;
-  url: string;
-  timestamp: number;
-  headers?: Record<string, string | string[] | undefined>;
-  incoming: Boolean; 
-} | {
-  type: NetworkEventType.RequestHeaders;
-  headers: Record<string, string | string[] | number | undefined>;
-} | {
-  type: NetworkEventType.RequestData;
-  payload: string;
-} | {
-  type: NetworkEventType.ResponseStatus;
-  statusCode: number;
-  statusMessage?: string;
-} | {
-  type: NetworkEventType.ResponseData;
-  payload: string;
-} | {
-  type: NetworkEventType.ResponseHeaders;
-  headers: Record<string, string | string[] | number | undefined>;
-}) & {
+export type Merge<T extends object> = {
+  [K in (T extends any ? keyof T : never)]: T extends { [k in K]?: any } ? T[K] : undefined;
+};
+
+export type NetworkEvent = (
+  | {
+      type: NetworkEventType.Request;
+      version?: string;
+      method: string;
+      url: string;
+      timestamp: number;
+      requestHeaders?: Record<string, string | string[] | undefined>;
+      incoming: boolean;
+    }
+  | {
+      type: NetworkEventType.RequestHeaders;
+      requestHeaders: Record<string, string | string[] | number | undefined>;
+    }
+  | {
+      type: NetworkEventType.RequestData;
+      request: string;
+    }
+  | {
+      type: NetworkEventType.ResponseStatus;
+      statusCode: number;
+      statusMessage?: string;
+    }
+  | {
+      type: NetworkEventType.ResponseData;
+      response: string;
+    }
+  | {
+      type: NetworkEventType.ResponseHeaders;
+      responseHeaders: Record<string, string | string[] | number | undefined>;
+    }
+) & {
   id: string;
-}
+};
 
 export enum NetworkEventType {
   Request = 'Request',

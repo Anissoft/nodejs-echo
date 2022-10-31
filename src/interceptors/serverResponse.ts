@@ -4,40 +4,38 @@ import { collect, interceptWritable } from './writable';
 import { getId } from '../utils/id';
 import { parseRawHeaders } from '../utils/headers';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const serverResponseEmit = http.ServerResponse.prototype.emit;
 
 export const interceptServerResponse = (capture: (event: NetworkEvent) => void) => {
   function emitInterceptor(this: http.ServerResponse, event: string | symbol, ...args: any[]) {
-    switch(event) {
-      case "socket":
+    switch (event) {
+      case 'socket':
         interceptWritable.call(this);
         break;
-      case "finish":
+      case 'finish':
         const id = getId(this);
-        capture({ 
-          id, 
-          type: NetworkEventType.ResponseHeaders, 
-          headers: Object.assign(
-            {}, 
-            this.getHeaders(), 
-            parseRawHeaders((this as any)._header),
-          )
+        capture({
+          id,
+          type: NetworkEventType.ResponseHeaders,
+          responseHeaders: Object.assign({}, this.getHeaders(), parseRawHeaders((this as any)._header)),
         });
-        capture({ 
-          id, 
-          type: NetworkEventType.ResponseStatus, 
-          statusCode: this.statusCode, 
+        capture({
+          id,
+          type: NetworkEventType.ResponseStatus,
+          statusCode: this.statusCode,
           statusMessage: this.statusMessage,
         });
-        capture({ 
+        capture({
           id,
-          type: NetworkEventType.ResponseData, 
-          payload: collect(id, this.getHeader('content-encoding') as string),
+          type: NetworkEventType.ResponseData,
+          response: collect(id, this.getHeader('content-encoding') as string),
         });
-        break;  
+        break;
     }
     return serverResponseEmit.call(this, event, ...args);
   }
 
   http.ServerResponse.prototype.emit = emitInterceptor;
-}
+};
