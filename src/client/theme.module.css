@@ -14,12 +14,12 @@
 
 :root.light {
   --background-color: #f8f9fa;
-  --surface-color: #d0d0d0;
+  --surface-color: #f1f3f4;
   --active-color: #3C873A;
   --primary-font-color: #212529;
   --secondary-font-color: #495057;
   --border-color-0: #e1e1e1;
-  --border-color-1: #a3a3a3;
+  --border-color-1: #ced1d5;
 }
 
 :root {

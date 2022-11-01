@@ -26,6 +26,7 @@ export const interceptServerResponse = (capture: (event: NetworkEvent) => void) 
           type: NetworkEventType.ResponseStatus,
           statusCode: this.statusCode,
           statusMessage: this.statusMessage,
+          timeEnd: Date.now(),
         });
         capture({
           id,

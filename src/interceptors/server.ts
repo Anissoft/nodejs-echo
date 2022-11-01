@@ -22,7 +22,7 @@ export const interceptServer = (capture: (event: NetworkEvent) => void) => {
           url: `http${this instanceof http.Server ? '' : 's'}://${
             req.headers['host'] || 'localhost'
           }${req.url}`,
-          timestamp: Date.now(),
+          timeStart: Date.now(),
           requestHeaders: req.headers,
           incoming: true,
         });

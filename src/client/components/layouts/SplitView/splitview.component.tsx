@@ -1,9 +1,11 @@
 import React, { PropsWithChildren, useCallback, useMemo, useState } from 'react';
-import { Split } from '@geoffcox/react-splitter';
+import SplitterLayout from 'react-splitter-layout';
 import { useLocalStorage } from '@anissoft/react-hooks';
 
-import classes from './splitview.module.css';
 import { useMediaQuery } from '../../../hooks/useMediaQuery';
+
+import 'react-splitter-layout/lib/index.css';
+import classes from './splitView.module.css';
 
 export type SplitViewProps = PropsWithChildren<{
   name: string;
@@ -11,25 +13,26 @@ export type SplitViewProps = PropsWithChildren<{
 }>;
 
 export function SplitView({ name, threshold = '(max-width: 768px)', children }: SplitViewProps) {
-  const [initialListWidth, setInitialListWidth] = useLocalStorage(`initialListWidth_${name}`, '50%')
-  const isHorizontal = useMediaQuery(threshold)
+  const [secondaryInitialSize, setSecondaryInitialSize] = useLocalStorage(`initialSplitViewSecondary_${name}`, '50')
+  const isVertical = useMediaQuery(threshold)
 
-  const onChangeProportions = useCallback((v: string) => {
-    setInitialListWidth(v);
+  const onChangeProportions = useCallback((v: number) => {
+    setSecondaryInitialSize(v.toString());
   }, []);
 
   return (
     <div className={classes.root}>
-      <Split 
-        horizontal={isHorizontal}
-        onSplitChanged={onChangeProportions} 
-        initialPrimarySize={initialListWidth as string}
-        minPrimarySize={'20%'}
-        minSecondarySize={'20%'}
-        splitterSize='2px'
+      <SplitterLayout
+        percentage
+        customClassName={classes.splitter}
+        vertical={isVertical}
+        onSecondaryPaneSizeChange={onChangeProportions} 
+        secondaryInitialSize={+(secondaryInitialSize as string)}
+        primaryMinSize={20}
+        secondaryMinSize={20}
       >
         {children}
-      </Split>
+      </SplitterLayout>
     </div>
   );
 }

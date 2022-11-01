@@ -8,7 +8,7 @@ export type NetworkEvent = (
       version?: string;
       method: string;
       url: string;
-      timestamp: number;
+      timeStart: number;
       requestHeaders?: Record<string, string | string[] | undefined>;
       incoming: boolean;
     }
@@ -24,6 +24,7 @@ export type NetworkEvent = (
       type: NetworkEventType.ResponseStatus;
       statusCode: number;
       statusMessage?: string;
+      timeEnd: number;
     }
   | {
       type: NetworkEventType.ResponseData;

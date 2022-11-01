@@ -1,0 +1,40 @@
+table.root {
+  border-spacing: 0;
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+table.root thead {
+  background-color: var(--surface-color);
+}
+
+table.root th, table.root td {
+  border: 1px solid var(--border-color-0);
+  padding: 2px 6px;
+}
+
+table.root th {
+  color: var(--primary-font-color);
+  font-weight: 400;
+}
+
+table.root th:hover {
+  /* filter:  */
+}
+
+table.root td {
+  color: var(--secondary-font-color);
+}
+
+table.root th:first-child, table.root td:first-child {
+  padding-left: 8px;
+}
+
+table.root th:last-child, table.root td:last-child {
+  padding-right: 8px;
+}
+
+th.sortable {
+  cursor: pointer;
+}

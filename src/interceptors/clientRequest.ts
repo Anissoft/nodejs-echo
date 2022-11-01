@@ -18,7 +18,7 @@ export const interceptClientRequest = (capture: (event: NetworkEvent) => void) =
           id: getId(this),
           method: this.method,
           url: `${this.protocol}//${this.host}${this.path}`,
-          timestamp: Date.now(),
+          timeStart: Date.now(),
           incoming: false,
         });
         break;

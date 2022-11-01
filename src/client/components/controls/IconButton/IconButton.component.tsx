@@ -12,7 +12,7 @@ export type IconButtonProps = PropsWithChildren<
 
 export function IconButton({ children, ...props }: IconButtonProps) {
   return (
-    <button className={`${classes.button} ${props.className ?? ''}`} {...props}>
+    <button className={[classes.button, props.className ].join('')} {...props}>
       {children}
     </button>
   );

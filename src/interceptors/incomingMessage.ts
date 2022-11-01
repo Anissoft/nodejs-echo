@@ -32,6 +32,7 @@ export const interceptIncomingMessage = (capture: (event: NetworkEvent) => void)
             type: NetworkEventType.ResponseStatus,
             statusCode: (this as any).statusCode,
             statusMessage: (this as any).statusMessage,
+            timeEnd: Date.now(),
           });
 
           capture({

@@ -4,24 +4,11 @@
   display: flex;
 }
 
-/* @media (max-width: 768px) {
-  .root :global .default-splitter > div {
-    height: 2px !important;
-    width: 100% !important;
-  }
+.root .splitter > :global.layout-splitter  {
+  width: 2px !important;
+  background-color: var(--border-color-1) !important;
 }
-
-@media (min-width: 769px) {
-  .root :global .default-splitter > div {
-    width: 2px !important;
-    height: 100% !important;
-  }
-} */
-
-.root :global .default-splitter > div {
+.root .splitter > :global.layout-splitter:hover   {
   background-color: var(--border-color-1) !important;
 }
 
-.root :global .default-splitter > div:hover {
-  background-color: var(--border-color-1) !important;
-}

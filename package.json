@@ -36,6 +36,7 @@
     "@types/http-server": "^0.12.1",
     "@types/react": "^18.0.23",
     "@types/react-dom": "^18.0.7",
+    "@types/react-splitter-layout": "^3.0.2",
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
@@ -57,8 +58,10 @@
     "@geoffcox/react-splitter": "^2.1.1",
     "chalk": "^3.0.0",
     "http-server": "^14.1.1",
+    "next": "^13.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-splitter-layout": "^4.0.0",
     "ws": "^7.5.9"
   }
 }
