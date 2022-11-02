@@ -1,6 +1,6 @@
 :root {
   --rec-active-color: #f28b82;
-  --common-hover-filter: invert(0.05);
+  --common-hover-filter: invert(0.08);
   --header-height: 27px;
 }
 
@@ -19,7 +19,7 @@
   --surface-color: #f2f2f2;
   --active-color: #5fd65c;
   --primary-font-color: #212529;
-  --secondary-font-color: #717579;
+  --secondary-font-color: #6e6e6e;
   --border-color-0: #e1e1e1;
   --border-color-1: #ced1d5;
 }

@@ -1,0 +1,19 @@
+ul.root {
+  list-style: none;
+  padding-left: 16px;
+  color: var(--secondary-font-color);
+}
+
+ul.root > li {
+  padding: 3px 0;
+}
+
+ul.root > li .key {
+  color: var(--primary-font-color);
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+ul.root > li .value {
+  font-family: monospace;
+}

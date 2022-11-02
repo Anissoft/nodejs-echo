@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import { Header } from './blocks/Header/header.componet';
-import { RequestsList } from './blocks/RequestsList/requestsList.component';
+import { Header } from './blocks/Header/header.block';
+import { RequestsList } from './blocks/RequestsList/requestsList.block';
 
 import { useThemeChange } from './hooks/useTheme';
 import { RequestsProvider } from './services/requests/requests.provider';

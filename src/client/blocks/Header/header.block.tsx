@@ -1,7 +1,8 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 
-import { RecordButton } from '../../components/controls/recordButton.component';
-import { ClearButton } from '../../components/controls/clearButton.component';
+import { Header as BaseHeader } from '../../components/Header/header.component';
+import { RecordButton } from '../../controls/recordButton.control';
+import { ClearButton } from '../../controls/clearButton.control';
 import { useRequests } from '../../services/requests/requests.provider';
 import { useClearRequestsEvent } from '../../services/requests/requests.events';
 
@@ -22,7 +23,7 @@ export const Header = memo(() => {
   );
 
   return (
-    <header className={classes.root}>
+    <BaseHeader className={classes.root}>
       <div className={classes.controls}>
         <RecordButton disabled={!isConnected} active={isEnabled} onClick={onRecordToggle} />
         <ClearButton onClick={clearAllCapturedRequests}/>
@@ -31,6 +32,6 @@ export const Header = memo(() => {
         {'{{Filter}}'}
       </div>
       <div className={classes.status}>{status}</div>
-    </header>
+    </BaseHeader>
   )
 });

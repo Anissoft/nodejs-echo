@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { useClearRequestsEvent } from '../../services/requests/requests.events';
-import { SplitView } from '../../components/layouts/SplitView/splitView.component';
-import { RequestDetails } from '../RequestDetails/requestDetails.component';
-import { TableView, TableViewColumn } from '../../components/layouts/TableView/tableview.component';
+import { SplitView } from '../../components/SplitView/splitView.component';
+import { RequestDetails } from '../RequestDetails/requestDetails.block';
+import { TableView, TableViewColumn } from '../../components/TableView/tableview.component';
 import { MessageListener, useRequests } from '../../services/requests/requests.provider';
 
 import { mergeDeep } from '../../../utils/json';
@@ -18,7 +18,10 @@ export const RequestsList = memo(() => {
     title: 'Time',
     key: 'timeStart',
     getValue(item) {
-      const timestamptWithOffset = item.timeStart! - new Date().getTimezoneOffset() * 60 * 1000;
+      if (!item.timeStart) {
+        return '';
+      }
+      const timestamptWithOffset = item.timeStart - new Date().getTimezoneOffset() * 60 * 1000;
       const [_, match] =  new Date(timestamptWithOffset).toISOString().match(/T(.+)Z/) || [];
       return match;
     }
@@ -85,6 +88,10 @@ export const RequestsList = memo(() => {
     setOpen(item);
   }, []);
 
+  const onDetailsClose = useCallback(() => {
+    setOpen(null);
+  }, []);
+
   return (
     <div className={classes.root}>
        <SplitView name='requests' threshold='(max-width: 1024px)'>
@@ -97,7 +104,7 @@ export const RequestsList = memo(() => {
             onRowClick={onItemClick}
           />
         </div>
-        {open && <RequestDetails request={open} />}
+        {open && <RequestDetails request={open} onClose={onDetailsClose}/>}
       </SplitView>
     </div>
   );

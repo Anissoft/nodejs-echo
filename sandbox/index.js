@@ -40,8 +40,8 @@ setTimeout(() => {
 
 setInterval(() => {
   exec(`curl -v -i -k https://localhost:8000/?param=${Date.now()} -H'Content-Encoding: gzip' --data-binary @${path.resolve(__dirname, 'body.gz')}`);
-}, 30000);
+}, 10000);
 
 setInterval(() => {
   axios.post('http://www.boredapi.com/api/activity', { key: 'value' });
-}, 20000);
+}, 15000);

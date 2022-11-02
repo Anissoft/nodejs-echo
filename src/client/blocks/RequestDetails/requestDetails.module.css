@@ -1,3 +1,23 @@
 .root {
-  display: flex;
+  width: 100%;
+  position: relative;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+}
+
+.active {
+  backdrop-filter: var(--common-hover-filter);
+  color: var(--primary-font-color);
+}
+
+.segment-header {
+  position: sticky;
+  top: var(--header-height);
+  padding: 0px 10px;
+  color: var(--secondary-font-color);
+  /* color: var(--primary-font-color); */
+
 }

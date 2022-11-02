@@ -2,7 +2,7 @@ import React, { memo, PropsWithChildren, useCallback, useMemo, useState } from '
 import SplitterLayout from 'react-splitter-layout';
 import { useLocalStorage } from '@anissoft/react-hooks';
 
-import { useMediaQuery } from '../../../hooks/useMediaQuery';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 import 'react-splitter-layout/lib/index.css';
 import classes from './splitView.module.css';

@@ -8,16 +8,21 @@ table.root {
 
 table.root thead {
   background-color: var(--surface-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-table.root th, table.root td {
+table.root, table.root thead, table.root th, table.root td {
   border: 1px solid var(--border-color-0);
   border-top: none;
+}
+table.root th, table.root td {
   padding: 2px 6px;
 }
 
 table.root th {
-  color: var(--primary-font-color);
+  color: var(--secondary-font-color);
   font-weight: 400;
   white-space: nowrap;
   height: var(--header-height);
@@ -29,6 +34,7 @@ table.root th.sortable {
 }
 
 table.root th.sortable:hover {
+  color: var(--primary-font-color);
   backdrop-filter: var(--common-hover-filter);
 }
 
