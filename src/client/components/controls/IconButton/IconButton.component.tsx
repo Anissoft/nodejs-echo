@@ -10,10 +10,10 @@ export type IconButtonProps = PropsWithChildren<
   >
 >;
 
-export function IconButton({ children, ...props }: IconButtonProps) {
+export const IconButton = ({ children, ...props }: IconButtonProps) => {
   return (
     <button className={[classes.button, props.className ].join('')} {...props}>
       {children}
     </button>
   );
-}
+};

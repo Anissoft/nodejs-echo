@@ -1,19 +1,18 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 
 import { useClearRequestsEvent } from '../../services/requests/requests.events';
 import { SplitView } from '../../components/layouts/SplitView/splitView.component';
+import { RequestDetails } from '../RequestDetails/requestDetails.component';
 import { TableView, TableViewColumn } from '../../components/layouts/TableView/tableview.component';
 import { MessageListener, useRequests } from '../../services/requests/requests.provider';
 
 import { mergeDeep } from '../../../utils/json';
-import { Merge, NetworkEvent } from '../../../types';
+import {  RequestItem } from '../../../types';
 
 import classes from './requestsList.module.css';
 
-type RequestItem = Partial<Omit<Merge<NetworkEvent>, 'type'>>;
-
-export function RequestsList() {
-  const [open, setOpen] = useState<string | null>(null);
+export const RequestsList = memo(() => {
+  const [open, setOpen] = useState<RequestItem | null>(null);
   const [items, setItems] = useState<RequestItem[]>([]);
   const columns = useMemo<TableViewColumn<RequestItem>[]>(() => [{
     title: 'Time',
@@ -39,13 +38,19 @@ export function RequestsList() {
     title: 'Address',
     key: 'url',
     width: '100%',
+    getValue(item) {
+      if (item.incoming && item.requestHeaders?.host) {
+        return item.url!.replace(/:\/\/[\-\_a-z0-9\.\:]*/, `://${item.requestHeaders?.host}`);
+      }
+      return item.url!;
+    }
   }, {
     title: 'Status',
     key: 'statusCode',
     align: 'center',
   }, {
     title: 'Duration',
-    align: 'center',
+    align: 'left',
     key: 'timeEnd',
     getValue(item) {
       return (item.timeEnd && item.timeStart) ? `${item.timeEnd - item.timeStart}ms` : ''
@@ -72,25 +77,28 @@ export function RequestsList() {
   useRequests(onMessage);
   useClearRequestsEvent(useCallback(()=> {
     setItems([]);
+    setOpen(null);
   }, []));
+
+  const onItemClick = useCallback((item: RequestItem) => {
+    console.log(item);
+    setOpen(item);
+  }, []);
 
   return (
     <div className={classes.root}>
-       <SplitView name='requests' threshold='(max-width: 768px)'>
+       <SplitView name='requests' threshold='(max-width: 1024px)'>
         <div className={classes.container}>
           <TableView 
             items={items}
+            selectedId={open?.id}
             columns={columns}
             getId={getItemId}
-            onRowClick={console.log}
+            onRowClick={onItemClick}
           />
         </div>
-        {open && (
-          <div className={classes.details} >
-            {/* // drawer */}
-          </div>
-        )}
+        {open && <RequestDetails request={open} />}
       </SplitView>
     </div>
   );
-}
+});

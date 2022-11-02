@@ -1,5 +1,7 @@
 :root {
   --rec-active-color: #f28b82;
+  --common-hover-filter: invert(0.05);
+  --header-height: 27px;
 }
 
 :root:not(.light) {
@@ -14,16 +16,15 @@
 
 :root.light {
   --background-color: #f8f9fa;
-  --surface-color: #f1f3f4;
-  --active-color: #3C873A;
+  --surface-color: #f2f2f2;
+  --active-color: #5fd65c;
   --primary-font-color: #212529;
-  --secondary-font-color: #495057;
+  --secondary-font-color: #717579;
   --border-color-0: #e1e1e1;
   --border-color-1: #ced1d5;
 }
 
 :root {
-  transition: background-color 0.3s ease;
   background-color: var(--background-color);
   color: var(--primary-font-color);
 

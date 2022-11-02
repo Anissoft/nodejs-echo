@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 
 import { RecordButton } from '../../components/controls/recordButton.component';
 import { ClearButton } from '../../components/controls/clearButton.component';
@@ -7,7 +7,7 @@ import { useClearRequestsEvent } from '../../services/requests/requests.events';
 
 import classes from './header.module.css'
 
-export function Header() {
+export const Header = memo(() => {
   const [status, setStatus] = useState<'offline' | 'online' | 'error'>('offline');
   const [isConnected, isEnabled, setEnabled] = useRequests(undefined, () => setStatus('error'));
   const clearAllCapturedRequests = useClearRequestsEvent();
@@ -28,10 +28,9 @@ export function Header() {
         <ClearButton onClick={clearAllCapturedRequests}/>
       </div>
       <div className={classes.filter}>
-        Filter
+        {'{{Filter}}'}
       </div>
       <div className={classes.status}>{status}</div>
     </header>
   )
-}
-
+});

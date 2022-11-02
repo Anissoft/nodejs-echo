@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import classes from './tableView.module.css';
 
 export type TableViewColumn<T  extends Record<string, any>> = {
@@ -13,9 +13,10 @@ export type TableViewColumn<T  extends Record<string, any>> = {
 
 export type TableViewProps<T extends Record<string, any>> = {
   items: T[];
-  getId: (item: T) => string;
   columns: TableViewColumn<T>[];
   className?: string;
+  selectedId?: string;
+  getId: (item: T) => string;
   onRowClick?: (item: T) => void;
 }
 
@@ -27,6 +28,7 @@ export const TableView = memo(<T extends Record<string, any>>({
   items,
   columns,
   className,
+  selectedId,
   onRowClick,
   getId,
 }: TableViewProps<T>) => {
@@ -92,7 +94,14 @@ export const TableView = memo(<T extends Record<string, any>>({
       </thead>
       <tbody>
         {itemsSorted.map(item => (
-          <tr key={getId(item)} onClick={onRowClick?.bind(null, item)}>
+          <tr 
+            key={getId(item)} 
+            className={[
+              onRowClick ? classes.clickable : '', 
+              selectedId && getId(item) === selectedId ? classes.selected : ''
+            ].join(' ')} 
+            onClick={onRowClick?.bind(null, item)}
+          >
             {head.map(column => (
               <td 
                 key={`${getId(item)}_${column.key}`}

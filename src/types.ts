@@ -46,3 +46,5 @@ export enum NetworkEventType {
   ResponseData = 'ResponseData',
   ResponseHeaders = 'ResponseHeaders',
 }
+
+export type RequestItem = Partial<Omit<Merge<NetworkEvent>, 'type'>>;

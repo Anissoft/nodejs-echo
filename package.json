@@ -3,8 +3,10 @@
   "version": "1.0.0-beta",
   "description": "HTTPs requests debugging tool",
   "main": "dist/index.node.js",
-  "engines": {
-    "node": ">=10"
+  "@parcel/transformer-css": {
+    "drafts": {
+      "nesting": true
+    }
   },
   "scripts": {
     "build:client": "parcel build ./src/index.html",

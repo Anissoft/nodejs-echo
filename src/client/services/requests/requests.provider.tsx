@@ -50,7 +50,7 @@ export function RequestsProvider({ children }: PropsWithChildren) {
         console.error(`Failed to execute ${index} listener - ${listener.name}`, error);
       }
     });
-  }, [messageListeners]);
+  }, [messageListeners, enabled]);
 
   const onError = useCallback((event: MessageEvent<any> | Event | CloseEvent) => {
     if (!enabled) {
@@ -64,7 +64,7 @@ export function RequestsProvider({ children }: PropsWithChildren) {
         console.error(`Failed to execute ${index} error listener - ${listener.name}`, error);
       }
     });
-  }, [errorListeners]);
+  }, [errorListeners, enabled]);
 
   const [connected] = useWebSocket(socketAddress, onMessage, onError);
 

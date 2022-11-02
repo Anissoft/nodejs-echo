@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback, useMemo, useState } from 'react';
+import React, { memo, PropsWithChildren, useCallback, useMemo, useState } from 'react';
 import SplitterLayout from 'react-splitter-layout';
 import { useLocalStorage } from '@anissoft/react-hooks';
 
@@ -12,7 +12,7 @@ export type SplitViewProps = PropsWithChildren<{
   threshold?: string;
 }>;
 
-export function SplitView({ name, threshold = '(max-width: 768px)', children }: SplitViewProps) {
+export const SplitView = memo(({ name, threshold = '(max-width: 768px)', children }: SplitViewProps) => {
   const [secondaryInitialSize, setSecondaryInitialSize] = useLocalStorage(`initialSplitViewSecondary_${name}`, '50')
   const isVertical = useMediaQuery(threshold)
 
@@ -24,7 +24,7 @@ export function SplitView({ name, threshold = '(max-width: 768px)', children }: 
     <div className={classes.root}>
       <SplitterLayout
         percentage
-        customClassName={classes.splitter}
+        customClassName={classes.container}
         vertical={isVertical}
         onSecondaryPaneSizeChange={onChangeProportions} 
         secondaryInitialSize={+(secondaryInitialSize as string)}
@@ -35,4 +35,4 @@ export function SplitView({ name, threshold = '(max-width: 768px)', children }: 
       </SplitterLayout>
     </div>
   );
-}
+})

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IconButton, IconButtonProps } from './IconButton/iconButton.component';
 import classes from './controls.module.css';
 
@@ -6,7 +6,7 @@ export type ClearButtonProps = {
   
 } & IconButtonProps;
 
-export function ClearButton({ children, ...props }: ClearButtonProps) {
+export const ClearButton = memo(({ children, ...props }: ClearButtonProps) => {
   return (
     <IconButton {...props}>
       <div className={classes['clear-i']}>
@@ -16,4 +16,4 @@ export function ClearButton({ children, ...props }: ClearButtonProps) {
       </div>
     </IconButton>
   );
-}
+});
