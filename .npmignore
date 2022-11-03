@@ -1,5 +1,6 @@
 src
 node_modules
+sandbox
 
 tsconfig.*
 *.tsx
@@ -11,6 +12,4 @@ tsconfig.*
 .vscode
 .cache
 .travis.yml
-
-rollup.config.ts
-sandbox.js
+.parcel-cache

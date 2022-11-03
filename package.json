@@ -1,9 +1,12 @@
 {
   "name": "@anissoft/http-debug",
-  "version": "1.0.0-beta",
+  "version": "1.0.0-beta1",
   "description": "HTTPs requests debugging tool",
   "main": "./dist/index.node.js",
   "exports": "./dist/index.node.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "targets": { 
     "main": false 
   },

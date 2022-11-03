@@ -3,7 +3,7 @@
 ## Installation
 
 ```sh
-npm install @anissoft/http-debug --save-dev
+npm --registry=https://registry.npmjs.org i @anissoft/http-debug@1.0.0-beta --no-save
 ```
 
 ## Usage

@@ -27,10 +27,12 @@ export const PayloadView = memo(({ data, contentType = '', ...props }: PayloadVi
           <ReactJson 
             src={json} 
             name={false}
+            collapsed={3}
             iconStyle='square'
             displayObjectSize
             enableClipboard={false}
             displayDataTypes={false}
+            collapseStringsAfterLength={100}
             style={{ backgroundColor: 'none' }}
             theme={theme === 'light' ? 'rjv-default' : 'railscasts'} 
           />
