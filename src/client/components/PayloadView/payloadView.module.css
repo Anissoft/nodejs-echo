@@ -1,0 +1,20 @@
+.root {
+  margin: 1em;
+}
+
+.empty {
+  font-style: italic;
+  color: var(--secondary-font-color);
+}
+
+:global .react-json-view .icon-container svg {
+  fill: var(--active-color);
+}
+
+:global .react-json-view .object-key span {
+  color: var(--primary-font-color);
+}
+
+:global .react-json-view .node-ellipsis {
+  zoom: 0.8;
+}

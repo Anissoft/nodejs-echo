@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
-import { useClearRequestsEvent } from '../../services/requests/requests.events';
+import { useClearRequestsEvent, useFilterRequestsEvent } from '../../services/requests/requests.events';
 import { SplitView } from '../../components/SplitView/splitView.component';
 import { RequestDetails } from '../RequestDetails/requestDetails.block';
 import { TableView, TableViewColumn } from '../../components/TableView/tableview.component';
@@ -13,6 +13,7 @@ import classes from './requestsList.module.css';
 
 export const RequestsList = memo(() => {
   const [open, setOpen] = useState<RequestItem | null>(null);
+  const [filter, setFilter] = useState<string>('');
   const [items, setItems] = useState<RequestItem[]>([]);
   const columns = useMemo<TableViewColumn<RequestItem>[]>(() => [{
     title: 'Time',
@@ -82,9 +83,11 @@ export const RequestsList = memo(() => {
     setItems([]);
     setOpen(null);
   }, []));
+  useFilterRequestsEvent(useCallback((filter: string) => {
+    setFilter(filter);
+  }, []));
 
   const onItemClick = useCallback((item: RequestItem) => {
-    console.log(item);
     setOpen(item);
   }, []);
 
@@ -92,12 +95,19 @@ export const RequestsList = memo(() => {
     setOpen(null);
   }, []);
 
+  const filteredItems = useMemo(() => {
+    if (filter) {
+      return items.filter(item => JSON.stringify(item).toLowerCase().indexOf(filter.toLowerCase()) !== -1);
+    }
+    return items;
+  }, [items, filter]);
+
   return (
     <div className={classes.root}>
        <SplitView name='requests' threshold='(max-width: 1024px)'>
         <div className={classes.container}>
           <TableView 
-            items={items}
+            items={filteredItems}
             selectedId={open?.id}
             columns={columns}
             getId={getItemId}

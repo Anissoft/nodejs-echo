@@ -14,7 +14,7 @@ export type NetworkEvent = (
     }
   | {
       type: NetworkEventType.RequestHeaders;
-      requestHeaders: Record<string, string | string[] | number | undefined>;
+      requestHeaders: Record<string, string | string[] | undefined>;
     }
   | {
       type: NetworkEventType.RequestData;
@@ -32,7 +32,7 @@ export type NetworkEvent = (
     }
   | {
       type: NetworkEventType.ResponseHeaders;
-      responseHeaders: Record<string, string | string[] | number | undefined>;
+      responseHeaders: Record<string, string | string[] | undefined>;
     }
 ) & {
   id: string;

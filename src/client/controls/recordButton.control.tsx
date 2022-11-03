@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo,forwardRef } from 'react';
 import { Button, ButtonProps } from '../components/Button/button.component';
 import { cls } from '../../utils/classname';
 
@@ -8,12 +8,12 @@ export type RecordButtonProps = {
   active: boolean;
 } & ButtonProps;
 
-export const RecordButton = memo(({ children, active, ...props }: RecordButtonProps) => {
+export const RecordButton = memo(forwardRef<HTMLButtonElement, RecordButtonProps>(({ children, active, ...props }, ref) => {
   const title = active ? 'Stop recording' : 'Start recording'; 
-  
+
   return (
-    <Button className={cls(classes.button, classes['button-i'])} title={title} {...props} >
+    <Button ref={ref} className={cls(classes.button, classes['button-i'])} title={title} {...props} >
       <div className={cls(classes['record-i'], { [classes.active]: active })}/>
     </Button>
   );
-})
+}));

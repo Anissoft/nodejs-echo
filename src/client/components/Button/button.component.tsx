@@ -1,20 +1,23 @@
-import React, { DetailedHTMLProps, PropsWithChildren, ButtonHTMLAttributes } from 'react';
+import React, { DetailedHTMLProps, PropsWithChildren, ButtonHTMLAttributes, forwardRef } from 'react';
 import { cls } from '../../../utils/classname';
 import classes from './button.module.css';
 
 export type ButtonProps = PropsWithChildren<
-  DetailedHTMLProps<
-    ButtonHTMLAttributes<
+  Omit<
+    DetailedHTMLProps<
+      ButtonHTMLAttributes<
+        HTMLButtonElement
+      >, 
       HTMLButtonElement
-    >, 
-    HTMLButtonElement
+    >,
+    'ref'
   >
 >;
 
-export const Button = ({ children, className, ...props }: ButtonProps) => {
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, ...props }, ref) => {
   return (
-    <button className={cls(classes.button, className)} {...props}>
+    <button ref={ref} className={cls(classes.button, className)} {...props}>
       {children}
     </button>
   );
-};
+});

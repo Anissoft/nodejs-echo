@@ -17,7 +17,7 @@ export const interceptClientRequest = (capture: (event: NetworkEvent) => void) =
           type: NetworkEventType.Request,
           id: getId(this),
           method: this.method,
-          url: `${this.protocol}//${this.host}${this.path}`,
+          url: (this as any)._redirectable?._currentUrl || `${this.protocol}//${this.getHeader('host') || this.host}${this.path}`,
           timeStart: Date.now(),
           incoming: false,
         });

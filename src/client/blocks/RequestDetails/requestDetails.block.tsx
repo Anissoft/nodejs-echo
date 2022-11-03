@@ -1,51 +1,62 @@
 import React, { memo, useState } from 'react';
-import { CloseButton } from '../../controls/closeButton.control';
-import { RequestItem } from '../../../types';
+import { Case, Switch } from '@anissoft/react-conditions';
 
-import { TextButton } from '../../controls';
-import { Header } from '../../components/Header/header.component';
 import { cls } from '../../../utils/classname';
-
-import classes from './requestDetails.module.css';
+import { TextButton } from '../../controls/textButton.control';
+import { CloseButton } from '../../controls/closeButton.control';
+import { Header } from '../../components/Header/header.component';
+import { PayloadView } from '../../components/PayloadView/payloadView.component';
 import { KeyValueView } from '../../components/KeyValueView/keyValueView.component';
+
+import { RequestItem } from '../../../types';
+import classes from './requestDetails.module.css';
 
 export type RequestDetailsProps = {
   request: RequestItem;
   onClose: () => void;
 }
 
-export const RequestDetails = memo(({ request, onClose }: RequestDetailsProps) => {
-  const [tab, setTab] = useState<0 | 1 | 2>(0);
+export const RequestDetails = memo(({ request : data, onClose }: RequestDetailsProps) => {
+  const [tab, setTab] = useState<'headers' | 'request' | 'response'>('headers');
+
   return (
     <div className={classes.root}>
       <Header className={classes.header}>
         <CloseButton onClick={onClose}/>
-        <TextButton className={cls({[classes.active]: tab === 0})} onClick={() => setTab(0)}>
+        <TextButton className={cls({[classes.active]: tab === 'headers'})} onClick={() => setTab('headers')}>
           Headers
         </TextButton>
-        <TextButton className={cls({[classes.active]: tab === 1})} onClick={() => setTab(1)}>
+        <TextButton className={cls({[classes.active]: tab === 'request'})} onClick={() => setTab('request')}>
           Request
         </TextButton>
-        <TextButton className={cls({[classes.active]: tab === 2})} onClick={() => setTab(2)}>
+        <TextButton className={cls({[classes.active]: tab === 'response'})} onClick={() => setTab('response')}>
           Response
         </TextButton>
       </Header>
-      {tab === 0 && (
-        <div>
-          <Header className={classes['segment-header']}>
-            [Request headers]
-          </Header>
-          {request.requestHeaders && (
-            <KeyValueView values={request.requestHeaders}/>
-          )}
-          <Header className={classes['segment-header']}>
-            [Response headers]
-          </Header>
-          {request.responseHeaders && (
-            <KeyValueView values={request.responseHeaders}/>
-          )}
-        </div>
-        )}
+      <Switch>
+        <Case condition={tab === 'headers'}>
+          <div>
+            <Header className={classes['segment-header']}>
+              [Request headers]
+            </Header>
+            {data.requestHeaders && (
+              <KeyValueView values={data.requestHeaders}/>
+            )}
+            <Header className={classes['segment-header']}>
+              [Response headers]
+            </Header>
+            {data.responseHeaders && (
+              <KeyValueView values={data.responseHeaders}/>
+            )}
+          </div>
+        </Case>
+        <Case condition={tab === 'request'}>
+          <PayloadView data={data.request} contentType={data.requestHeaders?.['content-type']} />
+        </Case>
+        <Case condition={tab === 'response'}>
+          <PayloadView data={data.response} contentType={data.responseHeaders?.['content-type']} />
+        </Case>
+      </Switch>
     </div>
   );
 });

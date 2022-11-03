@@ -15,6 +15,16 @@
   flex-direction: row;
 }
 
+.controls .blink {
+  filter: saturate(2.5);
+}
+
 .status {
   cursor: default;
+}
+
+.root .filter {
+  max-width: 500px;
+  width: 50%;
+  color: var(--primary-font-color);
 }

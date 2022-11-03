@@ -1,6 +1,6 @@
 import * as http from 'http';
 import { NetworkEvent, NetworkEventType } from '../types';
-import { collect, interceptWritable } from './writable';
+import { collect } from './writable';
 import { getId } from '../utils/id';
 import { parseRawHeaders } from '../utils/headers';
 
@@ -11,9 +11,6 @@ const serverResponseEmit = http.ServerResponse.prototype.emit;
 export const interceptServerResponse = (capture: (event: NetworkEvent) => void) => {
   function emitInterceptor(this: http.ServerResponse, event: string | symbol, ...args: any[]) {
     switch (event) {
-      case 'socket':
-        interceptWritable.call(this);
-        break;
       case 'finish':
         const id = getId(this);
         capture({
