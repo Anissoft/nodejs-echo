@@ -28,7 +28,7 @@ export function start(opts?: number | { port?: number }) {
     const wssPort = await getFreePort(httpPort);
     const wss = await createWebSocketServer(wssPort);
     console.log(
-      chalk.greenBright(`http-debug started to broadcast events on ws://localhost:${wssPort}`),
+      chalk.yellowBright(`http-debug started to broadcast events on ws://localhost:${wssPort}`),
     );
     await startHTTPServer(httpPort);
     console.log(
@@ -36,8 +36,6 @@ export function start(opts?: number | { port?: number }) {
     );
 
     emitter.on('message', (message: NetworkEvent) => {
-      console.log(chalk.gray(`[{${message.type}}]`));
-
       wss.clients.forEach((client) => {
         if (client.readyState !== client.OPEN) {
           return;

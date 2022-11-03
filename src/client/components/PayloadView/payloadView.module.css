@@ -1,7 +1,9 @@
 .root {
-  margin: 1em;
+  padding: 1em;
   width: 100%;
-  overflow: scroll;
+  padding-bottom: 24px;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .empty {

@@ -33,30 +33,30 @@ export const RequestDetails = memo(({ request : data, onClose }: RequestDetailsP
           Response
         </TextButton>
       </Header>
-      <Switch>
-        <Case condition={tab === 'headers'}>
-          <div>
-            <Header className={classes['segment-header']}>
-              [Request headers]
-            </Header>
-            {data.requestHeaders && (
-              <KeyValueView values={data.requestHeaders}/>
-            )}
-            <Header className={classes['segment-header']}>
-              [Response headers]
-            </Header>
-            {data.responseHeaders && (
-              <KeyValueView values={data.responseHeaders}/>
-            )}
-          </div>
-        </Case>
-        <Case condition={tab === 'request'}>
-          <PayloadView data={data.request} contentType={data.requestHeaders?.['content-type']} />
-        </Case>
-        <Case condition={tab === 'response'}>
-          <PayloadView data={data.response} contentType={data.responseHeaders?.['content-type']} />
-        </Case>
-      </Switch>
+      <div className={classes.container}>
+        <Switch>
+          <Case condition={tab === 'headers'}>
+              <Header className={classes['segment-header']}>
+                [Request headers]
+              </Header>
+              {data.requestHeaders && (
+                <KeyValueView values={data.requestHeaders}/>
+              )}
+              <Header className={classes['segment-header']}>
+                [Response headers]
+              </Header>
+              {data.responseHeaders && (
+                <KeyValueView values={data.responseHeaders}/>
+              )}
+          </Case>
+          <Case condition={tab === 'request'}>
+            <PayloadView data={data.request} contentType={data.requestHeaders?.['content-type']} />
+          </Case>
+          <Case condition={tab === 'response'}>
+            <PayloadView data={data.response} contentType={data.responseHeaders?.['content-type']} />
+          </Case>
+        </Switch>
+      </div>
     </div>
   );
 });
