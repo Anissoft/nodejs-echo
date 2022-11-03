@@ -9,7 +9,7 @@ import { MessageListener, useRequests } from '../../services/requests/requests.p
 import { mergeDeep } from '../../../utils/json';
 import {  RequestItem } from '../../../types';
 
-import classes from './requestsList.module.css';
+import * as classes from './requestsList.module.css';
 
 export const RequestsList = memo(() => {
   const [open, setOpen] = useState<RequestItem | null>(null);
@@ -32,7 +32,7 @@ export const RequestsList = memo(() => {
     align: 'center',
     sortable: false,
     getValue(item) {
-      return item.incoming ? '↘️' : '↖️'
+      return item.incoming ? <>&#8600;&#xFE0E;</> : <>&#8598;&#xFE0E;</>
     }
   }, {
     title: 'Method',

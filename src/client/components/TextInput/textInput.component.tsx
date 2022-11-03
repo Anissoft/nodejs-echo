@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { cls } from '../../../utils/classname';
 
-import classes from './textInput.module.css';
+import * as classes from './textInput.module.css';
 
 export type TextInputProps = {
 

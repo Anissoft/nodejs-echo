@@ -5,7 +5,7 @@ import { useLocalStorage } from '@anissoft/react-hooks';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 import 'react-splitter-layout/lib/index.css';
-import classes from './splitView.module.css';
+import * as classes from './splitView.module.css';
 
 export type SplitViewProps = PropsWithChildren<{
   name: string;

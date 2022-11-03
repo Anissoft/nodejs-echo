@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import classes from './tableView.module.css';
+import * as classes from './tableView.module.css';
 
 export type TableViewColumn<T  extends Record<string, any>> = {
   key: string;

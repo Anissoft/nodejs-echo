@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocalStorage } from '@anissoft/react-hooks/lib/useStorage';
-import styles from '../theme.module.css';
+import * as classes from '../theme.module.css';
 
 const defaultTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
   ? 'dark'
@@ -15,9 +15,9 @@ export function useThemeChange() {
 
   useEffect(() => {
     if (theme === 'light') {
-      document.documentElement.classList.add(styles.light);
+      document.documentElement.classList.add(classes.light);
     } else {
-      document.documentElement.classList.remove(styles.light);
+      document.documentElement.classList.remove(classes.light);
     }
   }, [theme]);
 }

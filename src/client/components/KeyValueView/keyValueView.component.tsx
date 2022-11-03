@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { cls } from '../../../utils/classname';
 
-import classes from './keyValueView.module.css'
+import * as classes from './keyValueView.module.css'
 
 export type KeyValueViewProps = {
   values: Record<string, undefined | string | number | string[]>;

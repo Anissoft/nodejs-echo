@@ -9,7 +9,7 @@ import { PayloadView } from '../../components/PayloadView/payloadView.component'
 import { KeyValueView } from '../../components/KeyValueView/keyValueView.component';
 
 import { RequestItem } from '../../../types';
-import classes from './requestDetails.module.css';
+import * as classes from './requestDetails.module.css';
 
 export type RequestDetailsProps = {
   request: RequestItem;

@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 
 import { cls } from '../../../utils/classname';
 
-import classes from './header.module.css';
+import * as classes from './header.module.css';
 
 export type HeaderProps = PropsWithChildren<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>

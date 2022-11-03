@@ -7,7 +7,7 @@ import { Header as BaseHeader } from '../../components/Header/header.component';
 import { useRequests } from '../../services/requests/requests.provider';
 import { useClearRequestsEvent, useFilterRequestsEvent } from '../../services/requests/requests.events';
 
-import classes from './header.module.css'
+import * as classes from './header.module.css'
 
 export const Header = memo(() => {
   const recButtonRef = useRef<HTMLButtonElement>(null);

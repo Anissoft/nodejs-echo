@@ -3,7 +3,7 @@ import ReactJson from 'react-json-view';
 import { cls } from '../../../utils/classname';
 import { useTheme } from '../../hooks/useTheme';
 
-import classes from './payloadVIew.module.css';
+import * as classes from './payloadVIew.module.css';
 
 export type PayloadViewProps = {
   data?: string;

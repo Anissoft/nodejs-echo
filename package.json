@@ -2,11 +2,10 @@
   "name": "@anissoft/http-debug",
   "version": "1.0.0-beta",
   "description": "HTTPs requests debugging tool",
-  "main": "dist/index.node.js",
-  "@parcel/transformer-css": {
-    "drafts": {
-      "nesting": true
-    }
+  "main": "./dist/index.node.js",
+  "exports": "./dist/index.node.js",
+  "targets": { 
+    "main": false 
   },
   "scripts": {
     "build:client": "parcel build ./src/index.html",
@@ -34,7 +33,6 @@
   },
   "homepage": "https://github.com/Anissoft/node-network-tools-core#readme",
   "devDependencies": {
-    "@tsconfig/svelte": "^3.0.0",
     "@types/http-server": "^0.12.1",
     "@types/react": "^18.0.23",
     "@types/react-dom": "^18.0.7",
@@ -51,7 +49,6 @@
     "postcss": "^8.4.18",
     "postcss-modules": "^4.3.1",
     "prettier": "^2.7.1",
-    "process": "^0.11.10",
     "typescript": "^4.8.4"
   },
   "dependencies": {
@@ -61,7 +58,6 @@
     "@geoffcox/react-splitter": "^2.1.1",
     "chalk": "^3.0.0",
     "http-server": "^14.1.1",
-    "next": "^13.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-json-view": "^1.21.3",

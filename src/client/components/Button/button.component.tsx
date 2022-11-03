@@ -1,6 +1,6 @@
 import React, { DetailedHTMLProps, PropsWithChildren, ButtonHTMLAttributes, forwardRef } from 'react';
 import { cls } from '../../../utils/classname';
-import classes from './button.module.css';
+import * as classes from './button.module.css';
 
 export type ButtonProps = PropsWithChildren<
   Omit<

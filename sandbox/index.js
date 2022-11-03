@@ -1,4 +1,4 @@
-require('../dist/index.node').start(4900);
+require('../').start(4900);
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
