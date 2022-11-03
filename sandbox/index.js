@@ -30,18 +30,24 @@ http.createServer( function (req, res) {
   });
 }).listen(9000, (...srgs) => console.log('started http server', ...srgs));
 
-setTimeout(() => {
-  exec(`curl -v -i -k https://localhost:8000/?param=${Date.now()} -H'Content-Encoding: gzip' --data-binary @${path.resolve(__dirname, 'body.gz')}`);
-}, 1000);
+function postGzip() {
+  exec(`curl -v -i -k https://localhost:8000/?param=${Date.now()} -H'Content-Type: application/json' -H'Content-Encoding: gzip' --data-binary @${path.resolve(__dirname, 'body.gz')}`);
+}
 
-setTimeout(() => {
-  axios.post('http://www.boredapi.com/api/activity', { key: 'value' });
-}, 2000);
+function getJson() {
+  axios.get('http://www.boredapi.com/api/activity');
+}
 
-setInterval(() => {
-  exec(`curl -v -i -k https://localhost:8000/?param=${Date.now()} -H'Content-Encoding: gzip' --data-binary @${path.resolve(__dirname, 'body.gz')}`);
-}, 10000);
+function postJson() {
+  axios.post(`http://localhost:9000/?param=${Date.now()}`, { key: 'value' });
+}
 
-setInterval(() => {
-  axios.post('http://www.boredapi.com/api/activity', { key: 'value' });
-}, 15000);
+setTimeout(postGzip, 1000);
+setTimeout(postJson, 1000);
+setTimeout(getJson, 2000);
+setTimeout(postJson, 3000);
+
+setInterval(postGzip, 10000);
+setInterval(getJson, 15000);
+setInterval(postJson, 20000);
+// 
