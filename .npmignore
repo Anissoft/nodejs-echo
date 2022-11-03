@@ -4,6 +4,7 @@ sandbox
 
 tsconfig.*
 *.tsx
+*.map
 
 .eslintignore
 .eslintrc.js

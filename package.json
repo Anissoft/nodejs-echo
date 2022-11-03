@@ -1,6 +1,6 @@
 {
   "name": "@anissoft/http-debug",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta5",
   "description": "HTTPs requests debugging tool",
   "main": "./dist/index.node.js",
   "exports": "./dist/index.node.js",

@@ -3,7 +3,7 @@
 ## Installation
 
 ```sh
-npm --registry=https://registry.npmjs.org i @anissoft/http-debug --no-save
+npm --registry=https://registry.npmjs.org i @anissoft/http-debug@latest --no-save
 ```
 
 ## Usage
