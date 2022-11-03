@@ -1,0 +1,73 @@
+table.root {
+  border-spacing: 0;
+  width: 100%;
+
+  border-collapse: collapse;
+  color: var(--secondary-font-color);
+}
+
+table.root thead {
+  background-color: var(--surface-color);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+table.root, table.root thead, table.root th, table.root td {
+  border: 1px solid var(--border-color-0);
+  border-top: none;
+}
+table.root th, table.root td {
+  padding: 2px 6px;
+}
+
+table.root th {
+  color: var(--secondary-font-color);
+  font-weight: 400;
+  white-space: nowrap;
+  height: var(--header-height);
+  box-sizing: border-box;
+}
+
+table.root th.sortable {
+  cursor: pointer;
+}
+
+table.root th.sortable:hover {
+  color: var(--primary-font-color);
+  backdrop-filter: var(--common-hover-filter);
+}
+
+table.root tr.clickable:hover {
+  backdrop-filter: var(--common-hover-filter);
+  cursor: pointer;
+  color: var(--primary-font-color);
+}
+
+table.root tr.selected {
+  background-color: var(--active-color);
+  color: var(--primary-font-color);
+}
+
+table.root td {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+table.root td:last-child {
+  border-right: none;
+}
+
+table.root td:first-child {
+  border-left: none;
+}
+
+table.root th:first-child, table.root td:first-child {
+  padding-left: 8px;
+}
+
+table.root th:last-child, table.root td:last-child {
+  padding-right: 8px;
+}

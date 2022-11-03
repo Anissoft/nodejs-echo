@@ -3,5 +3,5 @@
   "compilerOptions": {
     "esModuleInterop": false
   },
-  "include": ["src/node/**/*"]
+  "include": ["src/index.node.ts"]
 }

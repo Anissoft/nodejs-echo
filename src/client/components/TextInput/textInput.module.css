@@ -1,0 +1,29 @@
+.root {
+  font-size: inherit;
+  background: none;
+  border: 1px solid var(--border-color-0);
+  background-color: var(--background-color);
+  outline: none;
+  color: var(--secondary-font-color);
+  padding: 3px 4px 2px;
+}
+
+.root[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 12px;
+  width: 12px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px"><text y="100%" x="10%" font-size="20" fill="gray">✕</text></svg>');
+  background-repeat: no-repeat;
+  background-size: 10px 10px;
+  cursor: pointer;
+}
+
+.root[type="search"]::-webkit-search-cancel-button {
+  /* content: 'hi'; */
+}
+
+.root:focus-visible {
+  border: 0.5px solid var(--border-color-1);
+  color: var(--primary-font-color);
+}

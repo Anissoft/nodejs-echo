@@ -1,34 +1,25 @@
-# NodeJS Echo
-## Network debugging tool
-
-NodeJS Echo provides an easy way to monitor requests from your nodejs application.
-
-![list view](https://github.com/Anissoft/nodejs-echo/raw/master/screenshots/rl.png)
-
-![request view](https://github.com/Anissoft/nodejs-echo/raw/master/screenshots/rw.png)
+# HTTP-DEBUG - NodeJS network debugging tool
 
 ## Installation
 
 ```sh
-npm install nodejs-echo --save-dev
+npm --registry=https://registry.npmjs.org i @anissoft/http-debug@latest --no-save
 ```
 
 ## Usage
 
-Import `start` command from package and execute it in the very beginning of your program. This will start the static server and provide exact link to the web interface in the stdout.
+Import `start` command from package and execute it in the very beginning of your program. It will start the static server and provide exact link to the web interface in the terminal.
 
 ```js
-const { start } = require('nodejs-echo');
+const { start } = require('@anissoft/http-debug');
 
-start({ port: 4900, secret: 'any-string' });
+start({ port: 4900 });
 ```
 
-> Parameter `secret` is optional but highly recommended to use in public networks;
-
-The correct way to do so -  place the above code in a separate file (e.g. echo.js) and import it in your application's entry point (e.g. index.js).
+The best way to do so -  place the above code in a separate file (e.g. debug.js) and import it in your application's entry point (e.g. index.js).
 
 ```js
-require('./echo.js');
+require('./debug.js');
 
 // your code...
 ```

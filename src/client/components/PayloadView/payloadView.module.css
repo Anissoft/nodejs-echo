@@ -1,0 +1,24 @@
+.root {
+  padding: 1em;
+  width: 100%;
+  padding-bottom: 24px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.empty {
+  font-style: italic;
+  color: var(--secondary-font-color);
+}
+
+:global .react-json-view .icon-container svg {
+  fill: var(--active-color);
+}
+
+:global .react-json-view .object-key span {
+  color: var(--primary-font-color);
+}
+
+:global .react-json-view .node-ellipsis {
+  zoom: 0.8;
+}

@@ -1,0 +1,28 @@
+.button {
+  cursor: pointer;
+
+  background: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--secondary-font-color);
+}
+
+.button:disabled {
+  filter: brightness(0.5);
+  pointer-events: none;
+}
+
+.button:hover, .button:focus-visible {
+  outline: none;
+  color: var(--primary-font-color);
+}
+
+.button:focus-visible {
+  backdrop-filter: var(--common-hover-filter);
+}

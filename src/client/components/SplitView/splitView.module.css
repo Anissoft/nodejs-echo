@@ -1,0 +1,22 @@
+.root {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.root .container:global.splitter-layout:not(.splitter-layout-vertical) > .layout-splitter {
+  width: 2px;
+}
+
+.root .container:global.splitter-layout.splitter-layout-vertical > .layout-splitter {
+  height: 2px;
+}
+
+.root .container:global.splitter-layout > .layout-splitter {
+  background-color: var(--border-color-1);
+}
+
+.root .container:global.layout-splitter:hover   {
+  background-color: var(--border-color-1);
+}
+
