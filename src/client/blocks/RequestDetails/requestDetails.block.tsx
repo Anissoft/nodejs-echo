@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import { Case, Switch } from '@anissoft/react-conditions';
 
 import { cls } from '../../../utils/classname';
@@ -18,6 +18,11 @@ export type RequestDetailsProps = {
 
 export const RequestDetails = memo(({ request : data, onClose }: RequestDetailsProps) => {
   const [tab, setTab] = useState<'headers' | 'request' | 'response'>('headers');
+  const generalData = useMemo(() => ({
+    'Request URL': data.url,
+    'Request Method': data.method,
+    'Status Code': `${data.statusCode ? (data.statusCode > 299 ? '🔴' : '🟢') : ''} ${data.statusCode ?? ''} ${data.statusMessage?.toUpperCase() ?? ''}`, 
+  }), [data]);
 
   return (
     <div className={classes.root}>
@@ -36,6 +41,10 @@ export const RequestDetails = memo(({ request : data, onClose }: RequestDetailsP
       <div className={classes.container}>
         <Switch>
           <Case condition={tab === 'headers'}>
+              <Header className={classes['segment-header']}>
+                [General]
+              </Header>
+              <KeyValueView values={generalData}/>
               <Header className={classes['segment-header']}>
                 [Request headers]
               </Header>

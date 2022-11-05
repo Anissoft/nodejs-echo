@@ -19,7 +19,7 @@ export const PayloadView = memo(({ data, contentType = '', ...props }: PayloadVi
 
   const type = Array.isArray(contentType) ? contentType.join(' ') : contentType;
   
-  if (type.indexOf('json') !== -1) {
+  if (type.indexOf('json') !== -1 || type.indexOf('application/javascript') !== -1) {
     try {
       const json = JSON.parse(data);
       return (

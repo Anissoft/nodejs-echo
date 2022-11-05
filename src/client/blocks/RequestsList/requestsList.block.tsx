@@ -39,14 +39,23 @@ export const RequestsList = memo(() => {
     key: 'method',
     align: 'center',
   }, {
-    title: 'Address',
+    title: 'Host',
+    key: 'url0',
+    align: 'left',
+    getValue(item) {
+      if (item.requestHeaders?.host) {
+        return item.requestHeaders?.host as string;
+      }
+
+      return item.url?.replace(/https?:\/\//, '').replace(/\/.*$/, '') ?? '';
+    }
+  }, {
+    title: 'Path',
     key: 'url',
     width: '100%',
     getValue(item) {
-      if (item.incoming && item.requestHeaders?.host) {
-        return item.url!.replace(/:\/\/[\-\_a-z0-9\.\:]*/, `://${item.requestHeaders?.host}`);
-      }
-      return item.url!;
+      const [path, query] = item.url?.replace(/https?:\/\/.+?\//, '/').split('?') ?? ['', ''];
+      return <span>{path}<span className={classes['query-string']}>{query ? '?' : ''}{query}</span></span>;
     }
   }, {
     title: 'Status',
@@ -67,7 +76,13 @@ export const RequestsList = memo(() => {
     setItems(prevItems => {
       for (let index = prevItems.length - 1; index >= 0; index = index -1) {
         if (prevItems[index].id === message.id) {
-          prevItems[index] = mergeDeep(prevItems[index], message);
+          prevItems[index] = mergeDeep({}, prevItems[index], message);
+
+          if (open?.id === prevItems[index].id) {
+            // update RequestDetails
+            setOpen(prevItems[index]);
+          }
+
           return [...prevItems];
         }
       }
@@ -76,10 +91,10 @@ export const RequestsList = memo(() => {
 
       return [...prevItems]
     })
-  }, []);
+  }, [open]);
 
   useRequests(onMessage);
-  useClearRequestsEvent(useCallback(()=> {
+  useClearRequestsEvent(useCallback(() => {
     setItems([]);
     setOpen(null);
   }, []));
