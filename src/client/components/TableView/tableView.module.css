@@ -8,6 +8,7 @@ table.root {
 
 table.root thead {
   background-color: var(--surface-color);
+  height: calc(var(--header-height) - 1px);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -25,7 +26,6 @@ table.root th {
   color: var(--secondary-font-color);
   font-weight: 400;
   white-space: nowrap;
-  height: var(--header-height);
   box-sizing: border-box;
 }
 

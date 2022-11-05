@@ -11,11 +11,9 @@
   display: flex;
 }
 
-/* 
-.root.with-drawer  {
-  transition: width 0.3s ease-in-out;
-  width: 50%;
-  height: 100%;
-} */
+.query-string {
+  opacity: 0.6;
+}
+
 
 
