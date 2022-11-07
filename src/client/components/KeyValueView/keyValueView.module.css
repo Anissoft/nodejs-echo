@@ -13,6 +13,7 @@ ul.root > li .key {
   color: var(--primary-font-color);
   text-transform: capitalize;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 ul.root > li .value {

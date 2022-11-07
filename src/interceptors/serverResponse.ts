@@ -10,13 +10,18 @@ const serverResponseEmit = http.ServerResponse.prototype.emit;
 
 export const interceptServerResponse = (capture: (event: NetworkEvent) => void) => {
   function emitInterceptor(this: http.ServerResponse, event: string | symbol, ...args: any[]) {
+    const id = getId(this);
+
     switch (event) {
       case 'finish':
-        const id = getId(this);
         capture({
           id,
           type: NetworkEventType.ResponseHeaders,
-          responseHeaders: Object.assign({}, this.getHeaders(), parseRawHeaders((this as any)._header)),
+          responseHeaders: Object.assign(
+            {},
+            this.getHeaders(),
+            parseRawHeaders((this as any)._header),
+          ),
         });
         capture({
           id,

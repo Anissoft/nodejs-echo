@@ -1,10 +1,10 @@
 import * as ws from 'ws';
 
 export async function createWebSocketServer(port: number): Promise<ws.Server<ws.WebSocket>> {
-  return new Promise((res) => {
+  return await new Promise((resolve) => {
     const wss = new ws.Server(
       {
-        port: port,
+        port,
         perMessageDeflate: {
           zlibDeflateOptions: {
             chunkSize: 1024,
@@ -22,7 +22,7 @@ export async function createWebSocketServer(port: number): Promise<ws.Server<ws.
         },
       },
       () => {
-        res(wss);
+        resolve(wss);
       },
     );
   });

@@ -5,17 +5,19 @@ import { RecordButton } from '../../controls/recordButton.control';
 import { TextInput } from '../../components/TextInput/textInput.component';
 import { Header as BaseHeader } from '../../components/Header/header.component';
 import { useRequests } from '../../services/requests/requests.provider';
-import { useClearRequestsEvent, useFilterRequestsEvent } from '../../services/requests/requests.events';
+import {
+  useClearRequestsEvent,
+  useFilterRequestsEvent,
+} from '../../services/requests/requests.events';
 
-import * as classes from './header.module.css'
+import * as classes from './header.module.css';
 
-export const Header = memo(() => {
+export const Header = memo(function Header() {
   const recButtonRef = useRef<HTMLButtonElement>(null);
   const [status, setStatus] = useState<'offline' | 'online' | 'error'>('offline');
-  const [filter, setFilter] = useState('');
   const [isConnected, isEnabled, setEnabled] = useRequests(
     useCallback(() => {
-      if (!recButtonRef.current) {
+      if (recButtonRef.current == null) {
         return;
       }
 
@@ -24,7 +26,7 @@ export const Header = memo(() => {
       setTimeout(() => {
         recButtonRef.current?.classList.remove(classes.blink);
       }, 500);
-    }, []), 
+    }, []),
     useCallback(() => setStatus('error'), []),
   );
 
@@ -35,33 +37,30 @@ export const Header = memo(() => {
     setStatus(isConnected ? 'online' : 'offline');
   }, [isConnected]);
 
-  const onRecordToggle = useCallback(
-    () => setEnabled(val => !val),
-    [setEnabled],
-  );
+  const onRecordToggle = useCallback(() => setEnabled((val) => !val), [setEnabled]);
 
-  const onFilterChange = useCallback((event: ChangeEvent<HTMLInputElement> ) => {
+  const onFilterChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     filterCapturedRequests(event.target.value);
   }, []);
 
   return (
     <BaseHeader className={classes.root}>
       <div className={classes.controls}>
-        <RecordButton 
-          ref={recButtonRef} 
-          disabled={!isConnected} 
-          active={isConnected && isEnabled} 
+        <RecordButton
+          ref={recButtonRef}
+          disabled={!isConnected}
+          active={isConnected && isEnabled}
           onClick={onRecordToggle}
         />
-        <ClearButton onClick={clearAllCapturedRequests}/>
+        <ClearButton onClick={clearAllCapturedRequests} />
       </div>
-      <TextInput 
+      <TextInput
         type="search"
-        className={classes.filter} 
-        placeholder='Filter' 
+        className={classes.filter}
+        placeholder="Filter"
         onChange={onFilterChange}
       />
       <div className={classes.status}>{status}</div>
     </BaseHeader>
-  )
+  );
 });

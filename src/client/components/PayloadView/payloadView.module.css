@@ -4,11 +4,29 @@
   padding-bottom: 24px;
   margin: 0;
   box-sizing: border-box;
+  white-space: normal;
 }
 
 .empty {
   font-style: italic;
   color: var(--secondary-font-color);
+}
+
+.raw-toggle {
+  position: absolute;
+  top: calc(8px + var(--header-height));
+  right: 16px;
+  color: var(--secondary-font-color);
+  cursor: pointer;
+  background-color: var(--surface-color);
+  padding: 2px;
+  opacity: 0.5;
+}
+
+.raw-toggle:hover {
+  text-decoration: underline;
+  color: var(--primary-font-color);
+  opacity: 1;
 }
 
 :global .react-json-view .icon-container svg {

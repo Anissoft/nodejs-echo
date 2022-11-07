@@ -3,23 +3,21 @@ import { getId } from '../utils/id';
 import { parseBodyFromChunks } from '../utils/body';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-const PAYLOADS: Record<string, { chunks: any[]; encoding: BufferEncoding }> = {};
+const PAYLOADS = new Map<string, { chunks: any[]; encoding: BufferEncoding }>();
 
 export function intercept(this: stream.Writable, method: 'write' | 'end') {
   const originalMethod = this[method];
   const interceptor = (chunk: any, ...args: any[]): any => {
-    const id = getId(this);
-    const encoding = (typeof args[0] === 'string' ? args[0] : 'utf8') as BufferEncoding;
-
-    if (!PAYLOADS[id]) {
-      PAYLOADS[id] = {
+    if (chunk !== null) {
+      const id = getId(this);
+      const encoding = (typeof args[0] === 'string' ? args[0] : 'utf8') as BufferEncoding;
+      const record = PAYLOADS.get(id) ?? {
         chunks: [],
         encoding,
       };
-    }
-    if (chunk !== null) {
-      PAYLOADS[id].chunks.push(chunk);
+
+      record.chunks.push(chunk);
+      PAYLOADS.set(id, record);
     }
 
     return (originalMethod as any).apply(this, [chunk, ...args] as any);
@@ -34,10 +32,13 @@ export function interceptWritable(this: stream.Writable) {
 }
 
 export function collect(id: string, contentEncoding?: string) {
-  if (!PAYLOADS[id]) {
+  const record = PAYLOADS.get(id);
+
+  if (!record) {
     return '';
   }
-  const payload = parseBodyFromChunks(PAYLOADS[id].chunks, contentEncoding, PAYLOADS[id].encoding);
-  delete PAYLOADS[id];
+
+  const payload = parseBodyFromChunks(record.chunks, contentEncoding, record.encoding);
+  PAYLOADS.delete(id);
   return payload;
 }

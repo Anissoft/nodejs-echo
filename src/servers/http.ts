@@ -4,13 +4,13 @@ import { createServer } from 'http-server';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export async function startHTTPServer(port: number): Promise<{ server: http.Server }> {
-  return new Promise((res) => {
+export async function startHTTPServer(port: number): Promise<http.Server> {
+  return await new Promise((resolve) => {
     const server = createServer({
       root: path.resolve(__dirname, '..'),
-    });
+    }) as http.Server;
     server.listen(port, () => {
-      res(server as any);
+      resolve(server);
     });
   });
 }

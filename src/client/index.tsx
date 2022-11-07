@@ -7,7 +7,13 @@ import { RequestsList } from './blocks/RequestsList/requestsList.block';
 import { useThemeChange } from './hooks/useTheme';
 import { RequestsProvider } from './services/requests/requests.provider';
 
-const root = createRoot(document.getElementById('main')!);
+const rootNode = document.getElementById('main');
+
+if (!rootNode) {
+  throw new Error('Failed to mount application');
+}
+
+const root = createRoot(rootNode);
 
 function MainLayout() {
   useThemeChange();
@@ -18,10 +24,10 @@ function MainLayout() {
 
   return (
     <RequestsProvider>
-      <Header/>
+      <Header />
       <RequestsList />
     </RequestsProvider>
   );
 }
 
-root.render(React.createElement(MainLayout, { }));
+root.render(React.createElement(MainLayout, {}));

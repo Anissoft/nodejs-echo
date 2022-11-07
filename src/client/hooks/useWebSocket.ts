@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { stringifySafe } from '../../utils/json';
 
-const POLLING_INTERVAL = 500; //ms
+const POLLING_INTERVAL = 500; // ms
 
 export function useWebSocket(
-  url: string, 
+  url: string,
   onMessage?: (event: MessageEvent<any>) => void,
   onError?: (error: MessageEvent<any> | Event | CloseEvent) => void,
 ) {
@@ -12,7 +12,7 @@ export function useWebSocket(
   const [connected, setConnected] = useState(false);
 
   const connect = useCallback((address: string) => {
-    if (socketRef.current) {
+    if (socketRef.current != null) {
       socketRef.current.close();
     }
 
@@ -28,10 +28,12 @@ export function useWebSocket(
   useEffect(() => {
     connect(url);
 
-    const interval = setInterval( () => {
+    const interval = setInterval(() => {
       if (
-        socketRef.current && 
-        [socketRef.current.CLOSED, socketRef.current.CLOSING].includes(socketRef.current?.readyState)
+        socketRef.current != null &&
+        [socketRef.current.CLOSED, socketRef.current.CLOSING].includes(
+          socketRef.current?.readyState,
+        )
       ) {
         connect(url);
       }
@@ -40,34 +42,37 @@ export function useWebSocket(
     return () => {
       clearInterval(interval);
       socketRef.current?.close();
-    }
+    };
   }, [url]);
 
   useEffect(() => {
-    if (connected && socketRef.current) {
-      if (onMessage) {
+    if (connected && socketRef.current != null) {
+      if (onMessage != null) {
         socketRef.current.addEventListener('message', onMessage);
       }
-      if (onError) {
+      if (onError != null) {
         socketRef.current.addEventListener('error', onError);
       }
     }
 
     return () => {
-      if (onMessage) {
+      if (onMessage != null) {
         socketRef.current?.removeEventListener('message', onMessage);
       }
-      if (onError) {
+      if (onError != null) {
         socketRef.current?.removeEventListener('error', onError);
       }
-    }
+    };
   }, [connected, onMessage, onError]);
 
-  const send = useCallback((message: object) => {
-    if (connected && socketRef.current) {
-      socketRef.current.send(stringifySafe(message));
-    }
-  }, [connected]);
+  const send = useCallback(
+    (message: object) => {
+      if (connected && socketRef.current != null) {
+        socketRef.current.send(stringifySafe(message));
+      }
+    },
+    [connected],
+  );
 
   return [connected, send] as const;
 }

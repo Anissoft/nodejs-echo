@@ -8,11 +8,9 @@ function getRandomValues<T1>(buf: T1): T1 {
   }
   if (buf.length > 65536) {
     throw new Error(
-      "Failed to execute 'getRandomValues' on 'Crypto': The " +
-        "ArrayBufferView's byte length (" +
-        buf.length +
-        ') exceeds the ' +
-        'number of bytes of entropy available via this API (65536).',
+      `Failed to execute 'getRandomValues' on 'Crypto': The 
+      ArrayBufferView's byte length (${buf.length.toString()}) exceeds the
+      number of bytes of entropy available via this API (65536).`,
     );
   }
   const bytes = crypto.randomBytes(buf.length);
@@ -34,5 +32,5 @@ export const setId = (req: any, res?: any) => {
 };
 
 export const getId = (t: any): string => {
-  return (t as any)._id_;
+  return t._id_;
 };

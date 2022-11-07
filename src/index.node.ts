@@ -23,8 +23,9 @@ export function start(opts?: number | { port?: number }) {
   interceptServerResponse(captureEvent);
   interceptClientRequest(captureEvent);
 
+  /* eslint-disable @typescript-eslint/no-floating-promises */
   (async () => {
-    const httpPort = (typeof opts === 'object' ? opts.port : opts) || (await getFreePort());
+    const httpPort = (typeof opts === 'object' ? opts.port : opts) ?? (await getFreePort());
     const wssPort = await getFreePort(httpPort);
     const wss = await createWebSocketServer(wssPort);
     console.log(
@@ -41,7 +42,7 @@ export function start(opts?: number | { port?: number }) {
           return;
         }
         client.send(stringifySafe(message), (err) => {
-          if (err) {
+          if (err != null) {
             console.log(err);
           }
         });

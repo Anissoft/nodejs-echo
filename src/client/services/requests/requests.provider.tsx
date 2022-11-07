@@ -1,9 +1,9 @@
-import React, { 
-  createContext, 
-  PropsWithChildren, 
-  useCallback, 
-  useContext, 
-  useEffect, 
+import React, {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -30,70 +30,75 @@ export enum requestsEvents {
   clearAllCapturedRequests = 'clearAllCapturedRequests',
 }
 export function RequestsProvider({ children }: PropsWithChildren) {
-  const [enabled, setEnabled] = useState(true)
-  const [socketPort] = useQueryStringParameter('socket', (+location.host.split(':')[1]+1).toString());
-  const socketAddress = `ws://${window.location.hostname}:${socketPort}`;
+  const [enabled, setEnabled] = useState(true);
+  const [socketPort] = useQueryStringParameter(
+    'socket',
+    (+location.host.split(':')[1] + 1).toString(),
+  );
+  const socketAddress = `ws://${window.location.hostname}:${socketPort ?? ''}`;
   const messageListeners = useSet<MessageListener>([]);
   const errorListeners = useSet<ErrorListener>([]);
 
-  const onMessage = useCallback((event: MessageEvent<any>) => {
-    if (!enabled) {
-      return;
-    }
-
-    const payload = JSON.parse(event.data) as NetworkEvent;
-
-    messageListeners.forEach((listener, index) => {
-      try {
-        listener.call(window, payload);
-      } catch(error) {
-        console.error(`Failed to execute ${index} listener - ${listener.name}`, error);
+  const onMessage = useCallback(
+    (event: MessageEvent<any>) => {
+      if (!enabled) {
+        return;
       }
-    });
-  }, [messageListeners, enabled]);
 
-  const onError = useCallback((event: MessageEvent<any> | Event | CloseEvent) => {
-    if (!enabled) {
-      return;
-    }
+      const payload = JSON.parse(event.data) as NetworkEvent;
 
-    errorListeners.forEach((listener, index) => {
-      try {
-        listener.call(window, event);
-      } catch(error) {
-        console.error(`Failed to execute ${index} error listener - ${listener.name}`, error);
+      messageListeners.forEach((listener) => {
+        try {
+          listener.call(window, payload);
+        } catch (error) {
+          console.error(`Failed to execute listener - ${listener.name}`, error);
+        }
+      });
+    },
+    [messageListeners, enabled],
+  );
+
+  const onError = useCallback(
+    (event: MessageEvent<any> | Event | CloseEvent) => {
+      if (!enabled) {
+        return;
       }
-    });
-  }, [errorListeners, enabled]);
+
+      errorListeners.forEach((listener) => {
+        try {
+          listener.call(window, event);
+        } catch (error) {
+          console.error(`Failed to execute error listener - ${listener.name}`, error);
+        }
+      });
+    },
+    [errorListeners, enabled],
+  );
 
   const [connected] = useWebSocket(socketAddress, onMessage, onError);
 
-  const requests = useMemo(() => ({ 
-      connected,
-      enabled,
-      setEnabled,
-      addListener: messageListeners.add, 
-      removeListener: messageListeners.delete, 
-      addErrorListener: errorListeners.add,
-      removeErrorListener: errorListeners.delete,
-    } as const
-  ), [connected, enabled]);
+  const requests = useMemo(
+    () =>
+      ({
+        connected,
+        enabled,
+        setEnabled,
+        addListener: messageListeners.add,
+        removeListener: messageListeners.delete,
+        addErrorListener: errorListeners.add,
+        removeErrorListener: errorListeners.delete,
+      } as const),
+    [connected, enabled],
+  );
 
-  return (
-    <RequestsContext.Provider value={requests}>
-      {children}
-    </RequestsContext.Provider>
-  )
+  return <RequestsContext.Provider value={requests}>{children}</RequestsContext.Provider>;
 }
 
-export function useRequests(
-  onMessage?: MessageListener, 
-  onError?: ErrorListener,
-) {
+export function useRequests(onMessage?: MessageListener, onError?: ErrorListener) {
   const requests = useContext(RequestsContext);
- 
+
   useEffect(() => {
-    if (!onMessage) {
+    if (onMessage == null) {
       return;
     }
 
@@ -101,11 +106,11 @@ export function useRequests(
 
     return () => {
       requests.removeListener(onMessage);
-    }
+    };
   }, [onMessage]);
 
   useEffect(() => {
-    if (!onError) {
+    if (onError == null) {
       return;
     }
 
@@ -113,9 +118,9 @@ export function useRequests(
 
     return () => {
       requests.removeErrorListener(onError);
-    }
+    };
   }, [onError]);
-  
+
   return useMemo(() => {
     return [requests.connected, requests.enabled, requests.setEnabled] as const;
   }, [requests.connected, requests.enabled, requests.setEnabled]);

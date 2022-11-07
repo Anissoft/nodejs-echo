@@ -1,17 +1,33 @@
 module.exports = {
-  parser: '@typescript-eslint/parser',
+  env: {
+    'browser': true,
+    'es2021': true,
+    'node': true
+  },
   extends: [
-    'plugin:@typescript-eslint/recommended',
+    'standard-with-typescript',
     'plugin:react/recommended',
     'plugin:prettier/recommended',
-    "prettier"
+    'prettier'
   ],
   plugins: [
-    "@typescript-eslint"
+    'react',
   ],
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
+    project: ['./tsconfig.json'],
   },
-  rules: {},
+  rules: {
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_', argsIgnorePattern: '(children|^_)' }],
+    '@typescript-eslint/no-misused-promises': [
+      'error',
+      {
+        'checksVoidReturn': false
+      }
+    ],
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    'react/prop-types': 'off',
+  },
 };

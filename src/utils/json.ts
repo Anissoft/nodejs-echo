@@ -13,30 +13,14 @@ const getCircularReplacer = () => {
   };
 };
 
-const hidePrivateKeys = (source: object) => {
-  const replacer = getCircularReplacer();
-  const hide = (source: object) =>
-    Object.entries(source).reduce((acc, [key, value]) => {
-      if (/^_/.test(key)) {
-        acc._ = (acc._ || {}) as Record<string, any>;
-        acc._[key.replace(/^_+/, '')] = value;
-      } else {
-        const uniqValue = replacer(key, value);
-        acc[key] = !!uniqValue && typeof uniqValue === 'object' ? hide(uniqValue) : uniqValue;
-      }
-      return acc;
-    }, {} as { _: Record<string, any>; [key: string]: object | number | string | undefined });
-  return hide(source);
-};
-
 export const stringifySafe = (source: Record<string, any>): string =>
-  JSON.stringify(hidePrivateKeys(source), getCircularReplacer());
+  JSON.stringify(source, getCircularReplacer());
 
-export function mergeDeep<
-  T extends Record<string, any>, 
-  K extends Record<string, any>
->(target: T, ...sources: K[]): T & K | T {
-  if (!sources.length) {
+export function mergeDeep<T extends Record<string, any>, K extends Record<string, any>>(
+  target: T,
+  ...sources: K[]
+): (T & K) | T {
+  if (sources.length === 0) {
     return target;
   }
   const source = sources.shift() as K;

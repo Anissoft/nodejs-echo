@@ -1,5 +1,5 @@
 export type Merge<T extends object> = {
-  [K in (T extends any ? keyof T : never)]: T extends { [k in K]?: any } ? T[K] : undefined;
+  [K in T extends any ? keyof T : never]: T extends { [k in K]?: any } ? T[K] : undefined;
 };
 
 export type NetworkEvent = (

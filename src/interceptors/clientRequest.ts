@@ -10,6 +10,8 @@ const clientRequestEmit = http.ClientRequest.prototype.emit;
 
 export const interceptClientRequest = (capture: (event: NetworkEvent) => void) => {
   function emitInterceptor(this: http.ClientRequest, event: string | symbol, ...args: any[]) {
+    const id = getId(this);
+
     switch (event) {
       case 'socket':
         setId(this);
@@ -17,21 +19,27 @@ export const interceptClientRequest = (capture: (event: NetworkEvent) => void) =
           type: NetworkEventType.Request,
           id: getId(this),
           method: this.method,
-          url: (this as any)._redirectable?._currentUrl || `${this.protocol}//${this.getHeader('host') || this.host}${this.path}`,
+          url:
+            (this as any)._redirectable?._currentUrl ||
+            `${this.protocol}//${(this.getHeader('host') as string) || this.host}${
+              this.path ?? ''
+            }`,
           timeStart: Date.now(),
           incoming: false,
         });
         break;
       case 'response':
-        const response: http.IncomingMessage = args[0];
-        setId(this, response);
+        setId(this, args[0] as http.IncomingMessage);
         break;
       case 'finish':
-        const id = getId(this);
         capture({
           id,
           type: NetworkEventType.RequestHeaders,
-          requestHeaders: Object.assign({}, this.getHeaders(), parseRawHeaders((this as any)._header)),
+          requestHeaders: Object.assign(
+            {},
+            this.getHeaders(),
+            parseRawHeaders((this as any)._header),
+          ),
         });
         capture({
           id,
