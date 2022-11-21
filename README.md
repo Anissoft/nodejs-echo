@@ -1,5 +1,7 @@
 # HTTP-DEBUG - NodeJS network debugging tool
 
+![UI Example](screenshots/ui.png)
+
 ## Installation
 
 ```sh

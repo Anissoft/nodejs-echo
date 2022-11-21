@@ -1,6 +1,7 @@
 src
 node_modules
 sandbox
+screenshots
 
 tsconfig.*
 *.tsx

@@ -1,6 +1,6 @@
 {
   "name": "@anissoft/http-debug",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "HTTPs requests debugging tool",
   "main": "./dist/index.node.js",
   "exports": "./dist/index.node.js",
@@ -11,9 +11,9 @@
     "main": false
   },
   "scripts": {
-    "build:client": "parcel build ./src/index.html",
+    "build:client": "NODE_ENV=production parcel build ./src/index.html",
     "watch:client": "parcel ./src/index.html",
-    "build:node": "tsc -p tsconfig.node.json",
+    "build:node": "NODE_ENV=production tsc -p tsconfig.node.json",
     "watch:node": "tsc -p tsconfig.node.json --watch",
     "build": "rm -rf dist && npm run build:node && npm run build:client",
     "prepublishOnly": "npm run lint && npm run build && npm run test",
@@ -56,8 +56,8 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.31.10",
-    "parcel": "^2.7.0",
-    "postcss": "^8.4.18",
+    "parcel": "^2.8.0",
+    "postcss": "^8.4.19",
     "postcss-modules": "^4.3.1",
     "prettier": "^2.7.1",
     "process": "^0.11.10",

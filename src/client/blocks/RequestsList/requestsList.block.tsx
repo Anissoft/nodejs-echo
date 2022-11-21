@@ -151,7 +151,10 @@ export const RequestsList = memo(function RequestsList() {
           .includes(filter.toLowerCase()),
       );
     }
-    return items;
+    // filter-out requests which were sent from the UI itself
+    return items.filter(
+      (item) => Boolean(item.url) && item.requestHeaders?.referer !== window.location.href,
+    );
   }, [items, filter]);
 
   return (

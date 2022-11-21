@@ -1,5 +1,6 @@
 import React, { ChangeEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 
+import { ThemeButton } from '../../controls/themeButton.control';
 import { ClearButton } from '../../controls/clearButton.control';
 import { RecordButton } from '../../controls/recordButton.control';
 import { TextInput } from '../../components/TextInput/textInput.component';
@@ -53,6 +54,7 @@ export const Header = memo(function Header() {
           onClick={onRecordToggle}
         />
         <ClearButton onClick={clearAllCapturedRequests} />
+        <ThemeButton />
       </div>
       <TextInput
         type="search"

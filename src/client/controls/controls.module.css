@@ -69,3 +69,8 @@
   color: var(--primary-font-color);
   background-color: var(--rec-active-color);
 }
+
+
+.theme-i {
+  font-size: 18px;
+}
