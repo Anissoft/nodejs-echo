@@ -1,16 +1,16 @@
-## HTTP-debug 
+# HTTP-debug 
 
-Easy to use network debugging tool fro node-js
+### Easy to use network debugging tool for node-js
 
 ![UI Example](screenshots/ui.png)
 
-### Installation
+## Installation
 
 ```sh
 npm --registry=https://registry.npmjs.org i @anissoft/http-debug@latest --no-save
 ```
 
-### Usage
+## Usage
 
 Import `start` command from package and execute it in the very beginning of your program. It will start the static server and provide exact link to the web interface in the terminal.
 
