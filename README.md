@@ -1,4 +1,6 @@
-# HTTP-DEBUG - NodeJS network debugging tool
+# HTTP-debug 
+
+Easy to use network debugging tool fro node-js
 
 ![UI Example](screenshots/ui.png)
 
