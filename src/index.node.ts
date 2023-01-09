@@ -10,12 +10,16 @@ import { createWebSocketServer } from './servers/ws';
 import { startHTTPServer } from './servers/http';
 import { stringifySafe } from './utils/json';
 import { getFreePort } from './utils/net';
-import { NetworkEvent, NetworkEventType, RequestItem } from './types';
+
+import { RequestEvent, NetworkEvent, NetworkEventType, RequestItem } from './types';
+
+// const { name, version } = require('../package.json');
+const { name, version } = {name: 'name', version: 'version'};
 
 const emitter = new EventEmitter();
 const buffer: Record<string, RequestItem> = { };
 const captureEvent = (event: NetworkEvent) => {
-  emitter.emit('message', event);
+  emitter.emit('message-to-socket', event);
 
   if (event.type === NetworkEventType.Request) {
     buffer[event.id] = event;
@@ -24,11 +28,11 @@ const captureEvent = (event: NetworkEvent) => {
   }
 
   if (event.type === NetworkEventType.RequestData) {
-    emitter.emit(buffer[event.id].incoming ? 'incoming-start' : 'outgoing-start', buffer[event.id]);
+    emitter.emit(buffer[event.id].incoming ? RequestEvent.incomingRequestStart : RequestEvent.outgoingRequestStart, buffer[event.id]);
   }
 
   if (event.type === NetworkEventType.ResponseData) {
-    emitter.emit(buffer[event.id].incoming ? 'incoming-end' : 'outgoing-end', buffer[event.id]);
+    emitter.emit(buffer[event.id].incoming ? RequestEvent.incomingRequestFinish : RequestEvent.outgoingRequestFinish, buffer[event.id]);
     delete buffer[event.id];
   }
 };
@@ -38,30 +42,27 @@ interceptIncomingMessage(captureEvent);
 interceptServerResponse(captureEvent);
 interceptClientRequest(captureEvent);
 
-export function subscribe(
-  eventName: 'incoming-start' | 'incoming-end' | 'outgoing-start' | 'outgoing-end', 
-  cb: (m: any) => void,
-) {
+export function subscribe(eventName: RequestEvent, cb: (m: any) => void) {
   emitter.on(eventName, cb);
 
-  return () => {
-    emitter.off(eventName, cb);
-  }
+  return () => emitter.off(eventName, cb);
 }
+
+export const subscribeToRequests = subscribe;
 
 export async function startUI(opts?: number | { port?: number }) {
   const httpPort = (typeof opts === 'object' ? opts.port : opts) ?? (await getFreePort());
   const wssPort = await getFreePort(httpPort);
   const wss = await createWebSocketServer(wssPort);
   console.log(
-    chalk.yellowBright(`http-debug started to broadcast events on ws://localhost:${wssPort}`),
+    chalk.yellowBright(`${name}:${version} started to broadcast events [ws://localhost:${wssPort}]`),
   );
   await startHTTPServer(httpPort);
   console.log(
-    chalk.greenBright(`http-debug has started on http://localhost:${httpPort}?socket=${wssPort}`),
+    chalk.greenBright(`${name}:${version} - UI has started on http://localhost:${httpPort}?socket=${wssPort}`),
   );
 
-  emitter.on('message', (message: NetworkEvent) => {
+  emitter.on('message-to-socket', (message: NetworkEvent) => {
     wss.clients.forEach((client) => {
       if (client.readyState !== client.OPEN) {
         return;
@@ -76,3 +77,5 @@ export async function startUI(opts?: number | { port?: number }) {
 }
 
 export const start = startUI;
+
+export { RequestEvent, NetworkEvent, NetworkEventType, RequestItem };

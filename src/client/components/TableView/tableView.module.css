@@ -14,11 +14,16 @@ table.root thead {
   z-index: 10;
 }
 
-table.root, table.root thead, table.root th, table.root td {
+table.root,
+table.root thead,
+table.root th,
+table.root td {
   border: 1px solid var(--border-color-0);
   border-top: none;
 }
-table.root th, table.root td {
+
+table.root th,
+table.root td {
   padding: 2px 6px;
 }
 
@@ -39,9 +44,12 @@ table.root th.sortable:hover {
 }
 
 table.root tr.clickable:hover {
-  backdrop-filter: var(--common-hover-filter);
   cursor: pointer;
   color: var(--primary-font-color);
+}
+
+table.root tr.clickable:hover:not(.selected) {
+  backdrop-filter: var(--common-hover-filter);
 }
 
 table.root tr.selected {
@@ -64,10 +72,12 @@ table.root td:first-child {
   border-left: none;
 }
 
-table.root th:first-child, table.root td:first-child {
+table.root th:first-child,
+table.root td:first-child {
   padding-left: 8px;
 }
 
-table.root th:last-child, table.root td:last-child {
+table.root th:last-child,
+table.root td:last-child {
   padding-right: 8px;
 }

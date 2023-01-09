@@ -1,4 +1,4 @@
-const { subscribe, startUI } = require('../')
+const { subscribe, startUI, RequestEvent } = require('../')
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
@@ -6,11 +6,11 @@ const path = require('path');
 const axios = require('axios');
 const { exec } = require("child_process");
 
-startUI(4900);
-subscribe('incoming-start', event => console.log('incoming-start', event))
-subscribe('incoming-end',  event => console.log('incoming-end', event))
-subscribe('outgoing-start',  event => console.log('outgoing-start', event))
-subscribe('outgoing-end',  event => console.log('outgoing-end', event))
+startUI();
+subscribe(RequestEvent.incomingRequestStart, event => console.log('incoming-start', event))
+subscribe(RequestEvent.incomingRequestFinish,  event => console.log('incoming-end', event))
+subscribe(RequestEvent.outgoingRequestStart,  event => console.log('outgoing-start', event))
+subscribe(RequestEvent.outgoingRequestFinish,  event => console.log('outgoing-end', event))
 
 const options = {
   key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
