@@ -13,11 +13,11 @@ import { getFreePort } from './utils/net';
 
 import { RequestEvent, NetworkEvent, NetworkEventType, RequestItem } from './types';
 
-// const { name, version } = require('../package.json');
-const { name, version } = {name: 'name', version: 'version'};
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { name, version } = require('../package.json') as { name: string; version: string };
 
 const emitter = new EventEmitter();
-const buffer: Record<string, RequestItem> = { };
+const buffer: Record<string, RequestItem> = {};
 const captureEvent = (event: NetworkEvent) => {
   emitter.emit('message-to-socket', event);
 
@@ -28,11 +28,22 @@ const captureEvent = (event: NetworkEvent) => {
   }
 
   if (event.type === NetworkEventType.RequestData) {
-    emitter.emit(buffer[event.id].incoming ? RequestEvent.incomingRequestStart : RequestEvent.outgoingRequestStart, buffer[event.id]);
+    emitter.emit(
+      buffer[event.id].incoming
+        ? RequestEvent.incomingRequestStart
+        : RequestEvent.outgoingRequestStart,
+      buffer[event.id],
+    );
   }
 
   if (event.type === NetworkEventType.ResponseData) {
-    emitter.emit(buffer[event.id].incoming ? RequestEvent.incomingRequestFinish : RequestEvent.outgoingRequestFinish, buffer[event.id]);
+    emitter.emit(
+      buffer[event.id].incoming
+        ? RequestEvent.incomingRequestFinish
+        : RequestEvent.outgoingRequestFinish,
+      buffer[event.id],
+    );
+    /* eslint-disable @typescript-eslint/no-dynamic-delete */
     delete buffer[event.id];
   }
 };
@@ -55,11 +66,15 @@ export async function startUI(opts?: number | { port?: number }) {
   const wssPort = await getFreePort(httpPort);
   const wss = await createWebSocketServer(wssPort);
   console.log(
-    chalk.yellowBright(`${name}:${version} started to broadcast events [ws://localhost:${wssPort}]`),
+    chalk.yellowBright(
+      `${name}:${version} started to broadcast events [ws://localhost:${wssPort}]`,
+    ),
   );
   await startHTTPServer(httpPort);
   console.log(
-    chalk.greenBright(`${name}:${version} - UI has started on http://localhost:${httpPort}?socket=${wssPort}`),
+    chalk.greenBright(
+      `${name}:${version} - UI has started on http://localhost:${httpPort}?socket=${wssPort}`,
+    ),
   );
 
   emitter.on('message-to-socket', (message: NetworkEvent) => {
