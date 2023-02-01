@@ -62,7 +62,6 @@ export function subscribe(eventName: RequestEvent, cb: (m: any) => void) {
 export const subscribeToRequests = subscribe;
 
 export async function startUI(opts?: number | { port?: number }) {
-  console.log(process.env.NODE_ENV);
   if (process.env.NODE_ENV === 'production') {
     console.log(
       chalk.redBright(
