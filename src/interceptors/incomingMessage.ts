@@ -20,7 +20,7 @@ export const interceptIncomingMessage = (capture: (event: NetworkEvent) => void)
           (() => {
             const record = BODIES.get(id) ?? {
               chunks: [],
-              encoding: (typeof args[1] === 'string' ? args[1] : 'utf8') as BufferEncoding,
+              encoding: (typeof args[1] === 'string' ? args[1] : 'base64') as BufferEncoding,
             };
 
             record.chunks.push(args[0]);

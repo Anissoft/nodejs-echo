@@ -57,6 +57,10 @@ table.root tr.selected {
   color: var(--primary-font-color);
 }
 
+table.root tr.selected td span {
+  color: var(--primary-font-color) !important;
+}
+
 table.root td {
   max-width: 120px;
   overflow: hidden;

@@ -14,3 +14,21 @@
 .query-string {
   opacity: 0.6;
 }
+
+.ok {
+  color: var(--ok-color);
+}
+
+.warn {
+  color: var(--warn-color);
+}
+
+.fail {
+  color: var(--fail-color);
+}
+
+.ok,
+.warn,
+.fail {
+  filter: grayscale(0.5);
+}

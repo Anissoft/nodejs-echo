@@ -23,13 +23,13 @@ const captureEvent = (event: NetworkEvent) => {
 
   if (event.type === NetworkEventType.Request) {
     buffer[event.id] = event;
-  } else {
+  } else if (buffer[event.id]) {
     Object.assign(buffer[event.id], event);
   }
 
   if (event.type === NetworkEventType.RequestData) {
     emitter.emit(
-      buffer[event.id].incoming
+      buffer[event.id]?.incoming
         ? RequestEvent.incomingRequestStart
         : RequestEvent.outgoingRequestStart,
       buffer[event.id],
@@ -38,7 +38,7 @@ const captureEvent = (event: NetworkEvent) => {
 
   if (event.type === NetworkEventType.ResponseData) {
     emitter.emit(
-      buffer[event.id].incoming
+      buffer[event.id]?.incoming
         ? RequestEvent.incomingRequestFinish
         : RequestEvent.outgoingRequestFinish,
       buffer[event.id],
@@ -62,6 +62,13 @@ export function subscribe(eventName: RequestEvent, cb: (m: any) => void) {
 export const subscribeToRequests = subscribe;
 
 export async function startUI(opts?: number | { port?: number }) {
+  console.log(process.env.NODE_ENV);
+  if (process.env.NODE_ENV === 'production') {
+    chalk.redBright(
+      `!!!WARNING!!! It's highly inadvisable to run UI in production environment. Do it at your own risk`,
+    );
+  }
+
   const httpPort = (typeof opts === 'object' ? opts.port : opts) ?? (await getFreePort());
   const wssPort = await getFreePort(httpPort);
   const wss = await createWebSocketServer(wssPort);

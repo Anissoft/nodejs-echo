@@ -1,6 +1,6 @@
 {
   "name": "@anissoft/echo",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "HTTP requests debugging tool",
   "main": "./dist/index.node.js",
   "exports": "./dist/index.node.js",

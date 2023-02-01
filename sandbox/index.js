@@ -6,7 +6,7 @@ const path = require('path');
 const axios = require('axios');
 const { exec } = require("child_process");
 
-startUI();
+startUI(4900);
 subscribe(RequestEvent.incomingRequestStart, event => console.log('incoming-start', event))
 subscribe(RequestEvent.incomingRequestFinish,  event => console.log('incoming-end', event))
 subscribe(RequestEvent.outgoingRequestStart,  event => console.log('outgoing-start', event))
@@ -30,7 +30,7 @@ http.createServer( function (req, res) {
   req.on('data', () => undefined);
   req.on('end', () => {
     res.setHeader('content-type', 'application/json');
-    res.writeHead(200);
+    res.writeHead(500);
     res.write(`{"server": "http"}`)
     res.end();
   });
@@ -44,7 +44,11 @@ function postJsonLocally() {
   axios.post(`http://localhost:9000/api/v1/method?param=${Date.now()}`, { key: 'value' });
 }
 
+setInterval(postGzipLocally, 6000);
+setInterval(postJsonLocally, 10000);
+
 const urls = [
+  'https://upload.wikimedia.org/wikipedia/en/7/7d/Lenna_%28test_image%29.png',
   'https://api.publicapis.org/entries',
   'https://catfact.ninja/fact',
   'https://api.coindesk.com/v1/bpi/currentprice.json',
@@ -52,10 +56,7 @@ const urls = [
   'https://dog.ceo/api/breeds/image/random',
   'https://official-joke-api.appspot.com/random_joke',
   'https://randomuser.me/api/',
-]
-
-setInterval(postGzipLocally, 6000);
-setInterval(postJsonLocally, 10000);
+];
 
 let i = 0;
 setInterval(() => {

@@ -10,13 +10,11 @@ export interface KeyValueViewProps {
 }
 
 export const KeyValueView = memo(function KeyValueView({ className, values }: KeyValueViewProps) {
-  console.log({ values });
   return (
     <ul className={cls(classes.root, className)}>
       {Object.entries(values)
         .sort(([key1], [key2]) => (key1 > key2 ? 1 : -1))
         .reduce<Array<[string, undefined | string | number]>>((acc, [key, value]) => {
-          console.log({ key, value }, typeof value);
           if (typeof value === 'string') {
             acc.push([key, value]);
           } else if (Array.isArray(value)) {
@@ -25,7 +23,6 @@ export const KeyValueView = memo(function KeyValueView({ className, values }: Ke
             });
           } else if (typeof value === 'object') {
             Object.entries(value).forEach(([_, subVal]) => {
-              console.log('acc push ', subVal);
               acc.push([key, subVal as string]);
             });
           }

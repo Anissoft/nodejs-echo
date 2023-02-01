@@ -2,17 +2,20 @@
   --rec-active-color: #f28b82;
   --common-hover-filter: invert(0.08);
   --header-height: 27px;
+  --ok-color: #5bac3e;
+  --warn-color: #d59c2e;
+  --fail-color: #ce2b2b;
 }
 
 :root:not(.light) {
   --background-color: #202024;
   --surface-color: #292a2e;
   --active-color: #3C873A;
-  --primary-font-color: #e5e7eb ;
+  --primary-font-color: #e5e7eb;
   --secondary-font-color: #949ba0;
   --border-color-0: #353538;
   --border-color-1: #4a4c50;
-  
+
 }
 
 :root.light {
