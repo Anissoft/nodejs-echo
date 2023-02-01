@@ -9,7 +9,7 @@ export const parseBodyFromChunks = (
   if (chunks == null || chunks.length === 0) {
     return '';
   }
-  
+
   let raw: Buffer;
 
   if (Buffer.isBuffer(chunks[0])) {

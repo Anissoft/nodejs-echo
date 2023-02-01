@@ -64,8 +64,10 @@ export const subscribeToRequests = subscribe;
 export async function startUI(opts?: number | { port?: number }) {
   console.log(process.env.NODE_ENV);
   if (process.env.NODE_ENV === 'production') {
-    chalk.redBright(
-      `!!!WARNING!!! It's highly inadvisable to run UI in production environment. Do it at your own risk`,
+    console.log(
+      chalk.redBright(
+        `!!!WARNING!!! It's highly inadvisable to run ${name}:${version} UI in production environment. Do it at your own risk`,
+      ),
     );
   }
 

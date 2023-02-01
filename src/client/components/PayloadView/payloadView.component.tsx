@@ -28,7 +28,7 @@ export const PayloadView = memo(function PayloadView({ data, contentType = '' }:
         <>
           <pre className={classes.root}>
             {showRaw ? (
-             text
+              text
             ) : (
               <ReactJson
                 src={JSON.parse(text)}
@@ -58,7 +58,7 @@ export const PayloadView = memo(function PayloadView({ data, contentType = '' }:
   }
 
   if (type.startsWith('image/')) {
-    return <img className={classes.image} src={`data:${type};base64,${data}`} />
+    return <img className={classes.image} src={`data:${type};base64,${data}`} />;
   }
 
   return <pre className={classes.root}>{window.atob(data)}</pre>;

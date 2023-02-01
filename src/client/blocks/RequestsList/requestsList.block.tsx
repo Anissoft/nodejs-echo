@@ -84,7 +84,7 @@ export const RequestsList = memo(function RequestsList() {
             return '';
           }
 
-          const classname = statusCode < 300 ? 'ok' : (statusCode < 400 ? 'warn' : 'fail');
+          const classname = statusCode < 300 ? 'ok' : statusCode < 400 ? 'warn' : 'fail';
 
           return <span className={classes[classname]}>{statusCode}</span>;
         },
