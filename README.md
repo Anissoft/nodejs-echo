@@ -1,4 +1,4 @@
-# @anissoft/echo
+# @anissoft/echo <img alt="npm (scoped) badge" src="https://img.shields.io/npm/v/@anissoft/echo">
 
 ### Easy-to-use network intercepting tool for nodeJS
 
