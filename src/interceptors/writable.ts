@@ -10,7 +10,7 @@ export function intercept(this: stream.Writable, method: 'write' | 'end') {
   const interceptor = (chunk: any, ...args: any[]): any => {
     if (chunk !== null) {
       const id = getId(this);
-      const encoding = (typeof args[0] === 'string' ? args[0] : 'utf8') as BufferEncoding;
+      const encoding = (typeof args[0] === 'string' ? args[0] : 'base64') as BufferEncoding;
       const record = PAYLOADS.get(id) ?? {
         chunks: [],
         encoding,
@@ -39,6 +39,7 @@ export function collect(id: string, contentEncoding?: string) {
   }
 
   const payload = parseBodyFromChunks(record.chunks, contentEncoding, record.encoding);
+
   PAYLOADS.delete(id);
   return payload;
 }

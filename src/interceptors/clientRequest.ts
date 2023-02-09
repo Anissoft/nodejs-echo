@@ -21,7 +21,7 @@ export const interceptClientRequest = (capture: (event: NetworkEvent) => void) =
           method: this.method,
           url:
             (this as any)._redirectable?._currentUrl ||
-            `${this.protocol}//${(this.getHeader('host') as string) || this.host}${
+            `${this.protocol || 'http:'}//${(this.getHeader('host') as string) || this.host}${
               this.path ?? ''
             }`,
           timeStart: Date.now(),

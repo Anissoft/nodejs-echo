@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react';
 import ReactJson from 'react-json-view';
+
 import { cls } from '../../../utils/classname';
 import { useTheme } from '../../hooks/useTheme';
 
@@ -22,15 +23,15 @@ export const PayloadView = memo(function PayloadView({ data, contentType = '' }:
 
   if (type.includes('json') || type.includes('application/javascript')) {
     try {
-      const json = JSON.parse(data);
+      const text = window.atob(data);
       return (
         <>
           <pre className={classes.root}>
             {showRaw ? (
-              data
+              text
             ) : (
               <ReactJson
-                src={json}
+                src={JSON.parse(text)}
                 name={false}
                 collapsed={3}
                 iconStyle="square"
@@ -56,5 +57,9 @@ export const PayloadView = memo(function PayloadView({ data, contentType = '' }:
     } catch (error) {}
   }
 
-  return <pre className={classes.root}>{data}</pre>;
+  if (type.startsWith('image/')) {
+    return <img className={classes.image} src={`data:${type};base64,${data}`} />;
+  }
+
+  return <pre className={classes.root}>{window.atob(data)}</pre>;
 });

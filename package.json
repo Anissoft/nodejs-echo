@@ -1,7 +1,7 @@
 {
   "name": "@anissoft/echo",
-  "version": "1.0.3",
-  "description": "HTTPs requests intercepting tool",
+  "version": "1.2.3",
+  "description": "HTTP requests debugging tool",
   "main": "./dist/index.node.js",
   "exports": "./dist/index.node.js",
   "publishConfig": {

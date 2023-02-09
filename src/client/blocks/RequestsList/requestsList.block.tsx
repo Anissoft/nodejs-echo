@@ -79,6 +79,15 @@ export const RequestsList = memo(function RequestsList() {
         title: 'Status',
         key: 'statusCode',
         align: 'center',
+        getValue({ statusCode }) {
+          if (!statusCode) {
+            return '';
+          }
+
+          const classname = statusCode < 300 ? 'ok' : statusCode < 400 ? 'warn' : 'fail';
+
+          return <span className={classes[classname]}>{statusCode}</span>;
+        },
       },
       {
         title: 'Duration',

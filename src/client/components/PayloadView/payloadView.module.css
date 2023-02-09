@@ -7,6 +7,10 @@
   white-space: normal;
 }
 
+.image {
+  max-width: 100%;
+}
+
 .empty {
   font-style: italic;
   color: var(--secondary-font-color);

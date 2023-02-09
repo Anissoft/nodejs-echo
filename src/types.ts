@@ -47,4 +47,11 @@ export enum NetworkEventType {
   ResponseHeaders = 'ResponseHeaders',
 }
 
+export enum RequestEvent {
+  incomingRequestStart = 'incoming-start',
+  incomingRequestFinish = 'incoming-finish',
+  outgoingRequestStart = 'outgoing-start',
+  outgoingRequestFinish = 'outgoing-finish',
+}
+
 export type RequestItem = Partial<Omit<Merge<NetworkEvent>, 'type'>>;
