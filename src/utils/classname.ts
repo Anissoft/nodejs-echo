@@ -1,4 +1,6 @@
-export function cls(...args: Array<string | undefined | null | { [key: string]: boolean }>) {
+export function cls(
+  ...args: Array<string | undefined | null | { [key: string]: boolean }>
+) {
   return args
     .filter((item) => Boolean(item))
     .reduce((className: string, item) => {

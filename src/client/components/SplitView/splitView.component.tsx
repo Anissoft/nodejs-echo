@@ -1,10 +1,9 @@
-import React, { memo, PropsWithChildren, useCallback } from 'react';
-import SplitterLayout from 'react-splitter-layout';
 import { useLocalStorage } from '@anissoft/react-hooks';
+import React, { PropsWithChildren, memo, useCallback } from 'react';
+import SplitterLayout from 'react-splitter-layout';
+import 'react-splitter-layout/lib/index.css';
 
 import { useMediaQuery } from '../../hooks/useMediaQuery';
-
-import 'react-splitter-layout/lib/index.css';
 import * as classes from './splitView.module.css';
 
 export type SplitViewProps = PropsWithChildren<{
@@ -19,7 +18,7 @@ export const SplitView = memo(function SplitView({
 }: SplitViewProps) {
   const [secondaryInitialSize, setSecondaryInitialSize] = useLocalStorage(
     `initialSplitViewSecondary_${name}`,
-    '50',
+    '50'
   );
   const isVertical = useMediaQuery(threshold);
 

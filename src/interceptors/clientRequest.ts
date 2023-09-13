@@ -1,15 +1,22 @@
 import * as http from 'http';
-import { collect, interceptWritable } from './writable';
-import { getId, setId } from '../utils/id';
-import { parseRawHeaders } from '../utils/headers';
+
 import { NetworkEvent, NetworkEventType } from '../types';
+import { parseRawHeaders } from '../utils/headers';
+import { getId, setId } from '../utils/id';
+import { collect, interceptWritable } from './writable';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 const clientRequestEmit = http.ClientRequest.prototype.emit;
 
-export const interceptClientRequest = (capture: (event: NetworkEvent) => void) => {
-  function emitInterceptor(this: http.ClientRequest, event: string | symbol, ...args: any[]) {
+export const interceptClientRequest = (
+  capture: (event: NetworkEvent) => void
+) => {
+  function emitInterceptor(
+    this: http.ClientRequest,
+    event: string | symbol,
+    ...args: any[]
+  ) {
     const id = getId(this);
 
     switch (event) {
@@ -21,9 +28,9 @@ export const interceptClientRequest = (capture: (event: NetworkEvent) => void) =
           method: this.method,
           url:
             (this as any)._redirectable?._currentUrl ||
-            `${this.protocol || 'http:'}//${(this.getHeader('host') as string) || this.host}${
-              this.path ?? ''
-            }`,
+            `${this.protocol || 'http:'}//${
+              (this.getHeader('host') as string) || this.host
+            }${this.path ?? ''}`,
           timeStart: Date.now(),
           incoming: false,
         });
@@ -38,13 +45,16 @@ export const interceptClientRequest = (capture: (event: NetworkEvent) => void) =
           requestHeaders: Object.assign(
             {},
             this.getHeaders(),
-            parseRawHeaders((this as any)._header),
+            parseRawHeaders((this as any)._header)
           ),
         });
         capture({
           id,
           type: NetworkEventType.RequestData,
-          request: collect(id, this.getHeaders()['content-encoding']?.toString()),
+          request: collect(
+            id,
+            this.getHeaders()['content-encoding']?.toString()
+          ),
         });
         break;
     }

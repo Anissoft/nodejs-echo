@@ -1,14 +1,13 @@
-import React, { memo, useMemo, useState } from 'react';
 import { Case, Switch } from '@anissoft/react-conditions';
-
-import { cls } from '../../../utils/classname';
-import { TextButton } from '../../controls/textButton.control';
-import { CloseButton } from '../../controls/closeButton.control';
-import { Header } from '../../components/Header/header.component';
-import { PayloadView } from '../../components/PayloadView/payloadView.component';
-import { KeyValueView } from '../../components/KeyValueView/keyValueView.component';
+import React, { memo, useMemo, useState } from 'react';
 
 import { RequestItem } from '../../../types';
+import { cls } from '../../../utils/classname';
+import { Header } from '../../components/Header/header.component';
+import { KeyValueView } from '../../components/KeyValueView/keyValueView.component';
+import { PayloadView } from '../../components/PayloadView/payloadView.component';
+import { CloseButton } from '../../controls/closeButton.control';
+import { TextButton } from '../../controls/textButton.control';
 import * as classes from './requestDetails.module.css';
 
 export interface RequestDetailsProps {
@@ -25,11 +24,11 @@ export const RequestDetails = memo(function RequestDetails({
     () => ({
       'Request URL': data.url,
       'Request Method': data.method,
-      'Status Code': `${data.statusCode ? (data.statusCode > 299 ? '🔴' : '🟢') : ''} ${
-        data.statusCode ?? ''
-      } ${data.statusMessage?.toUpperCase() ?? ''}`,
+      'Status Code': `${
+        data.statusCode ? (data.statusCode > 299 ? '🔴' : '🟢') : ''
+      } ${data.statusCode ?? ''} ${data.statusMessage?.toUpperCase() ?? ''}`,
     }),
-    [data],
+    [data]
   );
 
   return (
@@ -60,13 +59,24 @@ export const RequestDetails = memo(function RequestDetails({
           <Case condition={tab === 'headers'}>
             <Header className={classes['segment-header']}>[General]</Header>
             <KeyValueView values={generalData} />
-            <Header className={classes['segment-header']}>[Request headers]</Header>
-            {data.requestHeaders != null && <KeyValueView values={data.requestHeaders} />}
-            <Header className={classes['segment-header']}>[Response headers]</Header>
-            {data.responseHeaders != null && <KeyValueView values={data.responseHeaders} />}
+            <Header className={classes['segment-header']}>
+              [Request headers]
+            </Header>
+            {data.requestHeaders != null && (
+              <KeyValueView values={data.requestHeaders} />
+            )}
+            <Header className={classes['segment-header']}>
+              [Response headers]
+            </Header>
+            {data.responseHeaders != null && (
+              <KeyValueView values={data.responseHeaders} />
+            )}
           </Case>
           <Case condition={tab === 'request'}>
-            <PayloadView data={data.request} contentType={data.requestHeaders?.['content-type']} />
+            <PayloadView
+              data={data.request}
+              contentType={data.requestHeaders?.['content-type']}
+            />
           </Case>
           <Case condition={tab === 'response'}>
             <PayloadView

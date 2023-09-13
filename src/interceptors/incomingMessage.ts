@@ -1,17 +1,25 @@
 import * as http from 'http';
-import { getId } from '../utils/id';
+
 import { NetworkEvent, NetworkEventType } from '../types';
 import { parseBodyFromChunks } from '../utils/body';
+import { getId } from '../utils/id';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 const BODIES = new Map<string, { chunks: any[]; encoding: BufferEncoding }>();
 const incomingMessageEmit = http.IncomingMessage.prototype.emit;
 
-export const interceptIncomingMessage = (capture: (event: NetworkEvent) => void) => {
-  function emitInterceptor(this: http.IncomingMessage, event: string | symbol, ...args: any[]) {
+export const interceptIncomingMessage = (
+  capture: (event: NetworkEvent) => void
+) => {
+  function emitInterceptor(
+    this: http.IncomingMessage,
+    event: string | symbol,
+    ...args: any[]
+  ) {
     const id = getId(this);
-    const isResponse = typeof this.statusCode !== 'undefined' && this.statusCode !== null;
+    const isResponse =
+      typeof this.statusCode !== 'undefined' && this.statusCode !== null;
 
     switch (event) {
       case 'data':
@@ -20,12 +28,14 @@ export const interceptIncomingMessage = (capture: (event: NetworkEvent) => void)
           (() => {
             const record = BODIES.get(id) ?? {
               chunks: [],
-              encoding: (typeof args[1] === 'string' ? args[1] : 'base64') as BufferEncoding,
+              encoding: (typeof args[1] === 'string'
+                ? args[1]
+                : 'base64') as BufferEncoding,
             };
 
             record.chunks.push(args[0]);
             return record;
-          })(),
+          })()
         );
         break;
       case 'end':
@@ -50,7 +60,7 @@ export const interceptIncomingMessage = (capture: (event: NetworkEvent) => void)
             response: parseBodyFromChunks(
               BODIES.get(id)?.chunks,
               this.headers['content-encoding'],
-              BODIES.get(id)?.encoding,
+              BODIES.get(id)?.encoding
             ),
           });
         } else {
@@ -66,7 +76,7 @@ export const interceptIncomingMessage = (capture: (event: NetworkEvent) => void)
             request: parseBodyFromChunks(
               BODIES.get(id)?.chunks,
               this.headers['content-encoding'],
-              BODIES.get(id)?.encoding,
+              BODIES.get(id)?.encoding
             ),
           });
         }

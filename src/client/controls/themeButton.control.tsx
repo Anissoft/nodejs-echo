@@ -1,8 +1,8 @@
-import React, { memo, forwardRef, useCallback } from 'react';
-import { Button, ButtonProps } from '../components/Button/button.component';
-import { cls } from '../../utils/classname';
-import { useTheme } from '../hooks/useTheme';
+import React, { forwardRef, memo, useCallback } from 'react';
 
+import { cls } from '../../utils/classname';
+import { Button, ButtonProps } from '../components/Button/button.component';
+import { useTheme } from '../hooks/useTheme';
 import * as classes from './controls.module.css';
 
 export type ThemeButtonProps = ButtonProps;
@@ -10,7 +10,7 @@ export type ThemeButtonProps = ButtonProps;
 export const ThemeButton = memo(
   forwardRef<HTMLButtonElement, ThemeButtonProps>(function ThemeButton(
     { children, onClick, ...props },
-    ref,
+    ref
   ) {
     const [theme, setTheme] = useTheme();
     const title = theme === 'light' ? 'Enable dark mode' : 'Enable light mode';
@@ -23,7 +23,7 @@ export const ThemeButton = memo(
           onClick(event);
         }
       },
-      [setTheme, onClick],
+      [setTheme, onClick]
     );
 
     return (
@@ -37,5 +37,5 @@ export const ThemeButton = memo(
         <div className={cls(classes['theme-i'])}>☼</div>
       </Button>
     );
-  }),
+  })
 );

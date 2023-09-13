@@ -7,10 +7,10 @@ const axios = require('axios');
 const { exec } = require("child_process");
 
 startUI(4900);
-subscribe(RequestEvent.incomingRequestStart, event => console.log('incoming-start', event))
-subscribe(RequestEvent.incomingRequestFinish,  event => console.log('incoming-end', event))
-subscribe(RequestEvent.outgoingRequestStart,  event => console.log('outgoing-start', event))
-subscribe(RequestEvent.outgoingRequestFinish,  event => console.log('outgoing-end', event))
+// subscribe(RequestEvent.incomingRequestStart, event => console.log('incoming-start', event))
+// subscribe(RequestEvent.incomingRequestFinish,  event => console.log('incoming-end', event))
+// subscribe(RequestEvent.outgoingRequestStart,  event => console.log('outgoing-start', event))
+// subscribe(RequestEvent.outgoingRequestFinish,  event => console.log('outgoing-end', event))
 
 const options = {
   key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
@@ -41,7 +41,7 @@ function postGzipLocally() {
 }
 
 function postJsonLocally() {
-  axios.post(`http://localhost:9000/api/v1/method?param=${Date.now()}`, { key: 'value' });
+  fetch(`http://localhost:9000/api/v1/method?param=${Date.now()}`, { method: 'POST', body: JSON.stringify({ key: 'value' }) });
 }
 
 setInterval(postGzipLocally, 6000);
@@ -60,6 +60,11 @@ const urls = [
 
 let i = 0;
 setInterval(() => {
-  axios.get(urls[i]);
+  // if (i%2 === 0) {
+    // axios.get(urls[i]);
+  // } else if (typeof fetch !== 'undefined') {
+    axios.get(urls[0]);
+    fetch(urls[0]);
+  // }
   i = i >= urls.length - 1 ? 0 : i + 1;
 }, 3000);

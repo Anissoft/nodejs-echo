@@ -1,4 +1,5 @@
 import React, { memo, useMemo, useState } from 'react';
+
 import * as classes from './tableView.module.css';
 
 export interface TableViewColumn<T extends Record<string, any>> {
@@ -24,7 +25,9 @@ type ItemHead<T extends Record<string, any>> = {
   onClick: () => void;
 } & Required<TableViewColumn<T>>;
 
-export const TableView = memo(function TableView<T extends Record<string, any>>({
+export const TableView = memo(function TableView<
+  T extends Record<string, any>
+>({
   items,
   columns,
   className,
@@ -32,18 +35,24 @@ export const TableView = memo(function TableView<T extends Record<string, any>>(
   onRowClick,
   getId,
 }: TableViewProps<T>) {
-  const [sorting, setSorting] = useState<[keyof T, 'asc' | 'desc'] | null>(null);
+  const [sorting, setSorting] = useState<[keyof T, 'asc' | 'desc'] | null>(
+    null
+  );
   const head: Array<ItemHead<T>> = useMemo(
     () =>
       columns.map((column) => {
         const sortable = column.sortable ?? true;
-        const isSorted = sortable && sorting != null && sorting[0] === column.key;
+        const isSorted =
+          sortable && sorting != null && sorting[0] === column.key;
         const sortDirection = isSorted && sorting[1] === 'desc' ? 1 : -1;
-        const title = `${column.title} ${isSorted ? (sorting[1] === 'asc' ? '▲' : '▼') : ''}`;
+        const title = `${column.title} ${
+          isSorted ? (sorting[1] === 'asc' ? '▲' : '▼') : ''
+        }`;
 
         const getValue = column.getValue ?? ((item) => item[column.key]);
         const compare =
-          column.compare ?? ((a, b) => (getValue(a) > getValue(b) ? -1 : 1) * sortDirection);
+          column.compare ??
+          ((a, b) => (getValue(a) > getValue(b) ? -1 : 1) * sortDirection);
         const onClick = () => {
           if (!sortable) {
             return;
@@ -68,7 +77,7 @@ export const TableView = memo(function TableView<T extends Record<string, any>>(
           onClick,
         };
       }),
-    [columns, sorting],
+    [columns, sorting]
   );
 
   const itemsSorted = useMemo(() => {
@@ -106,7 +115,10 @@ export const TableView = memo(function TableView<T extends Record<string, any>>(
             onClick={onRowClick?.bind(null, item)}
           >
             {head.map((column) => (
-              <td key={`${getId(item)}_${column.key}`} style={{ textAlign: column.align }}>
+              <td
+                key={`${getId(item)}_${column.key}`}
+                style={{ textAlign: column.align }}
+              >
                 {column.getValue(item)}
               </td>
             ))}

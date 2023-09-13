@@ -1,6 +1,8 @@
 import * as ws from 'ws';
 
-export async function createWebSocketServer(port: number): Promise<ws.Server<ws.WebSocket>> {
+export async function createWebSocketServer(
+  port: number
+): Promise<ws.Server<ws.WebSocket>> {
   return await new Promise((resolve) => {
     const wss = new ws.Server(
       {
@@ -23,7 +25,7 @@ export async function createWebSocketServer(port: number): Promise<ws.Server<ws.
       },
       () => {
         resolve(wss);
-      },
+      }
     );
   });
 }

@@ -1,17 +1,17 @@
+import { useSet } from '@anissoft/react-hooks';
+import { useQueryStringParameter } from '@anissoft/react-hooks/lib/useQueryParameters';
 import React, {
-  createContext,
   PropsWithChildren,
+  createContext,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from 'react';
-import { useSet } from '@anissoft/react-hooks';
-import { useQueryStringParameter } from '@anissoft/react-hooks/lib/useQueryParameters';
 
-import { useWebSocket } from '../../hooks/useWebSocket';
 import { NetworkEvent } from '../../../types';
+import { useWebSocket } from '../../hooks/useWebSocket';
 
 const RequestsContext = createContext<{
   readonly connected: boolean;
@@ -24,7 +24,9 @@ const RequestsContext = createContext<{
 }>(undefined as unknown as any);
 
 export type MessageListener = (event: NetworkEvent) => void;
-export type ErrorListener = (event: MessageEvent<any> | Event | CloseEvent) => void;
+export type ErrorListener = (
+  event: MessageEvent<any> | Event | CloseEvent
+) => void;
 
 export enum requestsEvents {
   clearAllCapturedRequests = 'clearAllCapturedRequests',
@@ -33,7 +35,7 @@ export function RequestsProvider({ children }: PropsWithChildren) {
   const [enabled, setEnabled] = useState(true);
   const [socketPort] = useQueryStringParameter(
     'socket',
-    (+location.host.split(':')[1] + 1).toString(),
+    (+location.host.split(':')[1] + 1).toString()
   );
   const socketAddress = `ws://${window.location.hostname}:${socketPort ?? ''}`;
   const messageListeners = useSet<MessageListener>([]);
@@ -55,7 +57,7 @@ export function RequestsProvider({ children }: PropsWithChildren) {
         }
       });
     },
-    [messageListeners, enabled],
+    [messageListeners, enabled]
   );
 
   const onError = useCallback(
@@ -68,11 +70,14 @@ export function RequestsProvider({ children }: PropsWithChildren) {
         try {
           listener.call(window, event);
         } catch (error) {
-          console.error(`Failed to execute error listener - ${listener.name}`, error);
+          console.error(
+            `Failed to execute error listener - ${listener.name}`,
+            error
+          );
         }
       });
     },
-    [errorListeners, enabled],
+    [errorListeners, enabled]
   );
 
   const [connected] = useWebSocket(socketAddress, onMessage, onError);
@@ -88,13 +93,20 @@ export function RequestsProvider({ children }: PropsWithChildren) {
         addErrorListener: errorListeners.add,
         removeErrorListener: errorListeners.delete,
       } as const),
-    [connected, enabled],
+    [connected, enabled]
   );
 
-  return <RequestsContext.Provider value={requests}>{children}</RequestsContext.Provider>;
+  return (
+    <RequestsContext.Provider value={requests}>
+      {children}
+    </RequestsContext.Provider>
+  );
 }
 
-export function useRequests(onMessage?: MessageListener, onError?: ErrorListener) {
+export function useRequests(
+  onMessage?: MessageListener,
+  onError?: ErrorListener
+) {
   const requests = useContext(RequestsContext);
 
   useEffect(() => {

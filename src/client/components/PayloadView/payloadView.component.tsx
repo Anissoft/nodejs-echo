@@ -3,7 +3,6 @@ import ReactJson from 'react-json-view';
 
 import { cls } from '../../../utils/classname';
 import { useTheme } from '../../hooks/useTheme';
-
 import * as classes from './payloadVIew.module.css';
 
 export interface PayloadViewProps {
@@ -11,7 +10,10 @@ export interface PayloadViewProps {
   contentType?: string | string[];
 }
 
-export const PayloadView = memo(function PayloadView({ data, contentType = '' }: PayloadViewProps) {
+export const PayloadView = memo(function PayloadView({
+  data,
+  contentType = '',
+}: PayloadViewProps) {
   const [showRaw, setShowRaw] = useState(false);
   const [theme] = useTheme();
 
@@ -58,7 +60,9 @@ export const PayloadView = memo(function PayloadView({ data, contentType = '' }:
   }
 
   if (type.startsWith('image/')) {
-    return <img className={classes.image} src={`data:${type};base64,${data}`} />;
+    return (
+      <img className={classes.image} src={`data:${type};base64,${data}`} />
+    );
   }
 
   return <pre className={classes.root}>{window.atob(data)}</pre>;

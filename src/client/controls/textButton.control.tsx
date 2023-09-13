@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+
 import { cls } from '../../utils/classname';
 import { Button, ButtonProps } from '../components/Button/button.component';
 import * as classes from './controls.module.css';
@@ -11,7 +12,10 @@ export const TextButton = memo(function TextButton({
   ...props
 }: TextButtonProps) {
   return (
-    <Button className={cls(classes.button, classes['button-t'], className)} {...props}>
+    <Button
+      className={cls(classes.button, classes['button-t'], className)}
+      {...props}
+    >
       {children}
     </Button>
   );

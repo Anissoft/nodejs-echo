@@ -1,13 +1,21 @@
 import React, { memo } from 'react';
+
 import { cls } from '../../utils/classname';
 import { Button, ButtonProps } from '../components/Button/button.component';
 import * as classes from './controls.module.css';
 
 export type ClearButtonProps = ButtonProps;
 
-export const ClearButton = memo(function ClearButton({ children, ...props }: ClearButtonProps) {
+export const ClearButton = memo(function ClearButton({
+  children,
+  ...props
+}: ClearButtonProps) {
   return (
-    <Button className={cls(classes.button, classes['button-i'])} title={'Clear'} {...props}>
+    <Button
+      className={cls(classes.button, classes['button-i'])}
+      title={'Clear'}
+      {...props}
+    >
       <div className={classes['clear-i']}>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path

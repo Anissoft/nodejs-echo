@@ -1,17 +1,21 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 
+import { RequestItem } from '../../../types';
+import { mergeDeep } from '../../../utils/json';
+import { SplitView } from '../../components/SplitView/splitView.component';
+import {
+  TableView,
+  TableViewColumn,
+} from '../../components/TableView/tableview.component';
 import {
   useClearRequestsEvent,
   useFilterRequestsEvent,
 } from '../../services/requests/requests.events';
-import { SplitView } from '../../components/SplitView/splitView.component';
+import {
+  MessageListener,
+  useRequests,
+} from '../../services/requests/requests.provider';
 import { RequestDetails } from '../RequestDetails/requestDetails.block';
-import { TableView, TableViewColumn } from '../../components/TableView/tableview.component';
-import { MessageListener, useRequests } from '../../services/requests/requests.provider';
-
-import { mergeDeep } from '../../../utils/json';
-import { RequestItem } from '../../../types';
-
 import * as classes from './requestsList.module.css';
 
 export const RequestsList = memo(function RequestsList() {
@@ -27,8 +31,10 @@ export const RequestsList = memo(function RequestsList() {
           if (!item.timeStart) {
             return '';
           }
-          const timestamptWithOffset = item.timeStart - new Date().getTimezoneOffset() * 60 * 1000;
-          const [_, match] = new Date(timestamptWithOffset).toISOString().match(/T(.+)Z/) ?? [];
+          const timestamptWithOffset =
+            item.timeStart - new Date().getTimezoneOffset() * 60 * 1000;
+          const [_, match] =
+            new Date(timestamptWithOffset).toISOString().match(/T(.+)Z/) ?? [];
           return match;
         },
       },
@@ -55,7 +61,9 @@ export const RequestsList = memo(function RequestsList() {
             return item.requestHeaders?.host as string;
           }
 
-          return item.url?.replace(/https?:\/\//, '').replace(/\/.*$/, '') ?? '';
+          return (
+            item.url?.replace(/https?:\/\//, '').replace(/\/.*$/, '') ?? ''
+          );
         },
       },
       {
@@ -63,7 +71,9 @@ export const RequestsList = memo(function RequestsList() {
         key: 'url',
         width: '100%',
         getValue(item) {
-          const [path, query] = item.url?.replace(/https?:\/\/.+?\//, '/').split('?') ?? ['', ''];
+          const [path, query] = item.url
+            ?.replace(/https?:\/\/.+?\//, '/')
+            .split('?') ?? ['', ''];
           return (
             <span>
               {path}
@@ -84,7 +94,8 @@ export const RequestsList = memo(function RequestsList() {
             return '';
           }
 
-          const classname = statusCode < 300 ? 'ok' : statusCode < 400 ? 'warn' : 'fail';
+          const classname =
+            statusCode < 300 ? 'ok' : statusCode < 400 ? 'warn' : 'fail';
 
           return <span className={classes[classname]}>{statusCode}</span>;
         },
@@ -94,11 +105,13 @@ export const RequestsList = memo(function RequestsList() {
         align: 'left',
         key: 'timeEnd',
         getValue(item) {
-          return item.timeEnd && item.timeStart ? `${item.timeEnd - item.timeStart}ms` : '';
+          return item.timeEnd && item.timeStart
+            ? `${item.timeEnd - item.timeStart}ms`
+            : '';
         },
       },
     ],
-    [],
+    []
   );
 
   const getItemId = useCallback((item: RequestItem) => item.id ?? 'no-id', []);
@@ -124,7 +137,7 @@ export const RequestsList = memo(function RequestsList() {
         return [...prevItems];
       });
     },
-    [open],
+    [open]
   );
 
   useRequests(onMessage);
@@ -132,12 +145,12 @@ export const RequestsList = memo(function RequestsList() {
     useCallback(() => {
       setItems([]);
       setOpen(null);
-    }, []),
+    }, [])
   );
   useFilterRequestsEvent(
     useCallback((filter: string) => {
       setFilter(filter);
-    }, []),
+    }, [])
   );
 
   const onItemClick = useCallback((item: RequestItem) => {
@@ -157,12 +170,14 @@ export const RequestsList = memo(function RequestsList() {
           status: item.statusCode,
         })
           .toLowerCase()
-          .includes(filter.toLowerCase()),
+          .includes(filter.toLowerCase())
       );
     }
     // filter-out requests which were sent from the UI itself
     return items.filter(
-      (item) => Boolean(item.url) && item.requestHeaders?.referer !== window.location.href,
+      (item) =>
+        Boolean(item.url) &&
+        item.requestHeaders?.referer !== window.location.href
     );
   }, [items, filter]);
 
@@ -178,7 +193,9 @@ export const RequestsList = memo(function RequestsList() {
             onRowClick={onItemClick}
           />
         </div>
-        {open != null && <RequestDetails request={open} onClose={onDetailsClose} />}
+        {open != null && (
+          <RequestDetails request={open} onClose={onDetailsClose} />
+        )}
       </SplitView>
     </div>
   );

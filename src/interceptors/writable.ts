@@ -1,6 +1,7 @@
 import * as stream from 'stream';
-import { getId } from '../utils/id';
+
 import { parseBodyFromChunks } from '../utils/body';
+import { getId } from '../utils/id';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const PAYLOADS = new Map<string, { chunks: any[]; encoding: BufferEncoding }>();
@@ -10,7 +11,9 @@ export function intercept(this: stream.Writable, method: 'write' | 'end') {
   const interceptor = (chunk: any, ...args: any[]): any => {
     if (chunk !== null) {
       const id = getId(this);
-      const encoding = (typeof args[0] === 'string' ? args[0] : 'base64') as BufferEncoding;
+      const encoding = (
+        typeof args[0] === 'string' ? args[0] : 'base64'
+      ) as BufferEncoding;
       const record = PAYLOADS.get(id) ?? {
         chunks: [],
         encoding,
@@ -38,7 +41,11 @@ export function collect(id: string, contentEncoding?: string) {
     return '';
   }
 
-  const payload = parseBodyFromChunks(record.chunks, contentEncoding, record.encoding);
+  const payload = parseBodyFromChunks(
+    record.chunks,
+    contentEncoding,
+    record.encoding
+  );
 
   PAYLOADS.delete(id);
   return payload;

@@ -1,21 +1,29 @@
-import React, { ChangeEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  memo,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-import { ThemeButton } from '../../controls/themeButton.control';
+import { Header as BaseHeader } from '../../components/Header/header.component';
+import { TextInput } from '../../components/TextInput/textInput.component';
 import { ClearButton } from '../../controls/clearButton.control';
 import { RecordButton } from '../../controls/recordButton.control';
-import { TextInput } from '../../components/TextInput/textInput.component';
-import { Header as BaseHeader } from '../../components/Header/header.component';
-import { useRequests } from '../../services/requests/requests.provider';
+import { ThemeButton } from '../../controls/themeButton.control';
 import {
   useClearRequestsEvent,
   useFilterRequestsEvent,
 } from '../../services/requests/requests.events';
-
+import { useRequests } from '../../services/requests/requests.provider';
 import * as classes from './header.module.css';
 
 export const Header = memo(function Header() {
   const recButtonRef = useRef<HTMLButtonElement>(null);
-  const [status, setStatus] = useState<'offline' | 'online' | 'error'>('offline');
+  const [status, setStatus] = useState<'offline' | 'online' | 'error'>(
+    'offline'
+  );
   const [isConnected, isEnabled, setEnabled] = useRequests(
     useCallback(() => {
       if (recButtonRef.current == null) {
@@ -28,7 +36,7 @@ export const Header = memo(function Header() {
         recButtonRef.current?.classList.remove(classes.blink);
       }, 500);
     }, []),
-    useCallback(() => setStatus('error'), []),
+    useCallback(() => setStatus('error'), [])
   );
 
   const clearAllCapturedRequests = useClearRequestsEvent();
@@ -38,7 +46,10 @@ export const Header = memo(function Header() {
     setStatus(isConnected ? 'online' : 'offline');
   }, [isConnected]);
 
-  const onRecordToggle = useCallback(() => setEnabled((val) => !val), [setEnabled]);
+  const onRecordToggle = useCallback(
+    () => setEnabled((val) => !val),
+    [setEnabled]
+  );
 
   const onFilterChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     filterCapturedRequests(event.target.value);

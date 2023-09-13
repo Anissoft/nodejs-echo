@@ -1,0 +1,18 @@
+{
+  "singleQuote": true,
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": true,
+  "jsxSingleQuote": false,
+  "importOrder": [
+    "^server\\-only$",
+    "^modules/(.*)$",
+    "^actions/(.*)$",
+    "^components/(.*)$",
+    "^hooks/(.*)$",
+    "^utils/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

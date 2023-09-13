@@ -1,7 +1,7 @@
-import React, { memo, forwardRef, PropsWithChildren } from 'react';
-import { Button, ButtonProps } from '../components/Button/button.component';
-import { cls } from '../../utils/classname';
+import React, { PropsWithChildren, forwardRef, memo } from 'react';
 
+import { cls } from '../../utils/classname';
+import { Button, ButtonProps } from '../components/Button/button.component';
 import * as classes from './controls.module.css';
 
 export type RecordButtonProps = PropsWithChildren<{
@@ -12,7 +12,7 @@ export type RecordButtonProps = PropsWithChildren<{
 export const RecordButton = memo(
   forwardRef<HTMLButtonElement, RecordButtonProps>(function RecordButton(
     { children, active, ...props },
-    ref,
+    ref
   ) {
     const title = active ? 'Stop recording' : 'Start recording';
 
@@ -23,8 +23,10 @@ export const RecordButton = memo(
         title={title}
         {...props}
       >
-        <div className={cls(classes['record-i'], { [classes.active]: active })} />
+        <div
+          className={cls(classes['record-i'], { [classes.active]: active })}
+        />
       </Button>
     );
-  }),
+  })
 );

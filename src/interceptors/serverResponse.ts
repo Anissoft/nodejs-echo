@@ -1,15 +1,22 @@
 import * as http from 'http';
+
 import { NetworkEvent, NetworkEventType } from '../types';
-import { collect } from './writable';
-import { getId } from '../utils/id';
 import { parseRawHeaders } from '../utils/headers';
+import { getId } from '../utils/id';
+import { collect } from './writable';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 const serverResponseEmit = http.ServerResponse.prototype.emit;
 
-export const interceptServerResponse = (capture: (event: NetworkEvent) => void) => {
-  function emitInterceptor(this: http.ServerResponse, event: string | symbol, ...args: any[]) {
+export const interceptServerResponse = (
+  capture: (event: NetworkEvent) => void
+) => {
+  function emitInterceptor(
+    this: http.ServerResponse,
+    event: string | symbol,
+    ...args: any[]
+  ) {
     const id = getId(this);
 
     switch (event) {
@@ -20,7 +27,7 @@ export const interceptServerResponse = (capture: (event: NetworkEvent) => void) 
           responseHeaders: Object.assign(
             {},
             this.getHeaders(),
-            parseRawHeaders((this as any)._header),
+            parseRawHeaders((this as any)._header)
           ),
         });
         capture({

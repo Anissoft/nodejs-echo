@@ -1,7 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 
 import { cls } from '../../../utils/classname';
-
 import * as classes from './header.module.css';
 
 export type HeaderProps = PropsWithChildren<

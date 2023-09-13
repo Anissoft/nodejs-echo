@@ -16,10 +16,10 @@ const getCircularReplacer = () => {
 export const stringifySafe = (source: Record<string, any>): string =>
   JSON.stringify(source, getCircularReplacer());
 
-export function mergeDeep<T extends Record<string, any>, K extends Record<string, any>>(
-  target: T,
-  ...sources: K[]
-): (T & K) | T {
+export function mergeDeep<
+  T extends Record<string, any>,
+  K extends Record<string, any>
+>(target: T, ...sources: K[]): (T & K) | T {
   if (sources.length === 0) {
     return target;
   }
@@ -40,5 +40,7 @@ export function mergeDeep<T extends Record<string, any>, K extends Record<string
 }
 
 export function isObject(candidate: object) {
-  return candidate && typeof candidate === 'object' && !Array.isArray(candidate);
+  return (
+    candidate && typeof candidate === 'object' && !Array.isArray(candidate)
+  );
 }

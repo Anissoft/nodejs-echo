@@ -1,7 +1,8 @@
 import * as http from 'http';
 import * as https from 'https';
-import { getId, setId } from '../utils/id';
+
 import { NetworkEvent, NetworkEventType } from '../types';
+import { getId, setId } from '../utils/id';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -9,7 +10,11 @@ const httpServerEmit = http.Server.prototype.emit;
 const httpsServerEmit = https.Server.prototype.emit;
 
 export const interceptServer = (capture: (event: NetworkEvent) => void) => {
-  function emitInterceptor(this: http.Server, event: string | symbol, ...args: any[]) {
+  function emitInterceptor(
+    this: http.Server,
+    event: string | symbol,
+    ...args: any[]
+  ) {
     const [req, res] = args as [http.IncomingMessage, http.ServerResponse];
 
     switch (event) {
@@ -20,9 +25,9 @@ export const interceptServer = (capture: (event: NetworkEvent) => void) => {
           type: NetworkEventType.Request,
           method: req.method ?? '',
           version: req.httpVersion,
-          url: `http${this instanceof http.Server ? '' : 's'}://${req.headers.host ?? 'localhost'}${
-            req.url ?? ''
-          }`,
+          url: `http${this instanceof http.Server ? '' : 's'}://${
+            req.headers.host ?? 'localhost'
+          }${req.url ?? ''}`,
           timeStart: Date.now(),
           requestHeaders: req.headers,
           incoming: true,

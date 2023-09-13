@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { stringifySafe } from '../../utils/json';
 
 const POLLING_INTERVAL = 500; // ms
@@ -6,7 +7,7 @@ const POLLING_INTERVAL = 500; // ms
 export function useWebSocket(
   url: string,
   onMessage?: (event: MessageEvent<any>) => void,
-  onError?: (error: MessageEvent<any> | Event | CloseEvent) => void,
+  onError?: (error: MessageEvent<any> | Event | CloseEvent) => void
 ) {
   const socketRef = useRef<WebSocket | null>();
   const [connected, setConnected] = useState(false);
@@ -32,7 +33,7 @@ export function useWebSocket(
       if (
         socketRef.current != null &&
         [socketRef.current.CLOSED, socketRef.current.CLOSING].includes(
-          socketRef.current?.readyState,
+          socketRef.current?.readyState
         )
       ) {
         connect(url);
@@ -71,7 +72,7 @@ export function useWebSocket(
         socketRef.current.send(stringifySafe(message));
       }
     },
-    [connected],
+    [connected]
   );
 
   return [connected, send] as const;
