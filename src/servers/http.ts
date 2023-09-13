@@ -15,6 +15,9 @@ export async function startHTTPServer(port: number): Promise<http.Server> {
         server.listen(port, () => {
           resolve(server);
         });
+      })
+      .catch((error) => {
+        console.error(error);
       });
   });
 }

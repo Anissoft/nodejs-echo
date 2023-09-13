@@ -26,7 +26,7 @@ export const interceptFetchCalls = (capture: (event: NetworkEvent) => void) => {
         type: NetworkEventType.Request,
         id,
         method: init?.method ?? 'GET',
-        url: url,
+        url,
         timeStart: Date.now(),
         incoming: false,
       });
@@ -71,6 +71,9 @@ export const interceptFetchCalls = (capture: (event: NetworkEvent) => void) => {
             type: NetworkEventType.ResponseData,
             response: Buffer.from(arrayBuffer).toString('base64'),
           });
+        })
+        .catch((error) => {
+          console.error(error);
         });
 
       return response;
