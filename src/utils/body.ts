@@ -5,7 +5,7 @@ export const parseBodyFromChunks = (
   contentEncoding?: string,
   encoding: BufferEncoding = 'base64'
 ) => {
-  chunks = chunks?.filter(Boolean);
+  chunks = chunks?.filter(chunk => Buffer.isBuffer(chunks) || typeof chunk === 'string');
   if (chunks == null || chunks.length === 0) {
     return '';
   }
